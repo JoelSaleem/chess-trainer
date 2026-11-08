@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 
 import { faqPage } from '../../core/schema';
 import { Seo } from '../../core/seo';
-import { SITE } from '../../core/site';
+import { SITE, storeHref } from '../../core/site';
 import { MoreApps } from '../../shared/more-apps/more-apps';
 import {
   COMPARE_CATEGORIES,
@@ -318,7 +318,7 @@ export class CompareHubPage {
               zero advertising under the GNU AGPLv3.
             </p>
             <div class="compare-actions">
-              <a class="button button--solid" [href]="site.appStore" rel="noopener">
+              <a class="button button--solid" [href]="storeUrl()" rel="noopener">
                 Brass Pawn on the App Store ↗
               </a>
               <a routerLink="/training">Explore all 8 modes</a>
@@ -392,6 +392,10 @@ export class CompareHubPage {
 export class CompareDetailPage {
   protected readonly page = inject(ActivatedRoute).snapshot.data['page'] as ComparePageData;
   protected readonly site = SITE;
+
+  protected storeUrl(): string {
+    return storeHref(this.page.slug);
+  }
 
   protected categoryLabel(): string {
     return COMPARE_CATEGORIES.find((c) => c.id === this.page.category)?.name ?? 'Comparisons';

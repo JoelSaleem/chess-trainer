@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Seo } from '../../core/seo';
-import { SITE } from '../../core/site';
+import { SITE, storeHref } from '../../core/site';
 import { MoreApps } from '../../shared/more-apps/more-apps';
 import { GUIDE_INDEX } from './guide-index';
 import { guideSeoTitle } from './seo-titles';
@@ -29,7 +29,7 @@ export class ArticlesPage{
 <div class="academy-layout"><div class="academy-prose">
 @if(guide.exercise;as e){<section class="academy-exercise"><h2>A position to work through</h2><p>{{e.prompt}}</p><div class="academy-board" role="img" [attr.aria-label]="'Chess position, '+side(e.fen)+' to move. FEN: '+e.fen">@for(row of board(e.fen);track $index;let rank=$index){@for(cell of row;track $index;let file=$index){<span aria-hidden="true" [class.light]="(rank+file)%2===0" [class.dark]="(rank+file)%2===1" [class.white-piece]="cell && cell===cell.toUpperCase()" [class.black-piece]="cell && cell===cell.toLowerCase()">{{piece(cell)}}<small>{{file===0?8-rank:''}}{{rank===7?'abcdefgh'[file]:''}}</small></span>}}</div><p class="mono">{{side(e.fen)}} to move</p><details><summary>Compare with the recorded continuation</summary><p>{{e.line}}</p><p>This is a line from the training source, not a claim that every alternative has the same outcome. Calculate the opponent’s reply before revealing it.</p></details><p class="academy-source"><a [href]="e.sourceUrl" target="_blank" rel="noopener">{{e.source}}</a></p></section>}
 @for(s of guide.sections;track s.heading;let i=$index){<section [id]="'section-'+i"><h2>{{s.heading}}</h2>@for(p of s.paragraphs;track p){<p>{{p}}</p>}@if(s.bullets?.length){<ul>@for(b of s.bullets;track b){<li>{{b}}</li>}</ul>}</section>}
-<section class="academy-product"><p class="mono academy-kicker">Put the practice into a routine</p><h2>Where Brass Pawn fits</h2><p>{{guide.appFit}}</p><div class="academy-actions"><a class="button button--solid" [href]="site.appStore" rel="noopener">Brass Pawn on the App Store ↗</a><a routerLink="/training">Explore the training modes</a><a routerLink="/pricing">Free and Pro</a></div></section>
+<section class="academy-product"><p class="mono academy-kicker">Put the practice into a routine</p><h2>Where Brass Pawn fits</h2><p>{{guide.appFit}}</p><div class="academy-actions"><a class="button button--solid" [href]="storeUrl()" rel="noopener">Brass Pawn on the App Store ↗</a><a routerLink="/training">Explore the training modes</a><a routerLink="/pricing">Free and Pro</a></div></section>
 <section><h2>Sources and further practice</h2><ul>@for(s of guide.sources;track s.url){<li><a [href]="s.url" target="_blank" rel="noopener">{{s.label}} ↗</a></li>}</ul></section>
 <section><h2>What to work on next</h2><ul>@for(g of related();track g.slug){<li><a [routerLink]="'/articles/'+g.slug">{{g.title}}</a></li>}</ul></section>
 <nav class="academy-prevnext" aria-label="More training guides">@if(previous();as p){<a [routerLink]="'/articles/'+p.slug">← {{p.title}}</a>}@if(next();as n){<a [routerLink]="'/articles/'+n.slug">{{n.title}} →</a>}</nav>
@@ -37,6 +37,7 @@ export class ArticlesPage{
 </div><aside class="academy-toc"><h2>In this guide</h2><ol>@for(s of guide.sections;track s.heading;let i=$index){<li><a [routerLink]="'/articles/'+guide.slug" [fragment]="'section-'+i">{{s.heading}}</a></li>}</ol><hr><a routerLink="/articles">All 100 training guides →</a></aside></div></article>`,styleUrl:'./articles.scss'})
 export class GuideArticlePage{
  readonly guide=inject(ActivatedRoute).snapshot.data['guide'] as ChessGuide;readonly site=SITE;
+ storeUrl(){return storeHref(this.guide.slug)}
  label(){return TOPICS.find(t=>t.id===this.guide.cluster)?.name||'Chess practice'}
  minutes(){return Math.max(1,Math.ceil(this.guide.sections.reduce((n,s)=>n+s.paragraphs.join(' ').split(/\s+/).length+(s.bullets||[]).join(' ').split(/\s+/).length,0)/200))}
  related(){return GUIDE_INDEX.filter(g=>this.guide.related.includes(g.slug))}

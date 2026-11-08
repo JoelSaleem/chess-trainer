@@ -69,7 +69,7 @@ export const SITE = {
    * id0000000000.
    */
   appStoreId: '6803566012',
-  appStore: 'https://apps.apple.com/app/brass-pawn/id6803566012',
+  appStore: 'https://apps.apple.com/app/brass-pawn/id6803566012?pt=127093297&ct=home&mt=8',
   appStoreLive: true,
   bundleId: 'com.arte-soft.brasspawn',
   /** The App Clip: game invitations and the daily feed's stories open in it. */
@@ -535,3 +535,40 @@ export const MOTIFS: readonly Motif[] = [
     count: 1129,
   },
 ];
+
+export const APP_STORE_BASE = 'https://apps.apple.com/app/brass-pawn/id6803566012';
+export const APP_STORE_PT = '127093297';
+
+export const pageCampaign = (pathname: string): string => {
+  const segs = (pathname || '/')
+    .replace(/^\/+|\/+$/g, '')
+    .split('/')
+    .filter(Boolean);
+  if (!segs.length || segs[0] === 'en') return 'home';
+  if (segs[0] === 'compare') {
+    return (segs[1] || 'compare').slice(0, 30).replace(/-+$/, '');
+  }
+  if (segs[0] === 'articles') {
+    return (segs[1] || 'articles').slice(0, 30).replace(/-+$/, '');
+  }
+  if (segs[0] === 'today') {
+    return (segs[1] ? `today-${segs[1]}` : 'today').slice(0, 30).replace(/-+$/, '');
+  }
+  if (segs[0] === 'guides') {
+    return (segs[1] || 'guides').slice(0, 30).replace(/-+$/, '');
+  }
+  return segs.join('-').slice(0, 30).replace(/-+$/, '') || 'home';
+};
+
+export const taggedCampaign = (pathname: string, source = ''): string => {
+  const page = pageCampaign(pathname);
+  const src = source.trim().replace(/[^a-z0-9]/gi, '').toLowerCase();
+  if (!src) return page.slice(0, 30).replace(/-+$/, '');
+  const maxPageLen = Math.max(1, 30 - src.length - 1);
+  return `${page.slice(0, maxPageLen).replace(/-+$/, '')}_${src}`;
+};
+
+export const storeHref = (campaign = 'home'): string => {
+  const ct = (campaign || 'home').slice(0, 30).replace(/-+$/, '');
+  return `${APP_STORE_BASE}?pt=${APP_STORE_PT}&ct=${encodeURIComponent(ct)}&mt=8`;
+};

@@ -527,6 +527,28 @@ try {
 }
 
 const files = await readdir(OUT, { recursive: true });
+const { pageCampaign, storeHref } = await loadTsModule('../src/app/core/site.ts');
+
+for (const relFile of files.filter((f) => f.endsWith('.html'))) {
+  const fullPath = join(OUT, relFile);
+  const rawHtml = await readFile(fullPath, 'utf8');
+  if (!rawHtml.includes('id6803566012')) continue;
+  const routePath =
+    '/' +
+    relFile
+      .replace(/\\/g, '/')
+      .replace(/(?:^|\/)index\.html$/, '')
+      .replace(/\.html$/, '');
+  const taggedHref = storeHref(pageCampaign(routePath));
+  const updatedHtml = rawHtml.replace(
+    /href="https:\/\/apps\.apple\.com\/[^"]*id6803566012[^"]*"/g,
+    `href="${taggedHref}"`,
+  );
+  if (updatedHtml !== rawHtml) {
+    await writeFile(fullPath, updatedHtml, 'utf8');
+  }
+}
+
 const html = files.filter((f) => f.endsWith('.html')).length;
 const bytes = (
   await Promise.all(
