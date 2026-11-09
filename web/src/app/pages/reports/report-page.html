@@ -1,4 +1,8 @@
-<bp-page-head [slug]="slug()" [title]="report().headline" [lede]="report().lede" [meta]="meta()" />
+<bp-page-head [slug]="slug()" [title]="report().headline" [lede]="report().lede" [meta]="meta()">
+  <div class="head-cta" ctReveal="200">
+    <a class="button button--solid" [href]="storeUrl()" rel="noopener">{{ w().getAppStore }}</a>
+  </div>
+</bp-page-head>
 
 <div class="page">
   @for (section of report().sections; track section.key; let s = $index) {
@@ -87,6 +91,18 @@
         </table>
       }
     </section>
+    @if (s === 0 && report().sections.length > 1) {
+      <section class="section take" ctReveal>
+        <div>
+          <p class="slug">{{ w().inBrassPawn }}</p>
+          <h2>{{ w().takeTitle }}</h2>
+          <p class="measure dim">{{ w().takeBody }}</p>
+        </div>
+        <div class="take__buttons">
+          <a class="button button--solid" [href]="storeUrl()" rel="noopener">{{ w().getAppStore }}</a>
+        </div>
+      </section>
+    }
   }
 
   @if (report().numbers; as numbers) {
@@ -154,6 +170,17 @@
       <a [href]="list()">{{ w().allStories }}</a>
     </nav>
   }
+
+  <section class="section take" ctReveal>
+    <div>
+      <p class="slug">{{ w().inBrassPawn }}</p>
+      <h2>{{ w().takeTitle }}</h2>
+      <p class="measure dim">{{ w().takeBody }}</p>
+    </div>
+    <div class="take__buttons">
+      <a class="button button--solid" [href]="storeUrl()" rel="noopener">{{ w().getAppStore }}</a>
+    </div>
+  </section>
 
   <section class="section source" ctReveal>
     <p class="measure faint">{{ r().counted }}</p>

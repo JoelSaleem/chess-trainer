@@ -204,9 +204,15 @@ const PAGES = [
 // other languages stay published, marked noindex, and are left out here.
 const siteFacts = await readFile(new URL('../src/app/core/site.ts', import.meta.url), 'utf8');
 const INDEXED = [...siteFacts.split('INDEXED_LOCALES')[1].split(';')[0].matchAll(/'([a-z-]+)'/g)].map((m) => m[1]);
-const NOT_INDEXED = locales.map((l) => l.slug).filter((slug) => !INDEXED.includes(slug));
+const GOOGLE_SITEMAP_LOCALES = [
+  'en', 'ar', 'bg', 'cs', 'de', 'el', 'es', 'fr', 'hu',
+  'id', 'it', 'ja', 'ko', 'pl', 'pt-br', 'ru', 'zh-hant',
+];
+const NOT_IN_GOOGLE_SITEMAP = locales
+  .map((l) => l.slug)
+  .filter((slug) => !GOOGLE_SITEMAP_LOCALES.includes(slug));
 const SITEMAP_PAGES = PAGES.filter(
-  (page) => !NOT_INDEXED.some((slug) => page.path === `/${slug}` || page.path.startsWith(`/${slug}/`)),
+  (page) => !NOT_IN_GOOGLE_SITEMAP.some((slug) => page.path === `/${slug}` || page.path.startsWith(`/${slug}/`)),
 );
 
 const today = new Date().toISOString().slice(0, 10);

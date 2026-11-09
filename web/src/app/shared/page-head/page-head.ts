@@ -20,6 +20,7 @@ import { Reveal } from '../../core/reveal';
       @if (meta()) {
         <p class="meta mono faint" ctReveal="160">{{ meta() }}</p>
       }
+      <ng-content />
     </div>
   `,
   styles: `

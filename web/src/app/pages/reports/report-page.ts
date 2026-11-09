@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input } f
 
 import { Reveal } from '../../core/reveal';
 import { Seo } from '../../core/seo';
-import { url } from '../../core/site';
+import { storeHref, url } from '../../core/site';
 import { PageHead } from '../../shared/page-head/page-head';
 import { fill, listPath, reportPath, STORY_SLUGS, storyLocales, storyPath, TodayLanguage } from '../today/i18n';
 import type { Report, ReportPlayer, ReportRow } from './types';
@@ -87,6 +87,9 @@ export class ReportPage {
   }
   protected reportPath(id: string, slug = this.w().slug): string {
     return reportPath(id, slug);
+  }
+  protected storeUrl(): string {
+    return storeHref('report-' + this.report().id);
   }
   protected readonly list = computed(() => listPath(this.w().slug));
   protected readonly event = computed(() => this.report().kind === 'event');

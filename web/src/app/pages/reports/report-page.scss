@@ -180,6 +180,36 @@ table {
   margin: 0 0 1rem;
 }
 
+.head-cta {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.take {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem 3rem;
+  align-items: end;
+  justify-content: space-between;
+
+  h2 {
+    font-size: var(--heading);
+    margin: 0 0 1rem;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.take__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
 .languages {
   display: flex;
   flex-wrap: wrap;

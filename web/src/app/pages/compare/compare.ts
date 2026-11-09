@@ -233,11 +233,18 @@ export class CompareHubPage {
         <p class="compare-byline mono">
           Brass Pawn editorial team · Verified against AGPLv3 repository facts · Updated 4 November 2026
         </p>
+        <div class="compare-actions">
+          <a class="button button--solid" [href]="storeUrl()" rel="noopener">
+            Brass Pawn on the App Store ↗
+          </a>
+          <a routerLink="/training">Explore all 8 modes</a>
+          <a routerLink="/pricing">Free vs Pro pricing</a>
+        </div>
       </header>
 
       <div class="compare-layout">
         <div class="compare-main">
-          @for (table of page.tables; track table.id) {
+          @for (table of page.tables; track table.id; let ti = $index) {
             <section class="compare-section" [id]="'table-' + table.id">
               <h2>{{ table.heading }}</h2>
               @if (table.intro) {
@@ -269,6 +276,23 @@ export class CompareHubPage {
                 </table>
               </div>
             </section>
+            @if (ti === 0 && page.tables.length > 1) {
+              <section class="compare-section compare-cta compare-prose">
+                <p class="mono compare-kicker">Try Brass Pawn free on iPhone, iPad &amp; Mac</p>
+                <h2>Practise offline with Stockfish 18 and Reckless 0.10</h2>
+                <p>
+                  Unlimited coached games against the engine or over Game Center, five daily exercises in
+                  Tactics, Rush, Positional judgement, Endgames and Guess the Elo, and zero advertising.
+                </p>
+                <div class="compare-actions">
+                  <a class="button button--solid" [href]="storeUrl()" rel="noopener">
+                    Brass Pawn on the App Store ↗
+                  </a>
+                  <a routerLink="/training">Explore all 8 modes</a>
+                  <a routerLink="/pricing">Free vs Pro pricing</a>
+                </div>
+              </section>
+            }
           }
 
           @for (section of page.sections; track section.heading; let i = $index) {
