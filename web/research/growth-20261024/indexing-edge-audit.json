@@ -4,15 +4,15 @@
   "tests": [
     {
       "path": "/de/today/sample/index.html",
-      "noindex": true
+      "noindex": false
     },
     {
       "path": "/ja",
-      "noindex": true
+      "noindex": false
     },
     {
-      "path": "/bg/articles/test",
-      "noindex": true
+      "path": "/it/reports/chess-olympiad-2026",
+      "noindex": false
     },
     {
       "path": "/articles/king-pawn-opposition",
@@ -23,5 +23,6 @@
       "noindex": false
     }
   ],
-  "preserved_request_router": true
+  "preserved_request_router": true,
+  "viewer_response_removed": true
 }

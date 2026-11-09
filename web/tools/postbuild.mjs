@@ -526,6 +526,68 @@ try {
   console.warn('postbuild: no prerendered 404 to copy');
 }
 
+// Prerender the Olympiad reports in English and every daily-feed language so
+// dist/brass-pawn/browser carries them directly alongside the static routes.
+{
+  const FEED_ORIGIN = process.env.FEED_ORIGIN ?? 'https://brasspawn.com/media/feed/v1';
+  const SLUG_TO_FOLDER = {
+    en: null,
+    'pt-br': 'pt-BR',
+    'zh-hans': 'zh-Hans',
+    'zh-hant': 'zh-Hant',
+  };
+  const folderFor = (slug) => (slug in SLUG_TO_FOLDER ? SLUG_TO_FOLDER[slug] : slug);
+  const fetchJson = async (relPath) => {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        const res = await fetch(`${FEED_ORIGIN}/${relPath}`, {
+          headers: { Accept: 'application/json' },
+          signal: AbortSignal.timeout(20_000),
+        });
+        if (!res.ok) return null;
+        return await res.json();
+      } catch {
+        if (attempt === 3) return null;
+        await new Promise((r) => setTimeout(r, 1000 * attempt));
+      }
+    }
+    return null;
+  };
+  const serverModule = await import(pathToFileURL(resolve('dist/brass-pawn/server/server.mjs')).href).catch(() => null);
+  const reportIdx = serverModule ? await fetchJson('reports/index.json') : null;
+  const reportList = reportIdx?.reports ?? [];
+  if (serverModule?.render && reportList.length) {
+    const reportLangs = ['en', ...STORY_SLUGS.filter((slug) => INDEXED.includes(slug))];
+    const jobs = reportList.flatMap(({ id }) =>
+      reportLangs.map((slug) => ({
+        id,
+        slug,
+        folder: folderFor(slug),
+        routePath: slug === 'en' ? `/reports/${id}` : `/${slug}/reports/${id}`,
+        outFile: join(OUT, ...(slug === 'en' ? ['reports', id, 'index.html'] : [slug, 'reports', id, 'index.html'])),
+      })),
+    );
+    const BATCH = 12;
+    let renderedReports = 0;
+    for (let i = 0; i < jobs.length; i += BATCH) {
+      const slice = jobs.slice(i, i + BATCH);
+      await Promise.all(
+        slice.map(async (job) => {
+          const jsonPath = `${job.folder ? `${job.folder}/` : ''}reports/${job.id}.json`;
+          const report = await fetchJson(jsonPath);
+          if (!report) return;
+          const html = await serverModule.render(job.routePath, { report });
+          if (!html || !html.includes(`<link rel="canonical" href="${ORIGIN}${job.routePath}"`)) return;
+          await mkdir(dirname(job.outFile), { recursive: true });
+          await writeFile(job.outFile, html, 'utf8');
+          renderedReports++;
+        }),
+      );
+    }
+    console.log(`postbuild: prerendered ${renderedReports} Olympiad report pages across ${reportLangs.length} languages`);
+  }
+}
+
 const files = await readdir(OUT, { recursive: true });
 const { pageCampaign, storeHref } = await loadTsModule('../src/app/core/site.ts');
 
@@ -577,3 +639,4 @@ if (html < PAGES.length + published.length) {
   );
   process.exitCode = 1;
 }
+process.exit(process.exitCode ?? 0);

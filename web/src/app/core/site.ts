@@ -10,11 +10,43 @@
 /**
  * The languages Google is asked to index, by slug.
  *
- * English only, per the publishing policy. Every other language stays
- * available to readers, marked noindex for Googlebot alone (other search
- * engines may index it), out of the sitemaps and hreflang.
+ * Every language in tools/locales.json is indexed, included in the sitemaps,
+ * and linked in hreflang alternates.
  */
-export const INDEXED_LOCALES: readonly string[] = ['en'];
+export const INDEXED_LOCALES: readonly string[] = [
+  'en',
+  'en-ca',
+  'ar',
+  'cs',
+  'da',
+  'de',
+  'el',
+  'es',
+  'fi',
+  'fr',
+  'fr-ca',
+  'he',
+  'hi',
+  'hu',
+  'id',
+  'it',
+  'ja',
+  'ko',
+  'ms',
+  'nl',
+  'no',
+  'pl',
+  'pt-br',
+  'ro',
+  'ru',
+  'sv',
+  'th',
+  'tr',
+  'vi',
+  'zh-hans',
+  'zh-hant',
+  'bg',
+];
 
 export const SITE = {
   name: 'Brass Pawn',

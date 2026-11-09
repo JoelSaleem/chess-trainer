@@ -35,11 +35,10 @@ export const LANGUAGES = LANGS.filter((lang) => lang !== 'en').map((lang) => ({
 
 /**
  * The languages search engines are asked to index: the site's INDEXED_LOCALES
- * (web/src/app/core/site.ts). English only since 2026-10-23. The other
- * languages' pages are still written, marked noindex by the renderer, but are
- * left out of sitemap-today.xml and are not announced to IndexNow.
+ * (web/src/app/core/site.ts). Every language is indexed, listed in
+ * sitemap-today.xml, and announced to IndexNow.
  */
-const INDEXED_LANGS = ['en'];
+const INDEXED_LANGS = ['en', ...LANGUAGES.map(({ slug }) => slug)];
 const indexedURL = (text) =>
   !LANGUAGES.some(({ slug }) => !INDEXED_LANGS.includes(slug) && text.includes(`brasspawn.com/${slug}/`));
 

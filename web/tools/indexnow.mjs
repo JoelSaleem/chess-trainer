@@ -72,10 +72,7 @@ if (/<sitemapindex\b/i.test(xml)) {
 } else {
   urlList.push(...locs(xml));
 }
-// A cached sitemap must never re-announce translated pages after the site
-// has switched to English-only indexing. Apply the same policy here too.
-const excluded = new Set(JSON.parse(fs.readFileSync(path.join(root, 'tools/locales.json'), 'utf8')).locales.filter(l => l.slug !== 'en').map(l => l.slug));
-urlList = [...new Set(urlList)].filter(url => !excluded.has(new URL(url).pathname.split('/')[1]));
+urlList = [...new Set(urlList)];
 if (!urlList.length) {
   console.error('cannot submit IndexNow: sitemap contains no <loc> URLs');
   process.exit(1);
@@ -89,32 +86,36 @@ for (const url of urlList) {
   }
 }
 
-const send = () => fetch('https://api.indexnow.org/indexnow', {
-  method: 'POST',
-  headers: {
-    'content-type': 'application/json; charset=utf-8',
-    'user-agent': 'Brass-Pawn-IndexNow/1.0',
-  },
-  body: JSON.stringify({
-    host: base.hostname,
-    key,
-    keyLocation: new URL(keyFile, base).href,
-    urlList,
-  }),
-  signal: AbortSignal.timeout(30_000),
-});
-let response = await send();
-let body = (await response.text()).trim();
-for (let attempt = 1; response.status === 403 && body.includes('SiteVerificationNotCompleted') && attempt <= 4; attempt++) {
-  await new Promise(resolve => setTimeout(resolve, 20_000));
-  response = await send();
-  body = (await response.text()).trim();
-}
+const BATCH_SIZE = 10_000;
+for (let offset = 0; offset < urlList.length; offset += BATCH_SIZE) {
+  const batch = urlList.slice(offset, offset + BATCH_SIZE);
+  const send = () => fetch('https://api.indexnow.org/indexnow', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'user-agent': 'Brass-Pawn-IndexNow/1.0',
+    },
+    body: JSON.stringify({
+      host: base.hostname,
+      key,
+      keyLocation: new URL(keyFile, base).href,
+      urlList: batch,
+    }),
+    signal: AbortSignal.timeout(30_000),
+  });
+  let response = await send();
+  let body = (await response.text()).trim();
+  for (let attempt = 1; response.status === 403 && body.includes('SiteVerificationNotCompleted') && attempt <= 4; attempt++) {
+    await new Promise(resolve => setTimeout(resolve, 20_000));
+    response = await send();
+    body = (await response.text()).trim();
+  }
 
-if (![200, 202].includes(response.status)) {
-  console.error(`IndexNow: HTTP ${response.status}${body ? ` — ${body.slice(0, 300)}` : ''}`);
-  process.exit(1);
-}
+  if (![200, 202].includes(response.status)) {
+    console.error(`IndexNow: HTTP ${response.status}${body ? ` — ${body.slice(0, 300)}` : ''}`);
+    process.exit(1);
+  }
 
-const meaning = response.status === 200 ? 'submitted' : 'accepted; key validation pending';
-console.log(`IndexNow: HTTP ${response.status} — ${meaning} ${urlList.length} sitemap URLs for ${base.hostname}`);
+  const meaning = response.status === 200 ? 'submitted' : 'accepted; key validation pending';
+  console.log(`IndexNow: HTTP ${response.status} — ${meaning} ${batch.length} sitemap URLs for ${base.hostname}`);
+}
