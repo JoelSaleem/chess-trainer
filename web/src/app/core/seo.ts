@@ -239,7 +239,10 @@ export class Seo {
       },
       image: { '@id': url('/#logo') },
       email: SITE.contactEmail,
-      sameAs: [SITE.repo],
+      sameAs: [
+        SITE.repo,
+        'https://github.com/minchopm/brass-pawn-docs',
+      ],
       founder: { '@type': 'Person', name: SITE.publisher },
     };
 
@@ -254,7 +257,7 @@ export class Seo {
     };
 
     const app = {
-      '@type': 'MobileApplication',
+      '@type': 'SoftwareApplication',
       '@id': url('/#app'),
       name: SITE.name,
       applicationCategory: 'GameApplication',
@@ -264,6 +267,15 @@ export class Seo {
       datePublished: SITE.published,
       url: url('/'),
       ...(SITE.appStoreId ? { installUrl: SITE.appStore, downloadUrl: SITE.appStore } : {}),
+      sameAs: [
+        'https://apps.apple.com/us/app/brass-pawn-chess-trainer/id6803566012',
+        'https://github.com/minchopm/chess-trainer',
+        'https://github.com/minchopm/brass-pawn-docs',
+        'https://alternativeto.net/software/brass-pawn-chess-trainer/',
+        'https://www.producthunt.com/products/brass-pawn-chess-trainer',
+        'https://dev.to/mincho_milev_c7753077d5af/mining-14351-chess-puzzles-with-stockfish-18-and-the-illegal-fen-trap-in-chessjs-3o5i',
+        'https://artesoft.hashnode.dev/mining-14-351-chess-puzzles-with-stockfish-18-and-the-illegal-fen-trap-in-chess-js',
+      ],
       description:
         'A chess training app for iPhone, iPad and Mac: tactics, positional judgement, endgame ' +
         'technique, Rush, Guess the Elo, coached play and online games, with Stockfish running ' +

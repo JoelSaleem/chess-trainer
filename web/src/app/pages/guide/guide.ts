@@ -65,11 +65,48 @@ export class PracticeGuide {
       const locale = this.locale();
       const words = this.words();
       const path = this.path(locale.slug);
+      const canonical = `https://brasspawn.com${path}`;
       seo.apply({
         path, locale, title: words.title, description: words.intro,
         translatedPath: '/guides/chess-practice', translatedIn: LOCALES.map(l => l.slug),
         updated: '2026-10-02',
-        entities: [faqPage(path, locale.tag, words.faq)],
+        entities: [
+          {
+            '@type': 'Article',
+            '@id': `${canonical}#article`,
+            headline: words.title,
+            description: words.intro,
+            inLanguage: locale.tag,
+            datePublished: '2026-10-02',
+            dateModified: '2026-10-02',
+            author: { '@id': 'https://brasspawn.com/#organization' },
+            publisher: { '@id': 'https://brasspawn.com/#organization' },
+            mainEntityOfPage: canonical,
+          },
+          {
+            '@type': 'HowTo',
+            '@id': `${canonical}#howto`,
+            name: words.title,
+            description: words.intro,
+            inLanguage: locale.tag,
+            tool: [{ '@type': 'HowToTool', name: SITE.name }],
+            step: [
+              ...words.sections.map((section, idx) => ({
+                '@type': 'HowToStep',
+                position: idx + 1,
+                name: section.q,
+                text: section.a,
+              })),
+              ...words.faq.map((item, idx) => ({
+                '@type': 'HowToStep',
+                position: words.sections.length + idx + 1,
+                name: item.q,
+                text: item.a,
+              })),
+            ],
+          },
+          faqPage(path, locale.tag, words.faq),
+        ],
       });
     });
   }

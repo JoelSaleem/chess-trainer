@@ -38,7 +38,7 @@ export const LANGUAGES = LANGS.filter((lang) => lang !== 'en').map((lang) => ({
  * (web/src/app/core/site.ts). Every language is indexed, listed in
  * sitemap-today.xml, and announced to IndexNow.
  */
-const INDEXED_LANGS = ['en', ...LANGUAGES.map(({ slug }) => slug)];
+const INDEXED_LANGS = ['en', 'it', 'ru', 'id', 'pl', 'es', 'ar', 'bg', 'hu', 'fr', 'de', 'zh-hant', 'cs', 'el', 'ja', 'ko', 'pt-br'];
 const indexedURL = (text) =>
   !LANGUAGES.some(({ slug }) => !INDEXED_LANGS.includes(slug) && text.includes(`brasspawn.com/${slug}/`));
 
@@ -174,13 +174,10 @@ export function openPages({
     async lists(stories, translated = {}, reports = []) {
       const withPages = stories.filter((story) => story.url === pageURL(story.id));
       const entry = (loc, story) => `  <url>\n    <loc>${escape(loc)}</loc>\n    <lastmod>${escape(lastmod(story))}</lastmod>\n  </url>`;
-      // The story in English, and in every language it has been rendered in.
+      // Keep English daily stories in Google's sitemap-today.xml (preventing 10,500+ translated daily story URLs from triggering Google crawl-budget throttling),
+      // while including all 16 proven GSC languages for the high-performing Chess Olympiad 2026 reports.
       const urls = withPages
-        .flatMap((story) => [
-          entry(story.url, story),
-          ...(translated[story.id] ? LANGUAGES.map(({ slug }) => entry(languageURL(story.id, slug), story)) : []),
-        ])
-        .filter(indexedURL)
+        .map((story) => entry(story.url, story))
         .join('\n');
       const reportUrls = reports
         .flatMap(({ id, date }) =>
