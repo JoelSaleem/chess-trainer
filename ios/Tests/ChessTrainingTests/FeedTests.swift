@@ -181,15 +181,73 @@ struct FeedTests {
     func feedFolders() {
         #expect(FeedLink.folder(for: "en") == nil)
         #expect(FeedLink.folder(for: "en-US") == nil)
+        #expect(FeedLink.folder(for: "en-GB") == nil)
+        #expect(FeedLink.folder(for: "en-AU") == nil)
         #expect(FeedLink.folder(for: "de-DE") == "de")
         #expect(FeedLink.folder(for: "fr-CA") == "fr")
         #expect(FeedLink.folder(for: "ar-SA") == "ar")
         #expect(FeedLink.folder(for: "pt-BR") == "pt-BR")
+        #expect(FeedLink.folder(for: "pt-PT") == "pt-PT")
+        #expect(FeedLink.folder(for: "es-MX") == "es-MX")
         #expect(FeedLink.folder(for: "zh-Hans") == "zh-Hans")
         #expect(FeedLink.folder(for: "zh-Hant") == "zh-Hant")
         #expect(FeedLink.folder(for: "no") == "no")
+        #expect(FeedLink.folder(for: "nb") == "no")
+        #expect(FeedLink.folder(for: "bg") == "bg")
+        #expect(FeedLink.folder(for: "uk") == "uk")
+        #expect(FeedLink.folder(for: "ca") == "ca")
+        #expect(FeedLink.folder(for: "hr") == "hr")
+        #expect(FeedLink.folder(for: "sk") == "sk")
+        #expect(FeedLink.folder(for: "sl-SI") == "sl")
+        #expect(FeedLink.folder(for: "bn-BD") == "bn")
+        #expect(FeedLink.folder(for: "gu-IN") == "gu")
+        #expect(FeedLink.folder(for: "kn-IN") == "kn")
+        #expect(FeedLink.folder(for: "ml-IN") == "ml")
+        #expect(FeedLink.folder(for: "mr-IN") == "mr")
+        #expect(FeedLink.folder(for: "or-IN") == "or")
+        #expect(FeedLink.folder(for: "pa-IN") == "pa")
+        #expect(FeedLink.folder(for: "ta-IN") == "ta")
+        #expect(FeedLink.folder(for: "te-IN") == "te")
+        #expect(FeedLink.folder(for: "ur-PK") == "ur")
         // A language the feed is not written in reads the English.
-        #expect(FeedLink.folder(for: "bg") == nil)
+        #expect(FeedLink.folder(for: "tlh") == nil)
+    }
+
+    @Test("decodes optional PremiumArticle sections and resolves section diagrams")
+    func premiumArticleDecoding() throws {
+        let plain = try #require(try FeedFile.decode(file(story(key: key))).stories.first)
+        #expect(plain.premium == nil)
+
+        let premiumJSON = """
+        {"tier":"pro","subtitle":"Why weakening the kingside diagonal decided the game","readingMinutes":4,
+         "sections":[
+           {"heading":"The Fatal Weakening","ply":3,"move":"2.g4",
+            "fen":"rnbqkbnr/pppp1ppp/8/4p3/6P1/5P2/PPPPP2P/RNBQKBNR b KQkq g3 0 2",
+            "last":{"from":"g2","to":"g4"},"evalBefore":"−1.50","evalAfter":"#−1",
+            "engineLine":"2...Qh4#","body":"Pushing the g-pawn opens the e1-h4 diagonal.",
+            "takeaways":["Never open f3 and g4 before developing pieces."]},
+           {"heading":"Checkmate on h4","ply":4,"move":"2...Qh4#",
+            "fen":null,"last":null,"evalBefore":null,"evalAfter":"#−1",
+            "engineLine":null,"body":"The queen delivers immediate mate.","takeaways":null}
+         ]}
+        """
+        let enriched = story(key: key).replacingOccurrences(
+            of: "\"id\":",
+            with: "\"premium\":\(premiumJSON),\"id\":"
+        )
+        let decoded = try #require(try FeedFile.decode(file(enriched)).stories.first)
+        let premium = try #require(decoded.premium)
+        #expect(premium.readingMinutes == 4)
+        #expect(premium.sections.count == 2)
+        #expect(premium.sections[0].heading == "The Fatal Weakening")
+        #expect(premium.sections[0].takeaways?.count == 1)
+
+        let diag0 = try #require(decoded.sectionBoard(premium.sections[0]))
+        #expect(diag0.lastMove?.from == Square("g2"))
+        #expect(diag0.lastMove?.to == Square("g4"))
+
+        let diag1 = try #require(decoded.sectionBoard(premium.sections[1]))
+        #expect(diag1.position.isCheckmate)
     }
 
     @Test("a story in another language's copy says which language its words are in")

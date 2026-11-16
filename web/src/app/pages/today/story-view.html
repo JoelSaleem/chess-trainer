@@ -60,8 +60,68 @@
     </figure>
 
     <div class="story__words">
+      @if (story().premium; as premium) {
+        <div class="premium-head">
+          <div class="premium-head__meta mono">
+            <span class="premium-badge">PREMIUM ARTICLE</span>
+            <span class="premium-time faint">{{ premium.readingMinutes }} MIN READ</span>
+          </div>
+          @if (premium.subtitle) {
+            <p class="premium-subtitle">{{ premium.subtitle }}</p>
+          }
+        </div>
+      }
+
       @for (paragraph of paragraphs(); track $index) {
         <p class="lede-ish">{{ paragraph }}</p>
+      }
+
+      @if (story().premium?.sections?.length) {
+        <div class="premium-sections">
+          @for (sec of story().premium!.sections; track sec.ply; let idx = $index) {
+            <section class="premium-sec">
+              <div class="premium-sec__top">
+                <div class="premium-sec__titles">
+                  <span class="mono premium-sec__index">0{{ idx + 1 }}</span>
+                  <h3>{{ sec.heading }}</h3>
+                </div>
+                <button
+                  type="button"
+                  class="mono premium-sec__chip"
+                  [class.on]="ply() === sec.ply"
+                  (click)="step(sec.ply)"
+                >
+                  {{ sec.move }}
+                </button>
+              </div>
+
+              @if (sec.evalBefore || sec.evalAfter || sec.engineLine) {
+                <div class="premium-sec__engine mono">
+                  @if (sec.evalBefore && sec.evalAfter) {
+                    <span class="premium-sec__eval">Stockfish {{ sec.evalBefore }} → {{ sec.evalAfter }}</span>
+                  } @else if (sec.evalAfter) {
+                    <span class="premium-sec__eval">Stockfish {{ sec.evalAfter }}</span>
+                  }
+                  @if (sec.engineLine) {
+                    <span class="premium-sec__pv faint">{{ sec.engineLine }}</span>
+                  }
+                </div>
+              }
+
+              @for (p of splitBody(sec.body); track $index) {
+                <p class="premium-sec__body">{{ p }}</p>
+              }
+
+              @if (sec.takeaways.length) {
+                <ul class="premium-sec__takeaways">
+                  @for (item of sec.takeaways; track $index) {
+                    <li>{{ item }}</li>
+                  }
+                </ul>
+              }
+            </section>
+          }
+        </div>
       }
 
       <dl class="facts">

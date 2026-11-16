@@ -13,7 +13,7 @@ struct TodayCopy {
         for key in ["today.beat", "today.drew", "today.round", "today.keyMove", "today.after", "today.stockfish"] {
             let values = AboutCopy.values(key)
             let english = values["en"]!.matches(of: pattern).map { String($0.output.0) }.sorted()
-            #expect(values.count == 32, "\(key) is in \(values.count) languages")
+            #expect(values.count == 71, "\(key) is in \(values.count) languages")
             for (lang, text) in values {
                 let found = text.matches(of: pattern).map { String($0.output.0) }.sorted()
                 #expect(found == english, "\(key) in \(lang) has \(found), English has \(english)")

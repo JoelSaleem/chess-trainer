@@ -38,11 +38,22 @@ final class Navigator {
     /// the story opens replaying from there rather than from its key move.
     var pendingPly: Int?
 
+    /// Asked to open the camera/photo board scanner directly on the free board.
+    var pendingPhotoScan = false
+
     /// Open the free board on a position, with the moves that led to it.
     func continueOnBoard(_ handoff: BoardHandoff) {
         boardHandoff = handoff
         playMode = .board
         pendingTab = .play
+    }
+
+    /// Jump straight to the free board and open the AI board scanner sheet.
+    func scanBoardFromPhoto() {
+        pendingPhotoScan = true
+        playMode = .board
+        pendingTab = .play
+        showsMenu = false
     }
 
     func goToMenu() {

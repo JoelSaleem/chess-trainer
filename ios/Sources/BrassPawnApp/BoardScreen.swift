@@ -435,13 +435,20 @@ struct BoardScreen: View {
             }
         }
         #if canImport(UIKit)
-        // Whatever a photograph produces goes to the editor, always. Even the
-        // best published reader gets a few squares wrong on an average board,
-        // so correcting it is the feature and not a safety net.
         .appSheet(isPresented: $isPhotographing) {
-            PhotoBoardSheet(isPresented: $isPhotographing, reader: UnreadBoard()) { pieces in
-                editorSeed = EditorSeed(pieces: pieces)
-            }
+            PhotoBoardSheet(
+                isPresented: $isPhotographing,
+                reader: UnreadBoard(),
+                onPlayOnBoard: { position, orientation in
+                    model.orientation = orientation
+                    model.begin(from: position)
+                    driveEngines()
+                },
+                onEditPosition: { extracted, orientation in
+                    if let orientation { model.orientation = orientation }
+                    editorSeed = EditorSeed(extracted: extracted, orientation: orientation)
+                }
+            )
         }
         #endif
         // A seat handed to an engine has to start thinking without waiting for
@@ -507,10 +514,19 @@ struct BoardScreen: View {
         // happens on another screen: by the time this one exists the game is
         // already waiting.
         .onAppear {
+            if navigator.pendingPhotoScan {
+                navigator.pendingPhotoScan = false
+                isPhotographing = true
+            }
             guard let handoff = navigator.boardHandoff else { return }
             navigator.boardHandoff = nil
             model.take(handoff)
             driveEngines()
+        }
+        .onChange(of: navigator.pendingPhotoScan) { _, pending in
+            guard pending else { return }
+            navigator.pendingPhotoScan = false
+            isPhotographing = true
         }
     }
 
@@ -612,7 +628,7 @@ struct BoardScreen: View {
                 }
                 .buttonStyle(PillButtonStyle(emphasis: .solid, usesBodySize: true))
                 #if canImport(UIKit)
-                Button(L.t("board.fromPhoto", "Photo")) { isPhotographing = true }
+                Button(L.t("board.scanPhoto", "Scan board")) { isPhotographing = true }
                     .buttonStyle(PillButtonStyle(emphasis: .solid, usesBodySize: true))
                 #endif
             }
@@ -802,6 +818,7 @@ private struct EditorSeed: Identifiable {
     let pieces: [Square: Piece]
     let sideToMove: PieceColor
     let castling: CastlingRights
+    let preferredOrientation: PieceColor?
 
     init(position: Position) {
         var found: [Square: Piece] = [:]
@@ -811,14 +828,21 @@ private struct EditorSeed: Identifiable {
         pieces = found
         sideToMove = position.sideToMove
         castling = position.castling
+        preferredOrientation = nil
     }
 
-    /// From a photograph: white to move and no castling rights, because a
-    /// picture says nothing about either and guessing would be inventing.
     init(pieces: [Square: Piece]) {
         self.pieces = pieces
         sideToMove = .white
         castling = []
+        preferredOrientation = nil
+    }
+
+    init(extracted: BoardVisionService.ExtractedBoard, orientation: PieceColor? = nil) {
+        self.pieces = extracted.pieces
+        self.sideToMove = extracted.sideToMove
+        self.castling = extracted.castling
+        self.preferredOrientation = orientation
     }
 }
 
@@ -826,7 +850,7 @@ private struct EditorSeed: Identifiable {
 @MainActor
 private extension EditorSeed {
     func editor(orientation: PieceColor) -> PositionEditorModel {
-        let model = PositionEditorModel(pieces: pieces, orientation: orientation)
+        let model = PositionEditorModel(pieces: pieces, orientation: preferredOrientation ?? orientation)
         model.sideToMove = sideToMove
         for right in [CastlingRights.whiteKingside, .whiteQueenside, .blackKingside, .blackQueenside]
         where castling.contains(right) {

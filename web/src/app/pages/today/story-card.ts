@@ -30,8 +30,16 @@ import { resultText } from './words';
         [label]="fill(w().positionIn, story().white.short + '–' + story().black.short)"
       />
       <div class="story__words">
-        <p class="mono story__occasion">{{ occasion() }}</p>
+        <div class="story__meta">
+          <p class="mono story__occasion">{{ occasion() }}</p>
+          @if (story().premium; as prem) {
+            <span class="mono story__badge">PREMIUM ARTICLE · {{ prem.readingMinutes }} MIN</span>
+          }
+        </div>
         <h3>{{ story().headline }}</h3>
+        @if (story().premium?.subtitle; as sub) {
+          <p class="story__sub">{{ sub }}</p>
+        }
         <p class="mono story__players">
           {{ story().white.short }} {{ result() }} {{ story().black.short }}
         </p>
@@ -56,6 +64,29 @@ import { resultText } from './words';
       transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
     }
     .story:hover, .story:focus-visible { border-color: var(--brass-deep); transform: translateY(-2px); }
+    .story__meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem 0.65rem;
+    }
+    .story__badge {
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: linear-gradient(135deg, var(--brass-hot, #e5c37a), var(--brass));
+      padding: 0.15rem 0.48rem;
+      border-radius: 999px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .story__sub {
+      font-size: 0.84rem;
+      color: var(--ivory-dim);
+      margin: 0 0 0.4rem;
+      line-height: 1.4;
+    }
     .story__occasion, .story__players {
       font-size: var(--label);
       letter-spacing: 0.14em;

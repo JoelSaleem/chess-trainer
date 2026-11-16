@@ -46,6 +46,29 @@ export interface KeyMoment {
   readonly clock?: number | null;
 }
 
+export interface PremiumSection {
+  readonly heading: string;
+  readonly ply: number;
+  readonly move: string;
+  readonly fen: string;
+  readonly last: { readonly from: string; readonly to: string } | null;
+  readonly evalBefore: string | null;
+  readonly evalAfter: string | null;
+  readonly engineLine: string | null;
+  readonly body: string;
+  readonly takeaways: readonly string[];
+}
+
+export interface PremiumSummary {
+  readonly tier: string;
+  readonly subtitle: string;
+  readonly readingMinutes: number;
+}
+
+export interface PremiumArticle extends PremiumSummary {
+  readonly sections: readonly PremiumSection[];
+}
+
 /** Enough to list a story and draw its board. */
 export interface StorySummary {
   readonly id: string;
@@ -59,6 +82,7 @@ export interface StorySummary {
   /** The board the story is about: after the key move, or the final one. */
   readonly fen: string;
   readonly last: { readonly from: string; readonly to: string } | null;
+  readonly premium?: PremiumSummary | PremiumArticle | null;
   /**
    * The story's address, as the feed has it: its own page once one has been
    * made — by a deploy, or by the collector for a story newer than it — and
@@ -80,6 +104,7 @@ export interface Story extends StorySummary {
   readonly moves: string;
   readonly key: KeyMoment | null;
   readonly body: string;
+  readonly premium?: PremiumArticle | null;
   readonly url: string;
   readonly source: { readonly name: string; readonly url: string | null };
   /** The Olympiad's report a story from it links to — see scripts/feed/reports.mjs. */

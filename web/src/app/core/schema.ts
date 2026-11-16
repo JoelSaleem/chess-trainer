@@ -56,7 +56,7 @@ export const filmList = (path: string, slug: string, locale: string, films: read
       name: `${SITE.name} — ${film.name}`,
       description: film.description,
       inLanguage: locale,
-      uploadDate: SITE.published,
+      uploadDate: SITE.published.includes('T') ? SITE.published : `${SITE.published}T00:00:00Z`,
       thumbnailUrl: url(`/media/video/iphone/${slug}/${film.clip}.jpg`),
       contentUrl: url(`/media/video/iphone/${slug}/${film.clip}.mp4`),
       isFamilyFriendly: true,
@@ -64,3 +64,63 @@ export const filmList = (path: string, slug: string, locale: string, films: read
     },
   })),
 });
+
+export interface StoryArticleInput {
+  readonly headline: string;
+  readonly lede: string;
+  readonly body: string;
+  readonly date: string;
+  readonly event: { readonly name: string; readonly location: string | null };
+  readonly white: { readonly name: string };
+  readonly black: { readonly name: string };
+  readonly premium?: {
+    readonly subtitle: string;
+    readonly readingMinutes: number;
+    readonly sections: readonly {
+      readonly heading: string;
+      readonly body: string;
+      readonly takeaways: readonly string[];
+    }[];
+  } | null;
+}
+
+/**
+ * Rich NewsArticle / Article JSON-LD for tournament game reports & Premium Articles.
+ */
+export const storyArticle = (path: string, localeTag: string, story: StoryArticleInput) => {
+  const isoDate = story.date.includes('T') ? story.date : `${story.date}T00:00:00Z`;
+  const premiumParts = (story.premium?.sections ?? []).flatMap((sec) => [
+    sec.heading,
+    sec.body,
+    ...sec.takeaways,
+  ]);
+  const fullBody = [story.body, ...premiumParts].filter(Boolean).join('\n\n');
+  const wordCount = fullBody.split(/\s+/).filter(Boolean).length;
+
+  return {
+    '@type': story.premium ? ['NewsArticle', 'Article'] : 'NewsArticle',
+    '@id': `${url(path)}#article`,
+    headline: story.headline,
+    ...(story.premium?.subtitle ? { alternativeHeadline: story.premium.subtitle } : {}),
+    description: story.lede,
+    articleBody: fullBody,
+    wordCount,
+    ...(story.premium?.sections?.length
+      ? { articleSection: story.premium.sections.map((s) => s.heading) }
+      : {}),
+    ...(story.premium?.readingMinutes ? { timeRequired: `PT${story.premium.readingMinutes}M` } : {}),
+    isAccessibleForFree: true,
+    datePublished: isoDate,
+    dateModified: isoDate,
+    mainEntityOfPage: { '@id': `${url(path)}#webpage` },
+    author: { '@id': url('/#organization') },
+    publisher: { '@id': url('/#organization') },
+    image: url('/og.jpg'),
+    inLanguage: localeTag,
+    about: { '@type': 'Thing', name: story.event.name },
+    ...(story.event.location
+      ? { contentLocation: { '@type': 'Place', name: story.event.location } }
+      : {}),
+    mentions: [story.white, story.black].map((p) => ({ '@type': 'Person', name: p.name })),
+  };
+};

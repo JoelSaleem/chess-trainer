@@ -1,400 +1,1323 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "CFBundleDisplayName" : {
-      "comment" : "Bundle display name",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Brass Pawn"
+  "sourceLanguage": "en",
+  "strings": {
+    "CFBundleDisplayName": {
+      "comment": "Bundle display name",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "Brass Pawn"
           }
         }
       }
     },
-    "CFBundleName" : {
-      "comment" : "Bundle name",
-      "extractionState" : "extracted_with_value",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "BrassPawn"
+    "CFBundleName": {
+      "comment": "Bundle name",
+      "extractionState": "extracted_with_value",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "new",
+            "value": "BrassPawn"
           }
         }
       }
     },
-    "NSCameraUsageDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ar-SA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "لقراءة وضعية شطرنج من صورة للوح حقيقي."
+    "NSCameraUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقراءة وضعية شطرنج من صورة للوح حقيقي."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pro načtení šachové pozice z fotografie skutečné šachovnice."
+        "ar-SA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لقراءة وضعية شطرنج من صورة للوح حقيقي."
           }
         },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Til at læse en skakstilling fra et foto af et rigtigt bræt."
+        "bg": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "За да прочете шахматна позиция от снимка на истинска дъска."
           }
         },
-        "de-DE" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Um eine Schachstellung von einem Foto eines echten Bretts zu lesen."
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "আসল বোর্ডের ছবির থেকে একটি চেস অবস্থান পড়তে।"
           }
         },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Για ανάγνωση θέσης σκακιού από φωτογραφία πραγματικής σκακιέρας."
+        "bn-BD": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "আসল বোর্ডের ছবির থেকে একটি চেস অবস্থান পড়তে।"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To read a chess position from a photo of a real board."
+        "ca": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per llegir una posició d’escacs a partir d’una foto d’un tauler real."
           }
         },
-        "es-ES" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para leer una posición de ajedrez desde una foto de un tablero real."
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro načtení šachové pozice z fotografie skutečné šachovnice."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Shakkiaseman lukemiseen valokuvasta oikeasta laudasta."
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Til at læse en skakstilling fra et foto af et rigtigt bræt."
           }
         },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pour lire une position d’échecs depuis une photo d’un vrai échiquier."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um eine Schachstellung von einem Foto eines echten Bretts zu lesen."
           }
         },
-        "fr-FR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pour lire une position d’échecs depuis une photo d’un vrai échiquier."
+        "de-DE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um eine Schachstellung von einem Foto eines echten Bretts zu lesen."
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "כדי לקרוא עמדת שחמט מתמונה של לוח אמיתי."
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Για ανάγνωση θέσης σκακιού από φωτογραφία πραγματικής σκακιέρας."
           }
         },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "असली बोर्ड की फ़ोटो से शतरंज की पोज़िशन पढ़ने के लिए।"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To read a chess position from a photo of a real board."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sakkállás beolvasásához egy valódi tábláról készült fotóról."
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To read a chess position from a photo of a real board."
           }
         },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untuk membaca posisi catur dari foto papan sungguhan."
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To read a chess position from a photo of a real board."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Per leggere una posizione di scacchi da una foto di una scacchiera reale."
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To read a chess position from a photo of a real board."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "実際の盤の写真からチェスの局面を読み取るために使います。"
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To read a chess position from a photo of a real board."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "실제 보드 사진에서 체스 포지션을 읽기 위해 사용합니다."
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para leer una posición de ajedrez desde una foto de un tablero real."
           }
         },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untuk membaca kedudukan catur daripada foto papan sebenar."
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para leer una posición de ajedrez desde una foto de un tablero real."
           }
         },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For å lese en sjakkstilling fra et foto av et ekte brett."
+        "es-MX": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leer una posición de ajedrez a partir de una foto de un tablero real."
           }
         },
-        "nl-NL" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Om een schaakstelling te lezen van een foto van een echt bord."
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shakkiaseman lukemiseen valokuvasta oikeasta laudasta."
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aby odczytać pozycję szachową ze zdjęcia prawdziwej szachownicy."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour lire une position d’échecs depuis une photo d’un vrai échiquier."
           }
         },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para ler uma posição de xadrez a partir de uma foto de um tabuleiro real."
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour lire une position d’échecs depuis une photo d’un vrai échiquier."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pentru a citi o poziție de șah dintr-o fotografie a unei table reale."
+        "fr-FR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour lire une position d’échecs depuis une photo d’un vrai échiquier."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Чтобы прочитать шахматную позицию с фотографии настоящей доски."
+        "gu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "વાસ્તવિક બોર્ડના ફોટામાંથી ચેસની પોઝિશન વાંચવા માટે."
           }
         },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "För att läsa en schackställning från ett foto av ett riktigt bräde."
+        "gu-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "વાસ્તવિક બોર્ડના ફોટામાંથી ચેસની પોઝિશન વાંચવા માટે."
           }
         },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "เพื่ออ่านตำแหน่งหมากรุกจากภาพถ่ายกระดานจริง"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כדי לקרוא עמדת שחמט מתמונה של לוח אמיתי."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gerçek bir tahtanın fotoğrafından satranç konumu okumak için."
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "असली बोर्ड की फ़ोटो से शतरंज की पोज़िशन पढ़ने के लिए।"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Để đọc thế cờ từ ảnh chụp bàn cờ thật."
+        "hr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pročitati šahovsku poziciju s fotografije stvarne ploče."
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用于从真实棋盘的照片中读取棋局。"
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sakkállás beolvasásához egy valódi tábláról készült fotóról."
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用於從真實棋盤的照片中讀取棋局。"
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk membaca posisi catur dari foto papan sungguhan."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per leggere una posizione di scacchi da una foto di una scacchiera reale."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "実際の盤の写真からチェスの局面を読み取るために使います。"
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Нақты тақтаның фотосынан шахмат позициясын оқу."
+          }
+        },
+        "kn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ನಿಜವಾದ ಬೋರ್ಡ್‌ನ ಫೋಟೋದಿಂದ ಚೆಸ್ ಸ್ಥಿತಿಯನ್ನು ಓದಲು."
+          }
+        },
+        "kn-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ನಿಜವಾದ ಬೋರ್ಡ್‌ನ ಫೋಟೋದಿಂದ ಚೆಸ್ ಸ್ಥಿತಿಯನ್ನು ಓದಲು."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "실제 보드 사진에서 체스 포지션을 읽기 위해 사용합니다."
+          }
+        },
+        "ml": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "യഥാർത്ഥ ബോർഡിന്റെ ഫോട്ടോയിൽ നിന്ന് ഒരു chess position വായിക്കാൻ."
+          }
+        },
+        "ml-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "യഥാർത്ഥ ബോർഡിന്റെ ഫോട്ടോയിൽ നിന്ന് ഒരു chess position വായിക്കാൻ."
+          }
+        },
+        "mr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "प्रत्यक्ष पटाच्या फोटोमधून बुद्धिबळाची स्थिती वाचण्यासाठी."
+          }
+        },
+        "mr-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "प्रत्यक्ष पटाच्या फोटोमधून बुद्धिबळाची स्थिती वाचण्यासाठी."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk membaca kedudukan catur daripada foto papan sebenar."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For å lese en sjakkstilling fra et foto av et ekte brett."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om een schaakstelling te lezen van een foto van een echt bord."
+          }
+        },
+        "nl-NL": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om een schaakstelling te lezen van een foto van een echt bord."
+          }
+        },
+        "no": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For å lese en sjakkstilling fra et foto av et ekte brett."
+          }
+        },
+        "or": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ଏକ ଭାବ୍ୟ ବୋର୍ଡର ଫଟୋରୁ ଚେସ୍ ସ୍ଥିତି ପଢ଼ିବା ପାଇଁ।"
+          }
+        },
+        "or-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ଏକ ଭାବ୍ୟ ବୋର୍ଡର ଫଟୋରୁ ଚେସ୍ ସ୍ଥିତି ପଢ଼ିବା ପାଇଁ।"
+          }
+        },
+        "pa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ਅਸਲੀ ਬੋਰਡ ਦੀ ਫੋਟੋ ਤੋਂ ਸ਼ਤਰੰਜ ਦੀ ਸਥਿਤੀ ਪੜ੍ਹਨ ਲਈ।"
+          }
+        },
+        "pa-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ਅਸਲੀ ਬੋਰਡ ਦੀ ਫੋਟੋ ਤੋਂ ਸ਼ਤਰੰਜ ਦੀ ਸਥਿਤੀ ਪੜ੍ਹਨ ਲਈ।"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aby odczytać pozycję szachową ze zdjęcia prawdziwej szachownicy."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ler uma posição de xadrez a partir de uma foto de um tabuleiro real."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ler uma posição de xadrez a partir de uma foto de um tabuleiro real."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para ler uma posição de xadrez a partir de uma fotografia de um tabuleiro real."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pentru a citi o poziție de șah dintr-o fotografie a unei table reale."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чтобы прочитать шахматную позицию с фотографии настоящей доски."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Načítanie šachovej pozície z fotografie skutočnej šachovnice."
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za branje šahovskega položaja s fotografije prave šahovnice."
+          }
+        },
+        "sl-SI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za branje šahovskega položaja s fotografije prave šahovnice."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "För att läsa en schackställning från ett foto av ett riktigt bräde."
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உண்மையான பலகையின் புகைப்படத்திலிருந்து ஒரு chess நிலையமைப்பைப் படிக்க."
+          }
+        },
+        "ta-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "உண்மையான பலகையின் புகைப்படத்திலிருந்து ஒரு chess நிலையமைப்பைப் படிக்க."
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "నిజమైన బోర్డు ఫోటో నుంచి ఒక చెస్ పొజిషన్‌ను చదవడం."
+          }
+        },
+        "te-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "నిజమైన బోర్డు ఫోటో నుంచి ఒక చెస్ పొజిషన్‌ను చదవడం."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เพื่ออ่านตำแหน่งหมากรุกจากภาพถ่ายกระดานจริง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek bir tahtanın fotoğrafından satranç konumu okumak için."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щоб зчитати шахову позицію з фото реальної дошки."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حقیقی بورڈ کی تصویر سے chess position پڑھنے کے لیے۔"
+          }
+        },
+        "ur-PK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حقیقی بورڈ کی تصویر سے chess position پڑھنے کے لیے۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để đọc thế cờ từ ảnh chụp bàn cờ thật."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用于从真实棋盘的照片中读取棋局。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用於從真實棋盤的照片中讀取棋局。"
           }
         }
       }
     },
-    "NSGKFriendListUsageDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "ar-SA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "لعرض أصدقائك في Game Center الذين يلعبون Brass Pawn ودعوتهم إلى مباراة."
+    "NSGKFriendListUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لعرض أصدقائك في Game Center الذين يلعبون Brass Pawn ودعوتهم إلى مباراة."
           }
         },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aby ukázal tvé přátele z Game Center, kteří hrají Brass Pawn, a mohl je pozvat na partii."
+        "ar-SA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لعرض أصدقائك في Game Center الذين يلعبون Brass Pawn ودعوتهم إلى مباراة."
           }
         },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For at vise dine Game Center-venner, der spiller Brass Pawn, og invitere dem til et parti."
+        "bg": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "За да покажете на приятелите си в Game Center, които играят Brass Pawn, и да ги поканите на партия."
           }
         },
-        "de-DE" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Um deine Game-Center-Freunde zu zeigen, die Brass Pawn spielen, und sie zu einer Partie einzuladen."
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ব্যবহার করা Game Center-এর বন্ধুদের দেখাতে, এবং তাদেরকে একটি গেমে আমন্ত্রণ জানাতে।"
           }
         },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Για να δείχνει τους φίλους σου στο Game Center που παίζουν Brass Pawn και να τους προσκαλείς σε παρτίδα."
+        "bn-BD": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ব্যবহার করা Game Center-এর বন্ধুদের দেখাতে, এবং তাদেরকে একটি গেমে আমন্ত্রণ জানাতে।"
           }
         },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To show your Game Center friends who play Brass Pawn, and invite them to a game."
+        "ca": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per mostrar als vostres amics de Game Center que juguen a Brass Pawn, i convidar-los a una partida."
           }
         },
-        "es-ES" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para mostrar a tus amigos de Game Center que juegan a Brass Pawn e invitarlos a una partida."
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aby ukázal tvé přátele z Game Center, kteří hrají Brass Pawn, a mohl je pozvat na partii."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jotta voit nähdä Brass Pawnia pelaavat Game Center -kaverisi ja kutsua heidät peliin."
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For at vise dine Game Center-venner, der spiller Brass Pawn, og invitere dem til et parti."
           }
         },
-        "fr-CA" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pour afficher vos amis Game Center qui jouent à Brass Pawn et les inviter à une partie."
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um deinen Game Center-Freunden zu zeigen, die Brass Pawn spielen, und sie zu einer Partie einzuladen."
           }
         },
-        "fr-FR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pour afficher vos amis Game Center qui jouent à Brass Pawn et les inviter à une partie."
+        "de-DE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um deinen Game Center-Freunden zu zeigen, die Brass Pawn spielen, und sie zu einer Partie einzuladen."
           }
         },
-        "he" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "כדי להציג חברים מ־Game Center שמשחקים ב־Brass Pawn ולהזמין אותם למשחק."
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Για να δείχνει τους φίλους σου στο Game Center που παίζουν Brass Pawn και να τους προσκαλείς σε παρτίδα."
           }
         },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brass Pawn खेलने वाले आपके Game Center मित्रों को दिखाने और उन्हें बाज़ी के लिए आमंत्रित करने के लिए।"
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your Game Center friends who play Brass Pawn, and invite them to a game."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hogy megmutassa a Brass Pawnnal játszó Game Center-barátaidat, és meghívhasd őket egy játszmára."
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your Game Center friends who play Brass Pawn, and invite them to a game."
           }
         },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untuk menampilkan teman Game Center-mu yang memainkan Brass Pawn dan mengundang mereka bermain."
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your Game Center friends who play Brass Pawn, and invite them to a game."
           }
         },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Per mostrare i tuoi amici di Game Center che giocano a Brass Pawn e invitarli a una partita."
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your Game Center friends who play Brass Pawn, and invite them to a game."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brass Pawn をプレイしている Game Center のフレンドを表示し、対局に招待するために使います。"
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To show your Game Center friends who play Brass Pawn, and invite them to a game."
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brass Pawn을 하는 Game Center 친구를 보여 주고 대국에 초대하기 위해 사용합니다."
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para mostrar a tus amigos de Game Center que juegan a Brass Pawn e invitarlos a una partida."
           }
         },
-        "ms" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Untuk menunjukkan rakan Game Center anda yang bermain Brass Pawn dan menjemput mereka bermain."
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para mostrar a tus amigos de Game Center que juegan a Brass Pawn e invitarlos a una partida."
           }
         },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "For å vise Game Center-vennene dine som spiller Brass Pawn, og invitere dem til et parti."
+        "es-MX": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostrar a tus amigos de Game Center que juegan Brass Pawn e invitarlos a una partida."
           }
         },
-        "nl-NL" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Om je Game Center-vrienden te tonen die Brass Pawn spelen, en ze uit te nodigen voor een partij."
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jotta voit nähdä Brass Pawnia pelaavat Game Center -kaverisi ja kutsua heidät peliin."
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aby pokazać twoich znajomych z Game Center, którzy grają w Brass Pawn, i zaprosić ich do partii."
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour afficher vos amis Game Center qui jouent à Brass Pawn et les inviter à une partie."
           }
         },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Para mostrar seus amigos do Game Center que jogam Brass Pawn e convidá-los para uma partida."
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour afficher vos amis Game Center qui jouent à Brass Pawn et les inviter à une partie."
           }
         },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pentru a-ți arăta prietenii din Game Center care joacă Brass Pawn și a-i invita la o partidă."
+        "fr-FR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour afficher vos amis Game Center qui jouent à Brass Pawn et les inviter à une partie."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Чтобы показывать ваших друзей из Game Center, которые играют в Brass Pawn, и приглашать их на партию."
+        "gu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "તમારા Game Center મિત્રો પૈકી જે Brass Pawn રમે છે તેમને બતાવવા અને તેમને ગેમ માટે આમંત્રણ આપવા માટે."
           }
         },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "För att visa dina Game Center-vänner som spelar Brass Pawn och bjuda in dem till ett parti."
+        "gu-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "તમારા Game Center મિત્રો પૈકી જે Brass Pawn રમે છે તેમને બતાવવા અને તેમને ગેમ માટે આમંત્રણ આપવા માટે."
           }
         },
-        "th" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "เพื่อแสดงเพื่อนใน Game Center ที่เล่น Brass Pawn และชวนมาเล่นด้วยกัน"
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "כדי להציג חברים מ־Game Center שמשחקים ב־Brass Pawn ולהזמין אותם למשחק."
           }
         },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brass Pawn oynayan Game Center arkadaşlarını göstermek ve onları bir oyuna davet etmek için."
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn खेलने वाले आपके Game Center मित्रों को दिखाने और उन्हें बाज़ी के लिए आमंत्रित करने के लिए।"
           }
         },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Để hiển thị bạn bè Game Center đang chơi Brass Pawn và mời họ vào một ván cờ."
+        "hr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Da prikaže vaše Game Center prijatelje koji igraju Brass Pawn i pozove ih na partiju."
           }
         },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用于显示在玩 Brass Pawn 的 Game Center 好友，并邀请他们下棋。"
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hogy megmutassa a Brass Pawnnal játszó Game Center-barátaidat, és meghívhasd őket egy játszmára."
           }
         },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "用於顯示在玩 Brass Pawn 的 Game Center 好友，並邀請他們下棋。"
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk menampilkan teman Game Center-mu yang memainkan Brass Pawn dan mengundang mereka bermain."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per mostrare i tuoi amici di Game Center che giocano a Brass Pawn e invitarli a una partita."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn をプレイしている Game Center のフレンドを表示し、対局に招待するために使います。"
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ойнайтын Game Center достарыңызды көрсету және оларды ойынға шақыру."
+          }
+        },
+        "kn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ಆಡುವ ನಿಮ್ಮ Game Center ಸ್ನೇಹಿತರನ್ನು ತೋರಿಸಲು, ಮತ್ತು ಅವರನ್ನು ಆಟಕ್ಕೆ ಆಹ್ವಾನಿಸಲು."
+          }
+        },
+        "kn-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ಆಡುವ ನಿಮ್ಮ Game Center ಸ್ನೇಹಿತರನ್ನು ತೋರಿಸಲು, ಮತ್ತು ಅವರನ್ನು ಆಟಕ್ಕೆ ಆಹ್ವಾನಿಸಲು."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn을 하는 Game Center 친구를 보여 주고 대국에 초대하기 위해 사용합니다."
+          }
+        },
+        "ml": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn കളിക്കുന്ന നിങ്ങളുടെ Game Center സുഹൃത്തുക്കളെ കാണിച്ച്, അവരെ ഒരു കളിയിലേക്ക് ക്ഷണിക്കാൻ."
+          }
+        },
+        "ml-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn കളിക്കുന്ന നിങ്ങളുടെ Game Center സുഹൃത്തുക്കളെ കാണിച്ച്, അവരെ ഒരു കളിയിലേക്ക് ക്ഷണിക്കാൻ."
+          }
+        },
+        "mr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn खेळणारे तुमचे Game Center मित्र दाखवण्यासाठी, आणि त्यांना खेळासाठी आमंत्रित करण्यासाठी."
+          }
+        },
+        "mr-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn खेळणारे तुमचे Game Center मित्र दाखवण्यासाठी, आणि त्यांना खेळासाठी आमंत्रित करण्यासाठी."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk menunjukkan rakan Game Center anda yang bermain Brass Pawn dan menjemput mereka bermain."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For å vise Game Center-vennene dine som spiller Brass Pawn, og invitere dem til et parti."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om je Game Center-vrienden te tonen die Brass Pawn spelen, en ze uit te nodigen voor een partij."
+          }
+        },
+        "nl-NL": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om je Game Center-vrienden te tonen die Brass Pawn spelen, en ze uit te nodigen voor een partij."
+          }
+        },
+        "no": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For å vise Game Center-vennene dine som spiller Brass Pawn, og invitere dem til et parti."
+          }
+        },
+        "or": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ଆପଣଙ୍କ Game Center ବନ୍ଧୁମାନେ, ଯେଉଁମାନେ Brass Pawn ଖେଳନ୍ତି, ସେମାନଙ୍କୁ ଦେଖାଇବା ଏବଂ ସେମାନଙ୍କୁ ଖେଳକୁ ଆମନ୍ତ୍ରଣ କରିବା ପାଇଁ।"
+          }
+        },
+        "or-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ଆପଣଙ୍କ Game Center ବନ୍ଧୁମାନେ, ଯେଉଁମାନେ Brass Pawn ଖେଳନ୍ତି, ସେମାନଙ୍କୁ ଦେଖାଇବା ଏବଂ ସେମାନଙ୍କୁ ଖେଳକୁ ଆମନ୍ତ୍ରଣ କରିବା ପାଇଁ।"
+          }
+        },
+        "pa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ਤੁਹਾਡੇ Game Center ਦੋਸਤਾਂ ਨੂੰ ਦਿਖਾਉਣ ਲਈ ਜੋ Brass Pawn ਖੇਡਦੇ ਹਨ, ਅਤੇ ਉਨ੍ਹਾਂ ਨੂੰ ਗੇਮ ਲਈ ਸੱਦਾ ਦੇਣ ਲਈ।"
+          }
+        },
+        "pa-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ਤੁਹਾਡੇ Game Center ਦੋਸਤਾਂ ਨੂੰ ਦਿਖਾਉਣ ਲਈ ਜੋ Brass Pawn ਖੇਡਦੇ ਹਨ, ਅਤੇ ਉਨ੍ਹਾਂ ਨੂੰ ਗੇਮ ਲਈ ਸੱਦਾ ਦੇਣ ਲਈ।"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aby pokazać twoich znajomych z Game Center, którzy grają w Brass Pawn, i zaprosić ich do partii."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para mostrar seus amigos do Game Center que jogam Brass Pawn e convidá-los para uma partida."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para mostrar seus amigos do Game Center que jogam Brass Pawn e convidá-los para uma partida."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para mostrar aos seus amigos do Game Center que jogam Brass Pawn e convidá-los para uma partida."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pentru a-ți arăta prietenii din Game Center care joacă Brass Pawn și a-i invita la o partidă."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чтобы показывать ваших друзей из Game Center, которые играют в Brass Pawn, и приглашать их на партию."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zobraziť vašich priateľov v Game Center, ktorí hrajú Brass Pawn, a pozvať ich do hry."
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za prikaz prijateljev iz Game Center, ki igrajo Brass Pawn, in povabilo na partijo."
+          }
+        },
+        "sl-SI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za prikaz prijateljev iz Game Center, ki igrajo Brass Pawn, in povabilo na partijo."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "För att visa dina Game Center-vänner som spelar Brass Pawn och bjuda in dem till ett parti."
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ஆடும் உங்கள் Game Center நண்பர்களைக் காட்டி, அவர்களை ஒரு ஆட்டத்திற்கு அழைக்க."
+          }
+        },
+        "ta-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ஆடும் உங்கள் Game Center நண்பர்களைக் காட்டி, அவர்களை ஒரு ஆட்டத்திற்கு அழைக்க."
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ఆడే మీ Game Center స్నేహితులను చూపించి, వారికి గేమ్ ఆహ్వానం పంపించడం."
+          }
+        },
+        "te-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn ఆడే మీ Game Center స్నేహితులను చూపించి, వారికి గేమ్ ఆహ్వానం పంపించడం."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เพื่อแสดงเพื่อนใน Game Center ที่เล่น Brass Pawn และชวนมาเล่นด้วยกัน"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brass Pawn oynayan Game Center arkadaşlarını göstermek ve onları bir oyuna davet etmek için."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щоб показати ваших друзів із Game Center, які грають у Brass Pawn, і запросити їх у партію."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اپنے Game Center دوستوں کو دکھانے کے لیے جو Brass Pawn کھیلتے ہیں، اور انہیں کھیل کی دعوت دینے کے لیے۔"
+          }
+        },
+        "ur-PK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اپنے Game Center دوستوں کو دکھانے کے لیے جو Brass Pawn کھیلتے ہیں، اور انہیں کھیل کی دعوت دینے کے لیے۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để hiển thị bạn bè Game Center đang chơi Brass Pawn và mời họ vào một ván cờ."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用于显示在玩 Brass Pawn 的 Game Center 好友，并邀请他们下棋。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "用於顯示在玩 Brass Pawn 的 Game Center 好友，並邀請他們下棋。"
+          }
+        }
+      }
+    },
+    "NSPhotoLibraryUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لاختيار صورة أو لقطة شاشة لرقعة شطرنج والتعرّف على وضعها."
+          }
+        },
+        "ar-SA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لاختيار صورة أو لقطة شاشة لرقعة شطرنج والتعرّف على وضعها."
+          }
+        },
+        "bg": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "За да изберете снимка или екранна снимка на шахматна дъска и да разпознае позицията ѝ."
+          }
+        },
+        "bn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "একটি চেসবোর্ডের ছবি বা স্ক্রিনশট বেছে নিয়ে তার অবস্থান শনাক্ত করতে।"
+          }
+        },
+        "bn-BD": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "একটি চেসবোর্ডের ছবি বা স্ক্রিনশট বেছে নিয়ে তার অবস্থান শনাক্ত করতে।"
+          }
+        },
+        "ca": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per triar una foto o captura d’un tauler d’escacs i reconèixer-ne la posició."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro výběr fotky nebo snímku šachovnice a rozpoznání její pozice."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For at vælge et foto eller skærmbillede af et skakbræt og genkende stillingen."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um ein Foto oder einen Screenshot eines Schachbretts auszuwählen und die Stellung zu erkennen."
+          }
+        },
+        "de-DE": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Um ein Foto oder einen Screenshot eines Schachbretts auszuwählen und die Stellung zu erkennen."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Για να επιλέξετε μια φωτογραφία ή ένα στιγμιότυπο σκακιέρας και να αναγνωρίσετε τη θέση της."
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose a photo or screenshot of a chessboard and recognize its position."
+          }
+        },
+        "en-AU": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose a photo or screenshot of a chessboard and recognize its position."
+          }
+        },
+        "en-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose a photo or screenshot of a chessboard and recognize its position."
+          }
+        },
+        "en-GB": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose a photo or screenshot of a chessboard and recognize its position."
+          }
+        },
+        "en-US": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "To choose a photo or screenshot of a chessboard and recognize its position."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para elegir una foto o captura de un tablero de ajedrez y reconocer su posición."
+          }
+        },
+        "es-ES": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para elegir una foto o captura de un tablero de ajedrez y reconocer su posición."
+          }
+        },
+        "es-MX": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegir una foto o captura de un tablero de ajedrez y reconocer su posición."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valitse shakkilaudan kuva tai kuvakaappaus ja tunnista sen asema."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour choisir une photo ou une capture d’écran d’un échiquier et reconnaître sa position."
+          }
+        },
+        "fr-CA": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour choisir une photo ou une capture d’écran d’un échiquier et en reconnaître la position."
+          }
+        },
+        "fr-FR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pour choisir une photo ou une capture d’écran d’un échiquier et reconnaître sa position."
+          }
+        },
+        "gu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ચેસબોર્ડનો ફોટો અથવા સ્ક્રીનશૉટ પસંદ કરવા અને તેની પોઝિશન ઓળખવા માટે."
+          }
+        },
+        "gu-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ચેસબોર્ડનો ફોટો અથવા સ્ક્રીનશૉટ પસંદ કરવા અને તેની પોઝિશન ઓળખવા માટે."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "לבחירת תמונה או צילום מסך של לוח שחמט ולזיהוי העמדה שלו."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "शतरंज की बिसात की फ़ोटो या स्क्रीनशॉट चुनकर उसकी स्थिति पहचानने के लिए।"
+          }
+        },
+        "hr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Odabrati fotografiju ili snimku zaslona šahovske ploče i prepoznati njezinu poziciju."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Válassz egy sakktáblás fotót vagy képernyőképet, és ismerd fel az állást."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk memilih foto atau tangkapan layar papan catur dan mengenali posisinya."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Per scegliere una foto o uno screenshot di una scacchiera e riconoscerne la posizione."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "チェス盤の写真またはスクリーンショットを選んで、その局面を認識します。"
+          }
+        },
+        "kk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Шахмат тақтасының фотосын немесе скриншотын таңдап, оның позициясын тану."
+          }
+        },
+        "kn": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ಚೆಸ್ ಬೋರ್ಡ್‌ನ ಫೋಟೋ ಅಥವಾ ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಆಯ್ಕೆ ಮಾಡಿ, ಅದರ ಸ್ಥಿತಿಯನ್ನು ಗುರುತಿಸಲು."
+          }
+        },
+        "kn-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ಚೆಸ್ ಬೋರ್ಡ್‌ನ ಫೋಟೋ ಅಥವಾ ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಆಯ್ಕೆ ಮಾಡಿ, ಅದರ ಸ್ಥಿತಿಯನ್ನು ಗುರುತಿಸಲು."
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "체스판 사진이나 스크린샷을 선택해 포지션을 인식합니다."
+          }
+        },
+        "ml": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ഒരു ഫോട്ടോ അല്ലെങ്കിൽ chessboard-ന്റെ സ്ക്രീൻഷോട്ട് തിരഞ്ഞെടുത്ത് അതിന്റെ സ്ഥാനം തിരിച്ചറിയാൻ."
+          }
+        },
+        "ml-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ഒരു ഫോട്ടോ അല്ലെങ്കിൽ chessboard-ന്റെ സ്ക്രീൻഷോട്ട് തിരഞ്ഞെടുത്ത് അതിന്റെ സ്ഥാനം തിരിച്ചറിയാൻ."
+          }
+        },
+        "mr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बुद्धिबळाच्या पटाचा फोटो किंवा स्क्रीनशॉट निवडून त्याची स्थिती ओळखण्यासाठी."
+          }
+        },
+        "mr-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "बुद्धिबळाच्या पटाचा फोटो किंवा स्क्रीनशॉट निवडून त्याची स्थिती ओळखण्यासाठी."
+          }
+        },
+        "ms": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Untuk memilih foto atau tangkapan skrin papan catur dan mengecam kedudukannya."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For å velge et bilde eller skjermbilde av et sjakkbrett og gjenkjenne stillingen."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om een foto of screenshot van een schaakbord te kiezen en de stelling te herkennen."
+          }
+        },
+        "nl-NL": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Om een foto of screenshot van een schaakbord te kiezen en de stelling te herkennen."
+          }
+        },
+        "no": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "For å velge et bilde eller skjermbilde av et sjakkbrett og gjenkjenne stillingen."
+          }
+        },
+        "or": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ଚେସ୍ ବୋର୍ଡର ଫଟୋ କିମ୍ବା ସ୍କ୍ରିନ୍‌ଶଟ୍ ବାଛି ତାହାର ସ୍ଥିତି ଚିହ୍ନଟ କରିବା ପାଇଁ।"
+          }
+        },
+        "or-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ଚେସ୍ ବୋର୍ଡର ଫଟୋ କିମ୍ବା ସ୍କ୍ରିନ୍‌ଶଟ୍ ବାଛି ତାହାର ସ୍ଥିତି ଚିହ୍ନଟ କରିବା ପାଇଁ।"
+          }
+        },
+        "pa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ਸ਼ਤਰੰਜ ਬੋਰਡ ਦੀ ਫੋਟੋ ਜਾਂ ਸਕ੍ਰੀਨਸ਼ਾਟ ਚੁਣਨ ਅਤੇ ਉਸਦੀ ਸਥਿਤੀ ਪਛਾਣਨ ਲਈ।"
+          }
+        },
+        "pa-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ਸ਼ਤਰੰਜ ਬੋਰਡ ਦੀ ਫੋਟੋ ਜਾਂ ਸਕ੍ਰੀਨਸ਼ਾਟ ਚੁਣਨ ਅਤੇ ਉਸਦੀ ਸਥਿਤੀ ਪਛਾਣਨ ਲਈ।"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aby wybrać zdjęcie lub zrzut ekranu szachownicy i rozpoznać jego pozycję."
+          }
+        },
+        "pt": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para escolher uma foto ou captura de tela de um tabuleiro de xadrez e reconhecer sua posição."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para escolher uma foto ou captura de tela de um tabuleiro de xadrez e reconhecer sua posição."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Para escolher uma fotografia ou captura de ecrã de um tabuleiro de xadrez e reconhecer a sua posição."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pentru a alege o fotografie sau o captură de ecran cu o tablă de șah și a-i recunoaște poziția."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Чтобы выбрать фото или снимок экрана шахматной доски и распознать её позицию."
+          }
+        },
+        "sk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vybrať fotografiu alebo snímku šachovnice a rozpoznať jej pozíciu."
+          }
+        },
+        "sl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za izbiro fotografije ali posnetka zaslona šahovnice in prepoznavo njenega položaja."
+          }
+        },
+        "sl-SI": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Za izbiro fotografije ali posnetka zaslona šahovnice in prepoznavo njenega položaja."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "För att välja ett foto eller en skärmbild av ett schackbräde och känna igen ställningen."
+          }
+        },
+        "ta": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஒரு chessboard-இன் புகைப்படம் அல்லது screenshot-ஐத் தேர்ந்தெடுத்து அதன் நிலையமைப்பை அறிய."
+          }
+        },
+        "ta-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ஒரு chessboard-இன் புகைப்படம் அல்லது screenshot-ஐத் தேர்ந்தெடுத்து அதன் நிலையமைப்பை அறிய."
+          }
+        },
+        "te": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "చదరంగ బోర్డు ఫోటో లేదా స్క్రీన్‌షాట్‌ను ఎంచుకుని, దాని పొజిషన్‌ను గుర్తించడం."
+          }
+        },
+        "te-IN": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "చదరంగ బోర్డు ఫోటో లేదా స్క్రీన్‌షాట్‌ను ఎంచుకుని, దాని పొజిషన్‌ను గుర్తించడం."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เพื่อเลือกรูปถ่ายหรือภาพหน้าจอกระดานหมากรุกและรู้จำตำแหน่ง"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bir satranç tahtasının fotoğrafını veya ekran görüntüsünü seçip konumunu tanımak için."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Щоб вибрати фото або скриншот шахівниці й розпізнати її позицію."
+          }
+        },
+        "ur": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chessboard کی photo یا screenshot چُننے اور اس کی پوزیشن پہچاننے کے لیے۔"
+          }
+        },
+        "ur-PK": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "chessboard کی photo یا screenshot چُننے اور اس کی پوزیشن پہچاننے کے لیے۔"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Để chọn ảnh hoặc ảnh chụp màn hình của bàn cờ và nhận dạng vị trí của nó."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择一张棋盘照片或截图并识别其局面。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇棋盤的照片或螢幕截圖，並辨識其局面。"
           }
         }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

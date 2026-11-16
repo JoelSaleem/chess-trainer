@@ -17,7 +17,7 @@ import { moveLabel, movePairs, playerText, resultText, scoreText } from './words
  * key move played and a little either side of it; the rest of the game — and
  * playing the position yourself — is what the app is for.
  */
-const FREE_MOVES = 5;
+const FREE_MOVES = 8;
 
 /**
  * One game from the daily feed, drawn: the board at the moment that mattered,
@@ -70,6 +70,9 @@ export class StoryView {
     return { path: reportPath(id, this.w().slug), label: `${r.section} — ${r.standings}` };
   });
   protected readonly paragraphs = computed(() => this.story().body.split(/\n\n+/));
+  protected splitBody(text: string): string[] {
+    return (text ?? '').split(/\n\n+/).filter(Boolean);
+  }
   protected readonly pairs = computed(() => movePairs(this.story().moves));
   /**
    * The app's own address for this story, at the move the reader is on.
@@ -126,6 +129,8 @@ export class StoryView {
     const line = this.story().line;
     const ply = this.ply();
     if (line && line[ply]) return line[ply];
+    const sec = this.story().premium?.sections?.find((s) => s.ply === ply);
+    if (sec) return { fen: sec.fen, last: sec.last };
     return { fen: this.story().fen, last: this.story().last };
   });
 
@@ -137,13 +142,15 @@ export class StoryView {
 
   /**
    * Move the board — a step, a jump to either end, a move picked from the
-   * score. The first few are the site's; after that the board is the app's,
-   * and the next one opens the card that takes the game there, at this move.
+   * score or a Premium Article section chip. The first few are the site's;
+   * after that the board is the app's, and the next one opens the card that
+   * takes the game there, at this move.
    */
   protected step(ply: number): void {
     const line = this.story().line;
-    if (!line) return;
-    const target = Math.max(0, Math.min(ply, line.length - 1));
+    const hasSectionBoard = this.story().premium?.sections?.some((s) => s.ply === ply);
+    if (!line && !hasSectionBoard) return;
+    const target = line ? Math.max(0, Math.min(ply, line.length - 1)) : ply;
     if (target === this.ply()) return;
     if (this.moved() >= FREE_MOVES) {
       this.handoff.set(true);

@@ -24,6 +24,10 @@ struct PaywallView: View {
     /// Opened from a story older than a day, whose game somebody wanted to
     /// play on from.
     var playingOn = false
+    /// Opened when today's free AI board scan has been used.
+    var boardScanLimit = false
+    /// Opened when reading an older archived Premium Article.
+    var premiumArchive = false
 
     private var store: SubscriptionStore { app.store }
 
@@ -78,6 +82,12 @@ struct PaywallView: View {
     }
 
     private var runOutText: String {
+        if boardScanLimit {
+            return L.t("store.doneBoardScan", "Today's free AI board scan has been used.")
+        }
+        if premiumArchive {
+            return L.t("store.premiumArchiveLocked", "Full Premium Article archive is part of Brass Pawn Pro.")
+        }
         if playingOn { return L.t("store.playOnLocked", "Playing on from an older story is part of Pro.") }
         guard let activity else { return L.t("store.support", "Support Brass Pawn") }
         return switch activity {
@@ -100,8 +110,14 @@ struct PaywallView: View {
                         .appFont(.title3, weight: .semibold)
                         .foregroundStyle(Theatre.ivory)
                     Text(planName)
-                        .appFont(.caption)
-                        .foregroundStyle(Theatre.ivoryDim)
+                        .appFont(.caption, weight: .medium)
+                        .foregroundStyle(Theatre.brass)
+                    if let desc = storeDescription(selectedProduct) {
+                        Text(desc)
+                            .appFont(.caption2)
+                            .foregroundStyle(Theatre.ivoryDim)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
 
                 Spacer(minLength: 8)
@@ -134,6 +150,8 @@ struct PaywallView: View {
                 row("infinity", L.t("store.unlimitedPuzzles", "All 14,351 puzzles, without a daily limit"))
                 row("timer", L.t("store.unlimitedRush", "Rush runs without a daily limit"))
                 row("square.grid.3x3.middle.filled", L.t("store.unlimitedRest", "Unlimited positional, endgame and Guess the Elo training"))
+                row("camera.viewfinder", L.t("store.aiBoardScans", "Up to 100 AI board scans a day from camera or photos"))
+                row("doc.text", L.t("store.premiumArticles", "Full Premium Articles archive with move-by-move engine breakdowns"))
                 row("play.rectangle", L.t("store.playOnStories", "Play on from any story in Today, not only the last day’s"))
             }
         }
@@ -195,7 +213,8 @@ struct PaywallView: View {
                     planOption(
                         .monthly,
                         current: store.ownership?.productID == monthly.id,
-                        title: L.t("store.monthly", "Monthly"),
+                        title: storeDisplayName(monthly, fallback: L.t("store.monthly", "Monthly")),
+                        storeDescription: storeDescription(monthly),
                         detail: L.t("store.renews", "Renews automatically"),
                         price: monthly.displayPrice
                     )
@@ -204,9 +223,11 @@ struct PaywallView: View {
                     planOption(
                         .yearly,
                         current: store.ownership?.productID == yearly.id,
-                        title: L.t("store.yearly", "Yearly"),
+                        title: storeDisplayName(yearly, fallback: L.t("store.yearly", "Yearly")),
+                        storeDescription: storeDescription(yearly),
                         detail: L.t("store.perMonthEquivalent", "%@ a month",
-                                    (yearly.price / 12).formatted(yearly.priceFormatStyle)),
+                                    (yearly.price / 12).formatted(yearly.priceFormatStyle))
+                            + " · " + L.t("store.renews", "Renews automatically"),
                         price: yearly.displayPrice
                     )
                 }
@@ -214,7 +235,8 @@ struct PaywallView: View {
                     planOption(
                         .lifetime,
                         current: store.ownership?.productID == lifetime.id,
-                        title: L.t("store.lifetime", "One-off"),
+                        title: storeDisplayName(lifetime, fallback: L.t("store.lifetimeUnlock", "One-off unlock")),
+                        storeDescription: storeDescription(lifetime),
                         detail: L.t("store.noRenewal", "No renewal"),
                         price: lifetime.displayPrice
                     )
@@ -281,20 +303,39 @@ struct PaywallView: View {
         }
     }
 
-    private func planOption(_ offer: Offer, current: Bool, title: String, detail: String, price: String) -> some View {
+    private func planOption(
+        _ offer: Offer,
+        current: Bool,
+        title: String,
+        storeDescription: String?,
+        detail: String,
+        price: String
+    ) -> some View {
         let selected = selectedOffer == offer
         return Button {
             withAnimation(.easeOut(duration: 0.18)) { selectedOffer = offer }
         } label: {
-            VStack(alignment: .leading, spacing: 3) {
-                Text(title)
-                    .appFont(size: 10, weight: .semibold)
-                    .tracking(0.8)
-                    .textCase(.uppercase)
-                Text(price)
-                    .appFont(size: 18, weight: .semibold)
-                    .monospacedDigit()
-                Text(detail).appFont(.caption2).foregroundStyle(Theatre.ivoryDim)
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(title)
+                        .appFont(.subheadline, weight: .semibold)
+                        .multilineTextAlignment(.leading)
+                    Spacer(minLength: 8)
+                    Text(price)
+                        .appFont(size: 18, weight: .semibold)
+                        .monospacedDigit()
+                }
+                if let storeDescription {
+                    Text(storeDescription)
+                        .appFont(.caption)
+                        .foregroundStyle(Theatre.ivoryDim)
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                Text(detail)
+                    .appFont(.caption2)
+                    .foregroundStyle(Theatre.ivoryFaint)
+                    .multilineTextAlignment(.leading)
                 if current {
                     Text(L.t("store.currentPlan", "Current plan"))
                         .appFont(.caption2, weight: .semibold)
@@ -387,12 +428,29 @@ struct PaywallView: View {
         product(selectedOffer) ?? store.yearly ?? store.monthly ?? store.lifetime
     }
 
-    private var planName: String {
-        switch selectedOffer {
-        case .monthly: L.t("store.monthlyPlan", "Monthly Pro plan")
-        case .yearly: L.t("store.yearlyPlan", "Yearly Pro plan")
-        case .lifetime: L.t("store.lifetimePlan", "One-off lifetime unlock")
+    private func storeDisplayName(_ product: Product?, fallback: String) -> String {
+        guard let raw = product?.displayName.trimmingCharacters(in: .whitespacesAndNewlines),
+              !raw.isEmpty else {
+            return fallback
         }
+        return raw
+    }
+
+    private func storeDescription(_ product: Product?) -> String? {
+        guard let raw = product?.description.trimmingCharacters(in: .whitespacesAndNewlines),
+              !raw.isEmpty else {
+            return nil
+        }
+        return raw
+    }
+
+    private var planName: String {
+        let fallback = switch selectedOffer {
+        case .monthly: L.t("store.monthly", "Monthly")
+        case .yearly: L.t("store.yearly", "Yearly")
+        case .lifetime: L.t("store.lifetimeUnlock", "One-off unlock")
+        }
+        return storeDisplayName(selectedProduct, fallback: fallback)
     }
 
     private var period: String {
@@ -544,12 +602,13 @@ struct ProUpsellRow: View {
 
 /// A plan in two lines: which it is, and when it renews, ends or changes.
 struct OwnershipLines: View {
+    @Environment(AppModel.self) private var app
     let ownership: SubscriptionStore.Ownership
     var compact = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
-            Text(Self.name(ownership.productID))
+            Text(planTitle)
                 .appFont(compact ? .caption : .subheadline, weight: .semibold)
                 .foregroundStyle(Theatre.ivory)
             Text(detail)
@@ -557,6 +616,15 @@ struct OwnershipLines: View {
                 .foregroundStyle(Theatre.ivoryDim)
                 .fixedSize(horizontal: false, vertical: true)
         }
+    }
+
+    private var planTitle: String {
+        if let loaded = app.store.product(for: ownership.productID)?.displayName
+            .trimmingCharacters(in: .whitespacesAndNewlines),
+           !loaded.isEmpty {
+            return loaded
+        }
+        return Self.name(ownership.productID)
     }
 
     private var detail: String {

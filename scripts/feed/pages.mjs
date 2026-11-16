@@ -15,6 +15,7 @@
 // sitemap-today.xml. Only stories the feed makes public (FEED_PUBLIC) get any.
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -194,35 +195,106 @@ export function openPages({
       log(`  sitemap-today.xml and today/feed.xml: ${withPages.length} stories, ${Object.keys(translated).length} of them in every language; ${reports.length} reports`);
     },
 
-    /** Bing and the engines that share its endpoint, told about the new pages. */
+    /** IndexNow (api.indexnow.org + www.bing.com), Bing Webmaster API, and Google Search Console. */
     async announce(urls) {
-      urls = urls.filter(indexedURL);
-      if (!urls.length) return;
-      if (!indexNowKey) {
-        log('  IndexNow: no key, nothing sent');
-        return;
-      }
+      urls = [...new Set(urls.filter(indexedURL))];
+      const results = { indexNow: {}, bingWebmaster: null, googleSearchConsole: null };
+
       if (dryRun) {
-        log(`  would tell IndexNow about ${urls.length} pages`);
-        return;
+        log(`  would announce ${urls.length} pages to IndexNow, Bing Webmaster Tools, and Google Search Console`);
+        return results;
       }
-      try {
-        const response = await fetch('https://api.indexnow.org/indexnow', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json; charset=utf-8', 'user-agent': 'Brass-Pawn-IndexNow/1.0' },
-          body: JSON.stringify({
-            host: new URL(ORIGIN).hostname,
-            key: indexNowKey,
-            keyLocation: `${ORIGIN}/${indexNowKey}.txt`,
-            urlList: urls,
-          }),
-          signal: AbortSignal.timeout(20_000),
+
+      // 1. IndexNow (both api.indexnow.org and www.bing.com/indexnow)
+      if (urls.length && indexNowKey) {
+        const payload = JSON.stringify({
+          host: new URL(ORIGIN).hostname,
+          key: indexNowKey,
+          keyLocation: `${ORIGIN}/${indexNowKey}.txt`,
+          urlList: urls.slice(0, 10_000),
         });
-        log(`  IndexNow: HTTP ${response.status} for ${urls.length} pages`);
-      } catch (error) {
-        // Never the run's failure: the pages are written, and the sitemap has them.
-        log(`  IndexNow: ${error.message}`);
+        for (const endpoint of ['https://api.indexnow.org/indexnow', 'https://www.bing.com/indexnow']) {
+          try {
+            const response = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'content-type': 'application/json; charset=utf-8', 'user-agent': 'Brass-Pawn-IndexNow/1.0' },
+              body: payload,
+              signal: AbortSignal.timeout(20_000),
+            });
+            results.indexNow[endpoint] = response.status;
+            log(`  IndexNow (${new URL(endpoint).hostname}): HTTP ${response.status} for ${urls.length} pages`);
+          } catch (error) {
+            log(`  IndexNow (${new URL(endpoint).hostname}): ${error.message}`);
+          }
+        }
+      } else if (urls.length && !indexNowKey) {
+        log('  IndexNow: no key, nothing sent');
       }
+
+      // 2. Bing Webmaster API (SubmitUrlbatch + SubmitFeed for sitemap-today.xml)
+      const bingKey = resolveBingApiKey();
+      if (bingKey) {
+        results.bingWebmaster = {};
+        if (urls.length) {
+          try {
+            const resp = await fetch(
+              `https://ssl.bing.com/webmaster/api.svc/json/SubmitUrlbatch?apikey=${encodeURIComponent(bingKey)}`,
+              {
+                method: 'POST',
+                headers: { 'content-type': 'application/json; charset=utf-8' },
+                body: JSON.stringify({ siteUrl: `${ORIGIN}/`, urlList: urls.slice(0, 500) }),
+                signal: AbortSignal.timeout(20_000),
+              },
+            );
+            results.bingWebmaster.urlBatch = resp.status;
+            log(`  Bing Webmaster API (SubmitUrlbatch): HTTP ${resp.status} for ${Math.min(urls.length, 500)} URLs`);
+          } catch (error) {
+            log(`  Bing Webmaster API (SubmitUrlbatch): ${String(error.message).replace(/apikey=[^&\s]+/gi, 'apikey=REDACTED')}`);
+          }
+        }
+        try {
+          const feedResp = await fetch(
+            `https://ssl.bing.com/webmaster/api.svc/json/SubmitFeed?apikey=${encodeURIComponent(bingKey)}`,
+            {
+              method: 'POST',
+              headers: { 'content-type': 'application/json; charset=utf-8' },
+              body: JSON.stringify({ siteUrl: `${ORIGIN}/`, feedUrl: `${ORIGIN}/sitemap-today.xml` }),
+              signal: AbortSignal.timeout(20_000),
+            },
+          );
+          results.bingWebmaster.sitemap = feedResp.status;
+          log(`  Bing Webmaster API (SubmitFeed sitemap-today.xml): HTTP ${feedResp.status}`);
+        } catch (error) {
+          log(`  Bing Webmaster API (SubmitFeed): ${String(error.message).replace(/apikey=[^&\s]+/gi, 'apikey=REDACTED')}`);
+        }
+      }
+
+      // 3. Google Search Console API (sc-domain:brasspawn.com -> sitemap-today.xml)
+      const gscAuth = await resolveGscAccessToken();
+      if (gscAuth?.accessToken) {
+        try {
+          const siteId = encodeURIComponent('sc-domain:brasspawn.com');
+          const feedPath = encodeURIComponent(`${ORIGIN}/sitemap-today.xml`);
+          const gscResp = await fetch(
+            `https://www.googleapis.com/webmasters/v3/sites/${siteId}/sitemaps/${feedPath}`,
+            {
+              method: 'PUT',
+              headers: {
+                Authorization: `Bearer ${gscAuth.accessToken}`,
+                ...(gscAuth.quotaProject ? { 'x-goog-user-project': gscAuth.quotaProject } : {}),
+                'content-length': '0',
+              },
+              signal: AbortSignal.timeout(20_000),
+            },
+          );
+          results.googleSearchConsole = gscResp.status;
+          log(`  Google Search Console (sitemap-today.xml): HTTP ${gscResp.status}`);
+        } catch (error) {
+          log(`  Google Search Console: ${error.message}`);
+        }
+      }
+
+      return results;
     },
   };
 }
@@ -392,4 +464,48 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
 function keyFromSite() {
   const files = readdirSync(resolve(HERE, '../../web/public')).filter((name) => /^[a-f0-9-]{8,128}\.txt$/i.test(name));
   return files.length === 1 ? files[0].slice(0, -4) : null;
+}
+
+function resolveBingApiKey() {
+  if (process.env.BING_API_KEY?.trim()) return process.env.BING_API_KEY.trim();
+  const keyFile = join(homedir(), '.config/bing-webmaster/api-key');
+  try {
+    if (existsSync(keyFile)) {
+      const val = readFileSync(keyFile, 'utf8').trim();
+      return val || null;
+    }
+  } catch {
+    // Ignore when running inside Lambda without ~/.config.
+  }
+  return null;
+}
+
+async function resolveGscAccessToken() {
+  if (process.env.GSC_ACCESS_TOKEN?.trim()) {
+    return { accessToken: process.env.GSC_ACCESS_TOKEN.trim(), quotaProject: process.env.GOOGLE_CLOUD_PROJECT ?? null };
+  }
+  const adcFile = process.env.GOOGLE_APPLICATION_CREDENTIALS ?? join(homedir(), '.config/gcloud/application_default_credentials.json');
+  try {
+    if (!existsSync(adcFile)) return null;
+    const adc = JSON.parse(readFileSync(adcFile, 'utf8'));
+    if (adc?.type !== 'authorized_user' || !adc.client_id || !adc.client_secret || !adc.refresh_token) return null;
+    const body = new URLSearchParams({
+      client_id: adc.client_id,
+      client_secret: adc.client_secret,
+      refresh_token: adc.refresh_token,
+      grant_type: 'refresh_token',
+    });
+    const resp = await fetch('https://oauth2.googleapis.com/token', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body,
+      signal: AbortSignal.timeout(15_000),
+    });
+    if (!resp.ok) return null;
+    const tokenJson = await resp.json();
+    if (!tokenJson?.access_token) return null;
+    return { accessToken: tokenJson.access_token, quotaProject: adc.quota_project_id ?? null };
+  } catch {
+    return null;
+  }
 }

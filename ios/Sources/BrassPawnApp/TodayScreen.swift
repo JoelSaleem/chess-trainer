@@ -204,10 +204,15 @@ struct TodayScreen: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 5) {
-                Text(story.occasion.uppercased())
-                    .appFont(size: 8).tracking(1.4)
-                    .foregroundStyle(Theatre.ivoryFaint)
-                    .lineLimit(1)
+                HStack(spacing: 6) {
+                    if let premium = story.premium {
+                        PremiumBadge(minutes: premium.readingMinutes)
+                    }
+                    Text(story.occasion.uppercased())
+                        .appFont(size: 8).tracking(1.4)
+                        .foregroundStyle(Theatre.ivoryFaint)
+                        .lineLimit(1)
+                }
                 Text(story.inReadersLanguage ? story.headline : story.title)
                     .appFont(size: 16, weight: .semibold)
                     .foregroundStyle(Theatre.ivory)
@@ -291,15 +296,21 @@ struct StoryScreen: View {
     var replayFrom: Int? = nil
 
     @State private var replaying = false
+    @State private var replayStartPly: Int?
     @State private var handedOver = false
     @State private var shareImage: Image?
     @State private var showsPaywall = false
+    @State private var showsPremiumArchivePaywall = false
 
     private var orientation: PieceColor { story.winner == .black ? .black : .white }
 
     /// Playing on from this story needs Pro: it is older than a day, and the
     /// reader does not have it. Reading and replaying it never do.
     private var playOnLocked: Bool { !app.store.isPro && !story.isRecent() }
+
+    /// Today's / latest day's Premium Articles are always free; older archived
+    /// Premium Articles show a full first-section preview and unlock with Pro.
+    private var hasFullPremiumAccess: Bool { story.isRecent() || app.store.isPro }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -352,6 +363,7 @@ struct StoryScreen: View {
             // rather than the replay opening again on top of it.
             guard replayFrom != nil, !handedOver else { return }
             handedOver = true
+            replayStartPly = replayFrom
             replaying = true
         }
         .task {
@@ -369,8 +381,8 @@ struct StoryScreen: View {
                 notation: story.moves,
                 // One move before the one the story is about, so the reader
                 // sees it played rather than finds it already on the board —
-                // or, handed over from the site, the move they had reached.
-                startAt: replayFrom ?? max(0, story.focusPly - 1),
+                // or, handed over from the site or a section diagram, that ply.
+                startAt: replayStartPly ?? replayFrom ?? max(0, story.focusPly - 1),
                 onContinue: { ply in
                     replaying = false
                     carryOn(from: ply)
@@ -380,6 +392,7 @@ struct StoryScreen: View {
             )
         }
         .appCover(isPresented: $showsPaywall) { PaywallView(playingOn: true) }
+        .appCover(isPresented: $showsPremiumArchivePaywall) { PaywallView(premiumArchive: true) }
     }
 
     private var board: some View {
@@ -427,6 +440,7 @@ struct StoryScreen: View {
     private var actions: some View {
         HStack(spacing: 8) {
             Button {
+                replayStartPly = replayFrom ?? max(0, story.focusPly - 1)
                 replaying = true
             } label: {
                 Text(L.t("today.replay", "Replay"))
@@ -474,21 +488,199 @@ struct StoryScreen: View {
 
     @ViewBuilder
     private var words: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 14) {
             if !story.inReadersLanguage {
                 Text(L.t("today.inEnglish", "Commentary in English").uppercased())
                     .appFont(size: 8).tracking(1.4)
                     .foregroundStyle(Theatre.ivoryFaint)
             }
+
+            if let premium = story.premium {
+                PremiumBadge(minutes: premium.readingMinutes, detailed: true)
+            }
+
             Text(verbatim: story.headline)
-                .appFont(size: 19, weight: .semibold)
+                .appFont(size: 20, weight: .semibold)
                 .foregroundStyle(Theatre.ivory)
+
+            if let subtitle = story.premium?.subtitle?.trimmingCharacters(in: .whitespacesAndNewlines),
+               !subtitle.isEmpty {
+                Text(verbatim: subtitle)
+                    .appFont(.subheadline, weight: .medium)
+                    .foregroundStyle(Theatre.brass)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+
             Text(verbatim: story.body)
                 .appFont(.subheadline)
                 .foregroundStyle(Theatre.ivoryDim)
                 .fixedSize(horizontal: false, vertical: true)
+
+            if let premium = story.premium, !premium.sections.isEmpty {
+                let visibleSections = hasFullPremiumAccess
+                    ? premium.sections
+                    : Array(premium.sections.prefix(1))
+
+                ForEach(Array(visibleSections.enumerated()), id: \.offset) { index, section in
+                    premiumSectionCard(section, number: index + 1)
+                }
+
+                if !hasFullPremiumAccess {
+                    premiumArchiveUnlockCard
+                }
+            }
         }
         .environment(\.locale, Locale(identifier: story.inReadersLanguage ? (Bundle.main.preferredLocalizations.first ?? "en") : "en"))
+    }
+
+    @ViewBuilder
+    private func premiumSectionCard(_ section: FeedStory.PremiumSection, number: Int) -> some View {
+        VStack(alignment: .leading, spacing: 11) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(verbatim: "\(number).")
+                    .appFont(size: 11, weight: .semibold)
+                    .foregroundStyle(Theatre.brass)
+                Text(verbatim: section.heading)
+                    .appFont(size: 16, weight: .semibold)
+                    .foregroundStyle(Theatre.ivory)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 4)
+                if let move = section.move, !move.isEmpty {
+                    Text(verbatim: move)
+                        .appFont(size: 10, weight: .semibold)
+                        .foregroundStyle(Theatre.brassHot)
+                        .padding(.horizontal, 7)
+                        .padding(.vertical, 3)
+                        .background(Theatre.brass.opacity(0.14), in: .rect(cornerRadius: 5))
+                }
+            }
+
+            if let diagram = story.sectionBoard(section) {
+                Button {
+                    replayStartPly = section.ply ?? story.focusPly
+                    replaying = true
+                } label: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        BoardView(
+                            position: diagram.position,
+                            orientation: orientation,
+                            lastMove: diagram.lastMove.map { ($0.from, $0.to) }
+                        )
+                        .environment(\.showsBoardCoordinates, false)
+                        .frame(width: 196, height: 196)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+
+                        HStack(spacing: 5) {
+                            BrassIcon("play.fill", size: 10)
+                                .foregroundStyle(Theatre.brass)
+                            Text(L.t("today.tapToReplay", "Tap board to replay from here"))
+                                .appFont(size: 10)
+                                .foregroundStyle(Theatre.ivoryDim)
+                        }
+                    }
+                }
+                .buttonStyle(BrassPressStyle())
+            }
+
+            if section.evalBefore != nil || section.evalAfter != nil || section.engineLine != nil {
+                VStack(alignment: .leading, spacing: 4) {
+                    if let before = section.evalBefore, let after = section.evalAfter {
+                        Text(verbatim: L.t("today.stockfish", "Stockfish %1$@ → %2$@", before, after))
+                            .appFont(size: 11, weight: .semibold)
+                            .foregroundStyle(Theatre.brassHot)
+                    } else if let single = section.evalAfter ?? section.evalBefore {
+                        Text(verbatim: "Stockfish \(single)")
+                            .appFont(size: 11, weight: .semibold)
+                            .foregroundStyle(Theatre.brassHot)
+                    }
+                    if let line = section.engineLine, !line.isEmpty {
+                        Text(verbatim: line)
+                            .appFont(.caption)
+                            .foregroundStyle(Theatre.ivoryDim)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .padding(.horizontal, 11)
+                .padding(.vertical, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background {
+                    BrassPlateShape(cut: 7).fill(Theatre.brass.opacity(0.10))
+                }
+                .overlay {
+                    BrassPlateShape(cut: 7)
+                        .strokeBorder(Theatre.brass.opacity(0.45), lineWidth: 0.7)
+                }
+            }
+
+            Text(verbatim: section.body)
+                .appFont(.subheadline)
+                .foregroundStyle(Theatre.ivoryDim)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if let takeaways = section.takeaways, !takeaways.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(Array(takeaways.enumerated()), id: \.offset) { _, point in
+                        HStack(alignment: .top, spacing: 8) {
+                            BrassIcon("sparkles", size: 12)
+                                .foregroundStyle(Theatre.brass)
+                                .padding(.top, 3)
+                            Text(verbatim: point)
+                                .appFont(.footnote)
+                                .foregroundStyle(Theatre.ivory)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                }
+                .padding(.top, 2)
+            }
+        }
+        .padding(14)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            BrassPlateShape(cut: 10).fill(Theatre.ink3)
+        }
+        .overlay {
+            BrassPlateShape(cut: 10)
+                .strokeBorder(Theatre.brassDeep.opacity(0.5), lineWidth: 0.7)
+        }
+    }
+
+    private var premiumArchiveUnlockCard: some View {
+        VStack(alignment: .leading, spacing: 11) {
+            HStack(spacing: 8) {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(Theatre.brassHot)
+                Text(L.t("store.title", "Brass Pawn Pro"))
+                    .appFont(.subheadline, weight: .semibold)
+                    .foregroundStyle(Theatre.brassHot)
+            }
+            Text(L.t("today.premiumArchiveUnlock",
+                     "Full Premium Article archive is part of Brass Pawn Pro. Today's Premium Articles are always free."))
+                .appFont(.footnote)
+                .foregroundStyle(Theatre.ivoryDim)
+                .fixedSize(horizontal: false, vertical: true)
+            Button {
+                showsPremiumArchivePaywall = true
+            } label: {
+                Text(L.t("store.unlockPro", "Unlock Brass Pawn Pro"))
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(PillButtonStyle(emphasis: .solid))
+        }
+        .padding(15)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background {
+            BrassPlateShape(cut: 11).fill(LinearGradient(
+                colors: [Theatre.ink4, Theatre.ink2],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ))
+        }
+        .overlay {
+            BrassPlateShape(cut: 11)
+                .strokeBorder(Theatre.brassHot.opacity(0.75), lineWidth: 0.85)
+        }
     }
 
     private var facts: some View {
@@ -615,5 +807,37 @@ private struct ShareCard: View {
         .padding(18)
         .frame(width: 360, height: 450, alignment: .topLeading)
         .background(Theatre.ink)
+    }
+}
+
+private struct PremiumBadge: View {
+    let minutes: Int?
+    var detailed = false
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Text(L.t("today.premiumBadge", "Premium").uppercased())
+                .appFont(size: detailed ? 9 : 8, weight: .semibold)
+                .tracking(1.3)
+                .foregroundStyle(Theatre.brassHot)
+                .padding(.horizontal, 6)
+                .padding(.vertical, 2.5)
+                .background {
+                    BrassPlateShape(cut: 4).fill(Theatre.brass.opacity(0.18))
+                }
+                .overlay {
+                    BrassPlateShape(cut: 4)
+                        .strokeBorder(Theatre.brass.opacity(0.62), lineWidth: 0.65)
+                }
+
+            if let minutes, minutes > 0 {
+                Text(detailed
+                     ? L.t("today.minRead", "%lld min read", Int64(minutes))
+                     : L.t("today.readingMinutes", "%lld min", Int64(minutes)))
+                    .appFont(size: detailed ? 10 : 8, weight: .medium)
+                    .foregroundStyle(Theatre.ivoryDim)
+                    .lineLimit(1)
+            }
+        }
     }
 }

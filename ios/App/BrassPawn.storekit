@@ -1,553 +1,1089 @@
 {
-  "appPolicies" : {
-    "eula" : "",
-    "policies" : [
+  "appPolicies": {
+    "eula": "",
+    "policies": [
       {
-        "locale" : "en_US",
-        "policyText" : "",
-        "policyURL" : ""
+        "locale": "en_US",
+        "policyText": "",
+        "policyURL": ""
       }
     ]
   },
-  "identifier" : "953B8193",
-  "nonRenewingSubscriptions" : [],
-  "products" : [
+  "identifier": "953B8193",
+  "nonRenewingSubscriptions": [],
+  "products": [
     {
-      "displayPrice" : "39.99",
-      "familyShareable" : false,
-      "internalID" : "6803787654",
-      "localizations" : [
+      "displayPrice": "39.99",
+      "familyShareable": false,
+      "internalID": "6803787654",
+      "localizations": [
         {
-          "description" : "पहेलियाँ, अभ्यास और दौर बिना सीमा",
-          "displayName" : "एक बार का भुगतान",
-          "locale" : "hi"
+          "description": "ألغاز ومسح ذكي ومقالات بلا حدود",
+          "displayName": "فتح لمرة واحدة",
+          "locale": "ar_SA"
         },
         {
-          "description" : "Uppgifter, övningar och rundor utan gräns",
-          "displayName" : "Engångsköp",
-          "locale" : "sv"
+          "description": "আনলিমিটেড পাজল, এআই স্ক্যান ও প্রিমিয়াম",
+          "displayName": "একবার আনলক",
+          "locale": "bn_BD"
         },
         {
-          "description" : "Unbegrenzt Aufgaben, Übungen und Läufe",
-          "displayName" : "Einmalig freischalten",
-          "locale" : "de"
+          "description": "Problemes, escaneig IA i articles il·limitats",
+          "displayName": "Pagament únic",
+          "locale": "ca"
         },
         {
-          "description" : "Ejercicios, finales y series sin límite",
-          "displayName" : "Pago único",
-          "locale" : "es_ES"
+          "description": "Úlohy, AI sken šachovnice a články bez limitu",
+          "displayName": "Jednorázově",
+          "locale": "cs"
         },
         {
-          "description" : "Opgaver, øvelser og runder uden grænser",
-          "displayName" : "Engangskøb",
-          "locale" : "da"
+          "description": "Ubegrænsede opgaver, AI-scan og artikler",
+          "displayName": "Engangskøb",
+          "locale": "da"
         },
         {
-          "description" : "Tehtäviä, harjoituksia ja kierroksia rajatta",
-          "displayName" : "Kertaosto",
-          "locale" : "fi"
+          "description": "Unbegrenzt Aufgaben, KI-Scan & Artikel",
+          "displayName": "Einmalig freischalten",
+          "locale": "de_DE"
         },
         {
-          "description" : "Zadania, ćwiczenia i serie bez limitu",
-          "displayName" : "Jednorazowo",
-          "locale" : "pl"
+          "description": "Απεριόριστες ασκήσεις, σάρωση AI & άρθρα",
+          "displayName": "Εφάπαξ",
+          "locale": "el"
         },
         {
-          "description" : "Exercícios, finais e séries sem limite",
-          "displayName" : "Compra única",
-          "locale" : "pt_BR"
+          "description": "Unlimited puzzles, AI scans & Premium archive",
+          "displayName": "One-off unlock",
+          "locale": "en_AU"
         },
         {
-          "description" : "ألغاز وتمارين وجولات بلا حدود",
-          "displayName" : "فتح لمرة واحدة",
-          "locale" : "ar"
+          "description": "Unlimited puzzles, AI scans & Premium archive",
+          "displayName": "One-off unlock",
+          "locale": "en_CA"
         },
         {
-          "description" : "문제·드릴·러시 무제한",
-          "displayName" : "한 번만 결제",
-          "locale" : "ko"
+          "description": "Unlimited puzzles, AI scans & Premium archive",
+          "displayName": "One-off unlock",
+          "locale": "en_GB"
         },
         {
-          "description" : "Úlohy, cvičení a série bez omezení",
-          "displayName" : "Jednorázově",
-          "locale" : "cs"
+          "description": "Unlimited puzzles, AI scans & Premium archive",
+          "displayName": "One-off unlock",
+          "locale": "en_US"
         },
         {
-          "description" : "Задачи, упражнения и серии без ограничений",
-          "displayName" : "Разовая покупка",
-          "locale" : "ru"
+          "description": "Problemas, escaneo IA y artículos sin límite",
+          "displayName": "Pago único",
+          "locale": "es_ES"
         },
         {
-          "description" : "แบบฝึก ดริล และรอบไม่จำกัด",
-          "displayName" : "จ่ายครั้งเดียว",
-          "locale" : "th"
+          "description": "Problemas, escaneo IA y artículos sin límite",
+          "displayName": "Pago único",
+          "locale": "es_MX"
         },
         {
-          "description" : "Problèmes, exercices et runs sans limite",
-          "displayName" : "Achat unique",
-          "locale" : "fr"
+          "description": "Tehtävät, tekoälyskannaus ja artikkelit",
+          "displayName": "Kertaosto",
+          "locale": "fi"
         },
         {
-          "description" : "Exerciții, finaluri și runde fără limită",
-          "displayName" : "Plată unică",
-          "locale" : "ro"
+          "description": "Problèmes, scan IA et articles sans limite",
+          "displayName": "Achat unique",
+          "locale": "fr_CA"
         },
         {
-          "description" : "Soal, latihan, dan sesi tanpa batas",
-          "displayName" : "Sekali bayar",
-          "locale" : "id"
+          "description": "Problèmes, scan IA et articles sans limite",
+          "displayName": "Achat unique",
+          "locale": "fr_FR"
         },
         {
-          "description" : "問題・ドリル・ラッシュが無制限",
-          "displayName" : "買い切り",
-          "locale" : "ja"
+          "description": "અમર્યાદિત કોયડા, AI સ્કેન અને પ્રીમિયમ લેખો",
+          "displayName": "એકવાર અનલૉક",
+          "locale": "gu_IN"
         },
         {
-          "description" : "Teka-teki, latihan dan pusingan tanpa had",
-          "displayName" : "Bayar sekali",
-          "locale" : "ms"
+          "description": "תרגילים, סריקת לוח ב-AI וכתבות ללא הגבלה",
+          "displayName": "רכישה חד-פעמית",
+          "locale": "he"
         },
         {
-          "description" : "Unlimited puzzles, drills and Rush runs.",
-          "displayName" : "One-off unlock",
-          "locale" : "en_CA"
+          "description": "असीमित पहेलियाँ, AI स्कैन और प्रीमियम लेख",
+          "displayName": "एक बार का भुगतान",
+          "locale": "hi"
         },
         {
-          "description" : "Esercizi, finali e run senza limiti",
-          "displayName" : "Sblocco una tantum",
-          "locale" : "it"
+          "description": "Neograničeni zadaci, AI sken i članci",
+          "displayName": "Jednokratno",
+          "locale": "hr"
         },
         {
-          "description" : "习题、练习和冲刺不限量",
-          "displayName" : "一次买断",
-          "locale" : "zh_Hans"
+          "description": "Korlátlan feladvány, AI-szken és cikkek",
+          "displayName": "Egyszeri feloldás",
+          "locale": "hu"
         },
         {
-          "description" : "Ασκήσεις, φινάλε και γύροι χωρίς όριο",
-          "displayName" : "Εφάπαξ",
-          "locale" : "el"
+          "description": "Soal, pindai papan AI & artikel tanpa batas",
+          "displayName": "Sekali bayar",
+          "locale": "id"
         },
         {
-          "description" : "Unlimited puzzles, drills and Rush runs.",
-          "displayName" : "One-off unlock",
-          "locale" : "en_US"
+          "description": "Esercizi, scansione IA e articoli illimitati",
+          "displayName": "Sblocco una tantum",
+          "locale": "it"
         },
         {
-          "description" : "習題、練習與衝刺不限量",
-          "displayName" : "一次買斷",
-          "locale" : "zh_Hant"
+          "description": "問題・AI盤面スキャン・プレミアム記事が無制限",
+          "displayName": "買い切り",
+          "locale": "ja"
         },
         {
-          "description" : "תרגילים, סופים וסבבים ללא הגבלה",
-          "displayName" : "רכישה חד-פעמית",
-          "locale" : "he"
+          "description": "ಅನಿಯಮಿತ ಒಗಟು, AI ಸ್ಕ್ಯಾನ್ ಮತ್ತು ಲೇಖನಗಳು",
+          "displayName": "ಒಮ್ಮೆ ಅನ್‌ಲಾಕ್",
+          "locale": "kn_IN"
         },
         {
-          "description" : "Sınırsız problem, alıştırma ve tur",
-          "displayName" : "Tek seferlik",
-          "locale" : "tr"
+          "description": "문제·AI 보드 스캔·프리미엄 아티클 무제한",
+          "displayName": "한 번만 결제",
+          "locale": "ko"
         },
         {
-          "description" : "Onbeperkt puzzels, oefeningen en runs",
-          "displayName" : "Eenmalig",
-          "locale" : "nl"
+          "description": "പരിധിയില്ലാത്ത പസിലുകൾ, AI സ്കാൻ, ലേഖനങ്ങൾ",
+          "displayName": "ഒറ്റത്തവണ അൺലോക്ക്",
+          "locale": "ml_IN"
         },
         {
-          "description" : "Oppgaver, øvelser og runder uten grense",
-          "displayName" : "Engangskjøp",
-          "locale" : "nb"
+          "description": "अमर्यादित कोडी, AI स्कॅन आणि प्रीमियम लेख",
+          "displayName": "एकदाच अनलॉक",
+          "locale": "mr_IN"
         },
         {
-          "description" : "Korlátlan feladvány, gyakorlat és kör",
-          "displayName" : "Egyszeri feloldás",
-          "locale" : "hu"
+          "description": "Teka-teki, imbasan AI & artikel tanpa had",
+          "displayName": "Bayar sekali",
+          "locale": "ms"
         },
         {
-          "description" : "Bài tập, luyện tập và lượt không giới hạn",
-          "displayName" : "Mua một lần",
-          "locale" : "vi"
+          "description": "Onbeperkt puzzels, AI-bordscan en artikelen",
+          "displayName": "Eenmalig",
+          "locale": "nl_NL"
         },
         {
-          "description" : "Problèmes, exercices et runs sans limite",
-          "displayName" : "Achat unique",
-          "locale" : "fr_CA"
+          "description": "Ubegrensede oppgaver, AI-skann og artikler",
+          "displayName": "Engangskjøp",
+          "locale": "no"
+        },
+        {
+          "description": "ଅସୀମିତ ପଜଲ୍, AI ସ୍କାନ୍ ଓ ପ୍ରିମିୟମ୍ ଲେଖା",
+          "displayName": "ଥରେ ଅନଲକ୍",
+          "locale": "or_IN"
+        },
+        {
+          "description": "ਅਣਗਿਣਤ ਪਹੇਲੀਆਂ, AI ਸਕੈਨ ਅਤੇ ਪ੍ਰੀਮੀਅਮ ਲੇਖ",
+          "displayName": "ਇੱਕ-ਵਾਰ ਅਨਲੌਕ",
+          "locale": "pa_IN"
+        },
+        {
+          "description": "Zadania, skan szachownicy AI i artykuły",
+          "displayName": "Jednorazowo",
+          "locale": "pl"
+        },
+        {
+          "description": "Exercícios, leitura IA e artigos sem limite",
+          "displayName": "Compra única",
+          "locale": "pt_BR"
+        },
+        {
+          "description": "Problemas, leitura IA e artigos sem limite",
+          "displayName": "Compra única",
+          "locale": "pt_PT"
+        },
+        {
+          "description": "Exerciții, scanare AI și articole nelimitate",
+          "displayName": "Plată unică",
+          "locale": "ro"
+        },
+        {
+          "description": "Задачи, ИИ-скан доски и статьи без лимита",
+          "displayName": "Разовая покупка",
+          "locale": "ru"
+        },
+        {
+          "description": "Úlohy, AI sken šachovnice a články bez limitu",
+          "displayName": "Jednorazovo",
+          "locale": "sk"
+        },
+        {
+          "description": "Neomejene naloge, AI-sken in članki",
+          "displayName": "Enkratni nakup",
+          "locale": "sl_SI"
+        },
+        {
+          "description": "Obegränsade problem, AI-skanning & artiklar",
+          "displayName": "Engångsköp",
+          "locale": "sv"
+        },
+        {
+          "description": "வரம்பற்ற புதிர்கள், AI ஸ்கேன் & கட்டுரைகள்",
+          "displayName": "ஒருமுறை திறப்பு",
+          "locale": "ta_IN"
+        },
+        {
+          "description": "అపరిమిత పజిల్స్, AI స్కాన్ & వ్యాసాలు",
+          "displayName": "ఒకసారి అన్‌లాక్",
+          "locale": "te_IN"
+        },
+        {
+          "description": "โจทย์ สแกนกระดาน AI และบทความไม่จำกัด",
+          "displayName": "จ่ายครั้งเดียว",
+          "locale": "th"
+        },
+        {
+          "description": "Sınırsız problem, YZ tahta tarama ve makale",
+          "displayName": "Tek seferlik",
+          "locale": "tr"
+        },
+        {
+          "description": "Задачі, ШІ-скан дошки та статті без ліміту",
+          "displayName": "Разова покупка",
+          "locale": "uk"
+        },
+        {
+          "description": "لامحدود پہیلیاں، AI بورڈ اسکین اور مضامین",
+          "displayName": "ایک بار ان لاک",
+          "locale": "ur_PK"
+        },
+        {
+          "description": "Bài tập, quét bàn cờ AI & bài viết vô hạn",
+          "displayName": "Mua một lần",
+          "locale": "vi"
+        },
+        {
+          "description": "无限战术习题、AI棋盘识别与精选深度长文",
+          "displayName": "一次买断",
+          "locale": "zh_Hans"
+        },
+        {
+          "description": "無限戰術習題、AI棋盤辨識與精選深度長文",
+          "displayName": "一次買斷",
+          "locale": "zh_Hant"
         }
       ],
-      "productID" : "com.artesoft.brasspawn.pro.lifetime",
-      "referenceName" : "Brass Pawn Pro Lifetime",
-      "type" : "NonConsumable"
+      "productID": "com.artesoft.brasspawn.pro.lifetime",
+      "referenceName": "Brass Pawn Pro Lifetime",
+      "type": "NonConsumable"
     }
   ],
-  "settings" : {
-    "_applicationInternalID" : "6803566012",
-    "_askToBuyEnabled" : false,
-    "_billingGracePeriodEnabled" : false,
-    "_billingIssuesEnabled" : false,
-    "_developerTeamID" : "8293TNMX6S",
-    "_disableDialogs" : false,
-    "_failTransactionsEnabled" : false,
-    "_lastSynchronizedDate" : 808986390.730674,
-    "_locale" : "en_US",
-    "_renewalBillingIssuesEnabled" : false,
-    "_storeKitErrors" : [],
-    "_storefront" : "USA",
-    "_timeRate" : 0
+  "settings": {
+    "_applicationInternalID": "6803566012",
+    "_askToBuyEnabled": false,
+    "_billingGracePeriodEnabled": false,
+    "_billingIssuesEnabled": false,
+    "_developerTeamID": "8293TNMX6S",
+    "_disableDialogs": false,
+    "_failTransactionsEnabled": false,
+    "_lastSynchronizedDate": 808986390.730674,
+    "_locale": "en_US",
+    "_renewalBillingIssuesEnabled": false,
+    "_storeKitErrors": [],
+    "_storefront": "USA",
+    "_timeRate": 0
   },
-  "subscriptionGroups" : [
+  "subscriptionGroups": [
     {
-      "id" : "22324080",
-      "localizations" : [],
-      "name" : "brasspawn.pro",
-      "subscriptions" : [
+      "id": "22324080",
+      "localizations": [
         {
-          "adHocOffers" : [],
-          "codeOffers" : [],
-          "displayPrice" : "3.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "6803789121",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "Sınırsız problem, alıştırma ve tur",
-              "displayName" : "Aylık",
-              "locale" : "tr"
-            },
-            {
-              "description" : "Teka-teki, latihan dan pusingan tanpa had",
-              "displayName" : "Bulanan",
-              "locale" : "ms"
-            },
-            {
-              "description" : "Soal, latihan, dan sesi tanpa batas",
-              "displayName" : "Bulanan",
-              "locale" : "id"
-            },
-            {
-              "description" : "Korlátlan feladvány, gyakorlat és kör",
-              "displayName" : "Havi",
-              "locale" : "hu"
-            },
-            {
-              "description" : "Bài tập, luyện tập và lượt không giới hạn",
-              "displayName" : "Hằng tháng",
-              "locale" : "vi"
-            },
-            {
-              "description" : "Tehtäviä, harjoituksia ja kierroksia rajatta",
-              "displayName" : "Kuukausittain",
-              "locale" : "fi"
-            },
-            {
-              "description" : "Exerciții, finaluri și runde fără limită",
-              "displayName" : "Lunar",
-              "locale" : "ro"
-            },
-            {
-              "description" : "Onbeperkt puzzels, oefeningen en runs",
-              "displayName" : "Maandelijks",
-              "locale" : "nl"
-            },
-            {
-              "description" : "Oppgaver, øvelser og runder uten grense",
-              "displayName" : "Månedlig",
-              "locale" : "nb"
-            },
-            {
-              "description" : "Exercícios, finais e séries sem limite",
-              "displayName" : "Mensal",
-              "locale" : "pt_BR"
-            },
-            {
-              "description" : "Esercizi, finali e run senza limiti",
-              "displayName" : "Mensile",
-              "locale" : "it"
-            },
-            {
-              "description" : "Ejercicios, finales y series sin límite",
-              "displayName" : "Mensual",
-              "locale" : "es_ES"
-            },
-            {
-              "description" : "Problèmes, exercices et runs sans limite",
-              "displayName" : "Mensuel",
-              "locale" : "fr"
-            },
-            {
-              "description" : "Problèmes, exercices et runs sans limite",
-              "displayName" : "Mensuel",
-              "locale" : "fr_CA"
-            },
-            {
-              "description" : "Zadania, ćwiczenia i serie bez limitu",
-              "displayName" : "Miesięcznie",
-              "locale" : "pl"
-            },
-            {
-              "description" : "Unbegrenzt Aufgaben, Übungen und Läufe",
-              "displayName" : "Monatlich",
-              "locale" : "de"
-            },
-            {
-              "description" : "Unlimited puzzles, drills and Rush runs.",
-              "displayName" : "Monthly",
-              "locale" : "en_CA"
-            },
-            {
-              "description" : "Unlimited puzzles, drills and Rush runs.",
-              "displayName" : "Monthly",
-              "locale" : "en_US"
-            },
-            {
-              "description" : "Uppgifter, övningar och rundor utan gräns",
-              "displayName" : "Månadsvis",
-              "locale" : "sv"
-            },
-            {
-              "description" : "Opgaver, øvelser og runder uden grænser",
-              "displayName" : "Månedligt",
-              "locale" : "da"
-            },
-            {
-              "description" : "Úlohy, cvičení a série bez omezení",
-              "displayName" : "Měsíčně",
-              "locale" : "cs"
-            },
-            {
-              "description" : "Ασκήσεις, φινάλε και γύροι χωρίς όριο",
-              "displayName" : "Μηνιαία",
-              "locale" : "el"
-            },
-            {
-              "description" : "Задачи, упражнения и серии без ограничений",
-              "displayName" : "Ежемесячно",
-              "locale" : "ru"
-            },
-            {
-              "description" : "תרגילים, סופים וסבבים ללא הגבלה",
-              "displayName" : "חודשי",
-              "locale" : "he"
-            },
-            {
-              "description" : "ألغاز وتمارين وجولات بلا حدود",
-              "displayName" : "شهريًا",
-              "locale" : "ar"
-            },
-            {
-              "description" : "पहेलियाँ, अभ्यास और दौर बिना सीमा",
-              "displayName" : "मासिक",
-              "locale" : "hi"
-            },
-            {
-              "description" : "แบบฝึก ดริล และรอบไม่จำกัด",
-              "displayName" : "รายเดือน",
-              "locale" : "th"
-            },
-            {
-              "description" : "习题、练习和冲刺不限量",
-              "displayName" : "按月",
-              "locale" : "zh_Hans"
-            },
-            {
-              "description" : "問題・ドリル・ラッシュが無制限",
-              "displayName" : "月額",
-              "locale" : "ja"
-            },
-            {
-              "description" : "習題、練習與衝刺不限量",
-              "displayName" : "每月",
-              "locale" : "zh_Hant"
-            },
-            {
-              "description" : "문제·드릴·러시 무제한",
-              "displayName" : "월간",
-              "locale" : "ko"
-            }
-          ],
-          "productID" : "com.artesoft.brasspawn.pro.monthly",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Brass Pawn Pro Monthly",
-          "subscriptionGroupID" : "22324080",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : []
+          "customAppName": "Brass Pawn",
+          "locale": "ar_SA",
+          "name": "Brass Pawn Pro"
         },
         {
-          "adHocOffers" : [],
-          "codeOffers" : [],
-          "displayPrice" : "19.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "6803789122",
-          "introductoryOffer" : null,
-          "localizations" : [
+          "customAppName": "Brass Pawn",
+          "locale": "bn_BD",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ca",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "cs",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "da",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "de_DE",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "el",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "en_AU",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "en_CA",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "en_GB",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "en_US",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "es_ES",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "es_MX",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "fi",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "fr_CA",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "fr_FR",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "gu_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "he",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "hi",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "hr",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "hu",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "id",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "it",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ja",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "kn_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ko",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ml_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "mr_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ms",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "nl_NL",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "no",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "or_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "pa_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "pl",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "pt_BR",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "pt_PT",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ro",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ru",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "sk",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "sl_SI",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "sv",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ta_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "te_IN",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "th",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "tr",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "uk",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "ur_PK",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "vi",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "zh_Hans",
+          "name": "Brass Pawn Pro"
+        },
+        {
+          "customAppName": "Brass Pawn",
+          "locale": "zh_Hant",
+          "name": "Brass Pawn Pro"
+        }
+      ],
+      "name": "brasspawn.pro",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "3.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6803789121",
+          "introductoryOffer": null,
+          "localizations": [
             {
-              "description" : "Sınırsız problem, alıştırma ve tur",
-              "displayName" : "Yıllık",
-              "locale" : "tr"
+              "description": "ألغاز ومسح ذكي ومقالات بلا حدود",
+              "displayName": "شهريًا",
+              "locale": "ar_SA"
             },
             {
-              "description" : "Teka-teki, latihan dan pusingan tanpa had",
-              "displayName" : "Tahunan",
-              "locale" : "ms"
+              "description": "আনলিমিটেড পাজল, এআই স্ক্যান ও প্রিমিয়াম",
+              "displayName": "মাসিক",
+              "locale": "bn_BD"
             },
             {
-              "description" : "Soal, latihan, dan sesi tanpa batas",
-              "displayName" : "Tahunan",
-              "locale" : "id"
+              "description": "Problemes, escaneig IA i articles il·limitats",
+              "displayName": "Mensual",
+              "locale": "ca"
             },
             {
-              "description" : "Korlátlan feladvány, gyakorlat és kör",
-              "displayName" : "Éves",
-              "locale" : "hu"
+              "description": "Úlohy, AI sken šachovnice a články bez limitu",
+              "displayName": "Měsíčně",
+              "locale": "cs"
             },
             {
-              "description" : "Bài tập, luyện tập và lượt không giới hạn",
-              "displayName" : "Hằng năm",
-              "locale" : "vi"
+              "description": "Ubegrænsede opgaver, AI-scan og artikler",
+              "displayName": "Månedligt",
+              "locale": "da"
             },
             {
-              "description" : "Tehtäviä, harjoituksia ja kierroksia rajatta",
-              "displayName" : "Vuosittain",
-              "locale" : "fi"
+              "description": "Unbegrenzt Aufgaben, KI-Scan & Artikel",
+              "displayName": "Monatlich",
+              "locale": "de_DE"
             },
             {
-              "description" : "Exerciții, finaluri și runde fără limită",
-              "displayName" : "Anual",
-              "locale" : "ro"
+              "description": "Απεριόριστες ασκήσεις, σάρωση AI & άρθρα",
+              "displayName": "Μηνιαία",
+              "locale": "el"
             },
             {
-              "description" : "Onbeperkt puzzels, oefeningen en runs",
-              "displayName" : "Jaarlijks",
-              "locale" : "nl"
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Monthly",
+              "locale": "en_AU"
             },
             {
-              "description" : "Oppgaver, øvelser og runder uten grense",
-              "displayName" : "Årlig",
-              "locale" : "nb"
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Monthly",
+              "locale": "en_CA"
             },
             {
-              "description" : "Exercícios, finais e séries sem limite",
-              "displayName" : "Anual",
-              "locale" : "pt_BR"
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Monthly",
+              "locale": "en_GB"
             },
             {
-              "description" : "Esercizi, finali e run senza limiti",
-              "displayName" : "Annuale",
-              "locale" : "it"
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Monthly",
+              "locale": "en_US"
             },
             {
-              "description" : "Ejercicios, finales y series sin límite",
-              "displayName" : "Anual",
-              "locale" : "es_ES"
+              "description": "Problemas, escaneo IA y artículos sin límite",
+              "displayName": "Mensual",
+              "locale": "es_ES"
             },
             {
-              "description" : "Problèmes, exercices et runs sans limite",
-              "displayName" : "Annuel",
-              "locale" : "fr"
+              "description": "Problemas, escaneo IA y artículos sin límite",
+              "displayName": "Mensual",
+              "locale": "es_MX"
             },
             {
-              "description" : "Problèmes, exercices et runs sans limite",
-              "displayName" : "Annuel",
-              "locale" : "fr_CA"
+              "description": "Tehtävät, tekoälyskannaus ja artikkelit",
+              "displayName": "Kuukausittain",
+              "locale": "fi"
             },
             {
-              "description" : "Zadania, ćwiczenia i serie bez limitu",
-              "displayName" : "Rocznie",
-              "locale" : "pl"
+              "description": "Problèmes, scan IA et articles sans limite",
+              "displayName": "Mensuel",
+              "locale": "fr_CA"
             },
             {
-              "description" : "Unbegrenzt Aufgaben, Übungen und Läufe",
-              "displayName" : "Jährlich",
-              "locale" : "de"
+              "description": "Problèmes, scan IA et articles sans limite",
+              "displayName": "Mensuel",
+              "locale": "fr_FR"
             },
             {
-              "description" : "Unlimited puzzles, drills and Rush runs.",
-              "displayName" : "Yearly",
-              "locale" : "en_CA"
+              "description": "અમર્યાદિત કોયડા, AI સ્કેન અને પ્રીમિયમ લેખો",
+              "displayName": "માસિક",
+              "locale": "gu_IN"
             },
             {
-              "description" : "Unlimited puzzles, drills and Rush runs.",
-              "displayName" : "Yearly",
-              "locale" : "en_US"
+              "description": "תרגילים, סריקת לוח ב-AI וכתבות ללא הגבלה",
+              "displayName": "חודשי",
+              "locale": "he"
             },
             {
-              "description" : "Uppgifter, övningar och rundor utan gräns",
-              "displayName" : "Årsvis",
-              "locale" : "sv"
+              "description": "असीमित पहेलियाँ, AI स्कैन और प्रीमियम लेख",
+              "displayName": "मासिक",
+              "locale": "hi"
             },
             {
-              "description" : "Opgaver, øvelser og runder uden grænser",
-              "displayName" : "Årligt",
-              "locale" : "da"
+              "description": "Neograničeni zadaci, AI sken i članci",
+              "displayName": "Mjesečno",
+              "locale": "hr"
             },
             {
-              "description" : "Úlohy, cvičení a série bez omezení",
-              "displayName" : "Ročně",
-              "locale" : "cs"
+              "description": "Korlátlan feladvány, AI-szken és cikkek",
+              "displayName": "Havi",
+              "locale": "hu"
             },
             {
-              "description" : "Ασκήσεις, φινάλε και γύροι χωρίς όριο",
-              "displayName" : "Ετήσια",
-              "locale" : "el"
+              "description": "Soal, pindai papan AI & artikel tanpa batas",
+              "displayName": "Bulanan",
+              "locale": "id"
             },
             {
-              "description" : "Задачи, упражнения и серии без ограничений",
-              "displayName" : "Ежегодно",
-              "locale" : "ru"
+              "description": "Esercizi, scansione IA e articoli illimitati",
+              "displayName": "Mensile",
+              "locale": "it"
             },
             {
-              "description" : "תרגילים, סופים וסבבים ללא הגבלה",
-              "displayName" : "שנתי",
-              "locale" : "he"
+              "description": "問題・AI盤面スキャン・プレミアム記事が無制限",
+              "displayName": "月額",
+              "locale": "ja"
             },
             {
-              "description" : "ألغاز وتمارين وجولات بلا حدود",
-              "displayName" : "سنويًا",
-              "locale" : "ar"
+              "description": "ಅನಿಯಮಿತ ಒಗಟು, AI ಸ್ಕ್ಯಾನ್ ಮತ್ತು ಲೇಖನಗಳು",
+              "displayName": "ಮಾಸಿಕ",
+              "locale": "kn_IN"
             },
             {
-              "description" : "पहेलियाँ, अभ्यास और दौर बिना सीमा",
-              "displayName" : "वार्षिक",
-              "locale" : "hi"
+              "description": "문제·AI 보드 스캔·프리미엄 아티클 무제한",
+              "displayName": "월간",
+              "locale": "ko"
             },
             {
-              "description" : "แบบฝึก ดริล และรอบไม่จำกัด",
-              "displayName" : "รายปี",
-              "locale" : "th"
+              "description": "പരിധിയില്ലാത്ത പസിലുകൾ, AI സ്കാൻ, ലേഖനങ്ങൾ",
+              "displayName": "പ്രതിമാസം",
+              "locale": "ml_IN"
             },
             {
-              "description" : "习题、练习和冲刺不限量",
-              "displayName" : "按年",
-              "locale" : "zh_Hans"
+              "description": "अमर्यादित कोडी, AI स्कॅन आणि प्रीमियम लेख",
+              "displayName": "मासिक",
+              "locale": "mr_IN"
             },
             {
-              "description" : "問題・ドリル・ラッシュが無制限",
-              "displayName" : "年額",
-              "locale" : "ja"
+              "description": "Teka-teki, imbasan AI & artikel tanpa had",
+              "displayName": "Bulanan",
+              "locale": "ms"
             },
             {
-              "description" : "習題、練習與衝刺不限量",
-              "displayName" : "每年",
-              "locale" : "zh_Hant"
+              "description": "Onbeperkt puzzels, AI-bordscan en artikelen",
+              "displayName": "Maandelijks",
+              "locale": "nl_NL"
             },
             {
-              "description" : "문제·드릴·러시 무제한",
-              "displayName" : "연간",
-              "locale" : "ko"
+              "description": "Ubegrensede oppgaver, AI-skann og artikler",
+              "displayName": "Månedlig",
+              "locale": "no"
+            },
+            {
+              "description": "ଅସୀମିତ ପଜଲ୍, AI ସ୍କାନ୍ ଓ ପ୍ରିମିୟମ୍ ଲେଖା",
+              "displayName": "ମାସିକ",
+              "locale": "or_IN"
+            },
+            {
+              "description": "ਅਣਗਿਣਤ ਪਹੇਲੀਆਂ, AI ਸਕੈਨ ਅਤੇ ਪ੍ਰੀਮੀਅਮ ਲੇਖ",
+              "displayName": "ਮਾਸਿਕ",
+              "locale": "pa_IN"
+            },
+            {
+              "description": "Zadania, skan szachownicy AI i artykuły",
+              "displayName": "Miesięcznie",
+              "locale": "pl"
+            },
+            {
+              "description": "Exercícios, leitura IA e artigos sem limite",
+              "displayName": "Mensal",
+              "locale": "pt_BR"
+            },
+            {
+              "description": "Problemas, leitura IA e artigos sem limite",
+              "displayName": "Mensal",
+              "locale": "pt_PT"
+            },
+            {
+              "description": "Exerciții, scanare AI și articole nelimitate",
+              "displayName": "Lunar",
+              "locale": "ro"
+            },
+            {
+              "description": "Задачи, ИИ-скан доски и статьи без лимита",
+              "displayName": "Ежемесячно",
+              "locale": "ru"
+            },
+            {
+              "description": "Úlohy, AI sken šachovnice a články bez limitu",
+              "displayName": "Mesačne",
+              "locale": "sk"
+            },
+            {
+              "description": "Neomejene naloge, AI-sken in članki",
+              "displayName": "Mesečno",
+              "locale": "sl_SI"
+            },
+            {
+              "description": "Obegränsade problem, AI-skanning & artiklar",
+              "displayName": "Månadsvis",
+              "locale": "sv"
+            },
+            {
+              "description": "வரம்பற்ற புதிர்கள், AI ஸ்கேன் & கட்டுரைகள்",
+              "displayName": "மாதாந்திரம்",
+              "locale": "ta_IN"
+            },
+            {
+              "description": "అపరిమిత పజిల్స్, AI స్కాన్ & వ్యాసాలు",
+              "displayName": "నెలవారీ",
+              "locale": "te_IN"
+            },
+            {
+              "description": "โจทย์ สแกนกระดาน AI และบทความไม่จำกัด",
+              "displayName": "รายเดือน",
+              "locale": "th"
+            },
+            {
+              "description": "Sınırsız problem, YZ tahta tarama ve makale",
+              "displayName": "Aylık",
+              "locale": "tr"
+            },
+            {
+              "description": "Задачі, ШІ-скан дошки та статті без ліміту",
+              "displayName": "Щомісяця",
+              "locale": "uk"
+            },
+            {
+              "description": "لامحدود پہیلیاں، AI بورڈ اسکین اور مضامین",
+              "displayName": "ماہانہ",
+              "locale": "ur_PK"
+            },
+            {
+              "description": "Bài tập, quét bàn cờ AI & bài viết vô hạn",
+              "displayName": "Hằng tháng",
+              "locale": "vi"
+            },
+            {
+              "description": "无限战术习题、AI棋盘识别与精选深度长文",
+              "displayName": "按月",
+              "locale": "zh_Hans"
+            },
+            {
+              "description": "無限戰術習題、AI棋盤辨識與精選深度長文",
+              "displayName": "每月",
+              "locale": "zh_Hant"
             }
           ],
-          "productID" : "com.artesoft.brasspawn.pro.yearly",
-          "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Brass Pawn Pro Yearly",
-          "subscriptionGroupID" : "22324080",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : []
+          "productID": "com.artesoft.brasspawn.pro.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Brass Pawn Pro Monthly",
+          "subscriptionGroupID": "22324080",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "19.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6816595321",
+          "introductoryOffer": null,
+          "localizations": [
+            {
+              "description": "ألغاز ومسح ذكي ومقالات بلا حدود",
+              "displayName": "سنويًا",
+              "locale": "ar_SA"
+            },
+            {
+              "description": "আনলিমিটেড পাজল, এআই স্ক্যান ও প্রিমিয়াম",
+              "displayName": "বার্ষিক",
+              "locale": "bn_BD"
+            },
+            {
+              "description": "Problemes, escaneig IA i articles il·limitats",
+              "displayName": "Anual",
+              "locale": "ca"
+            },
+            {
+              "description": "Úlohy, AI sken šachovnice a články bez limitu",
+              "displayName": "Ročně",
+              "locale": "cs"
+            },
+            {
+              "description": "Ubegrænsede opgaver, AI-scan og artikler",
+              "displayName": "Årligt",
+              "locale": "da"
+            },
+            {
+              "description": "Unbegrenzt Aufgaben, KI-Scan & Artikel",
+              "displayName": "Jährlich",
+              "locale": "de_DE"
+            },
+            {
+              "description": "Απεριόριστες ασκήσεις, σάρωση AI & άρθρα",
+              "displayName": "Ετήσια",
+              "locale": "el"
+            },
+            {
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Yearly",
+              "locale": "en_AU"
+            },
+            {
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Yearly",
+              "locale": "en_CA"
+            },
+            {
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Yearly",
+              "locale": "en_GB"
+            },
+            {
+              "description": "Unlimited puzzles, AI scans & Premium archive",
+              "displayName": "Yearly",
+              "locale": "en_US"
+            },
+            {
+              "description": "Problemas, escaneo IA y artículos sin límite",
+              "displayName": "Anual",
+              "locale": "es_ES"
+            },
+            {
+              "description": "Problemas, escaneo IA y artículos sin límite",
+              "displayName": "Anual",
+              "locale": "es_MX"
+            },
+            {
+              "description": "Tehtävät, tekoälyskannaus ja artikkelit",
+              "displayName": "Vuosittain",
+              "locale": "fi"
+            },
+            {
+              "description": "Problèmes, scan IA et articles sans limite",
+              "displayName": "Annuel",
+              "locale": "fr_CA"
+            },
+            {
+              "description": "Problèmes, scan IA et articles sans limite",
+              "displayName": "Annuel",
+              "locale": "fr_FR"
+            },
+            {
+              "description": "અમર્યાદિત કોયડા, AI સ્કેન અને પ્રીમિયમ લેખો",
+              "displayName": "વાર્ષિક",
+              "locale": "gu_IN"
+            },
+            {
+              "description": "תרגילים, סריקת לוח ב-AI וכתבות ללא הגבלה",
+              "displayName": "שנתי",
+              "locale": "he"
+            },
+            {
+              "description": "असीमित पहेलियाँ, AI स्कैन और प्रीमियम लेख",
+              "displayName": "वार्षिक",
+              "locale": "hi"
+            },
+            {
+              "description": "Neograničeni zadaci, AI sken i članci",
+              "displayName": "Godišnje",
+              "locale": "hr"
+            },
+            {
+              "description": "Korlátlan feladvány, AI-szken és cikkek",
+              "displayName": "Éves",
+              "locale": "hu"
+            },
+            {
+              "description": "Soal, pindai papan AI & artikel tanpa batas",
+              "displayName": "Tahunan",
+              "locale": "id"
+            },
+            {
+              "description": "Esercizi, scansione IA e articoli illimitati",
+              "displayName": "Annuale",
+              "locale": "it"
+            },
+            {
+              "description": "問題・AI盤面スキャン・プレミアム記事が無制限",
+              "displayName": "年額",
+              "locale": "ja"
+            },
+            {
+              "description": "ಅನಿಯಮಿತ ಒಗಟು, AI ಸ್ಕ್ಯಾನ್ ಮತ್ತು ಲೇಖನಗಳು",
+              "displayName": "ವಾರ್ಷಿಕ",
+              "locale": "kn_IN"
+            },
+            {
+              "description": "문제·AI 보드 스캔·프리미엄 아티클 무제한",
+              "displayName": "연간",
+              "locale": "ko"
+            },
+            {
+              "description": "പരിധിയില്ലാത്ത പസിലുകൾ, AI സ്കാൻ, ലേഖനങ്ങൾ",
+              "displayName": "വാർഷികം",
+              "locale": "ml_IN"
+            },
+            {
+              "description": "अमर्यादित कोडी, AI स्कॅन आणि प्रीमियम लेख",
+              "displayName": "वार्षिक",
+              "locale": "mr_IN"
+            },
+            {
+              "description": "Teka-teki, imbasan AI & artikel tanpa had",
+              "displayName": "Tahunan",
+              "locale": "ms"
+            },
+            {
+              "description": "Onbeperkt puzzels, AI-bordscan en artikelen",
+              "displayName": "Jaarlijks",
+              "locale": "nl_NL"
+            },
+            {
+              "description": "Ubegrensede oppgaver, AI-skann og artikler",
+              "displayName": "Årlig",
+              "locale": "no"
+            },
+            {
+              "description": "ଅସୀମିତ ପଜଲ୍, AI ସ୍କାନ୍ ଓ ପ୍ରିମିୟମ୍ ଲେଖା",
+              "displayName": "ବାର୍ଷିକ",
+              "locale": "or_IN"
+            },
+            {
+              "description": "ਅਣਗਿਣਤ ਪਹੇਲੀਆਂ, AI ਸਕੈਨ ਅਤੇ ਪ੍ਰੀਮੀਅਮ ਲੇਖ",
+              "displayName": "ਸਾਲਾਨਾ",
+              "locale": "pa_IN"
+            },
+            {
+              "description": "Zadania, skan szachownicy AI i artykuły",
+              "displayName": "Rocznie",
+              "locale": "pl"
+            },
+            {
+              "description": "Exercícios, leitura IA e artigos sem limite",
+              "displayName": "Anual",
+              "locale": "pt_BR"
+            },
+            {
+              "description": "Problemas, leitura IA e artigos sem limite",
+              "displayName": "Anual",
+              "locale": "pt_PT"
+            },
+            {
+              "description": "Exerciții, scanare AI și articole nelimitate",
+              "displayName": "Anual",
+              "locale": "ro"
+            },
+            {
+              "description": "Задачи, ИИ-скан доски и статьи без лимита",
+              "displayName": "Ежегодно",
+              "locale": "ru"
+            },
+            {
+              "description": "Úlohy, AI sken šachovnice a články bez limitu",
+              "displayName": "Ročne",
+              "locale": "sk"
+            },
+            {
+              "description": "Neomejene naloge, AI-sken in članki",
+              "displayName": "Letno",
+              "locale": "sl_SI"
+            },
+            {
+              "description": "Obegränsade problem, AI-skanning & artiklar",
+              "displayName": "Årsvis",
+              "locale": "sv"
+            },
+            {
+              "description": "வரம்பற்ற புதிர்கள், AI ஸ்கேன் & கட்டுரைகள்",
+              "displayName": "வருடாந்திரம்",
+              "locale": "ta_IN"
+            },
+            {
+              "description": "అపరిమిత పజిల్స్, AI స్కాన్ & వ్యాసాలు",
+              "displayName": "వార్షిక",
+              "locale": "te_IN"
+            },
+            {
+              "description": "โจทย์ สแกนกระดาน AI และบทความไม่จำกัด",
+              "displayName": "รายปี",
+              "locale": "th"
+            },
+            {
+              "description": "Sınırsız problem, YZ tahta tarama ve makale",
+              "displayName": "Yıllık",
+              "locale": "tr"
+            },
+            {
+              "description": "Задачі, ШІ-скан дошки та статті без ліміту",
+              "displayName": "Щороку",
+              "locale": "uk"
+            },
+            {
+              "description": "لامحدود پہیلیاں، AI بورڈ اسکین اور مضامین",
+              "displayName": "سالانہ",
+              "locale": "ur_PK"
+            },
+            {
+              "description": "Bài tập, quét bàn cờ AI & bài viết vô hạn",
+              "displayName": "Hằng năm",
+              "locale": "vi"
+            },
+            {
+              "description": "无限战术习题、AI棋盘识别与精选深度长文",
+              "displayName": "按年",
+              "locale": "zh_Hans"
+            },
+            {
+              "description": "無限戰術習題、AI棋盤辨識與精選深度長文",
+              "displayName": "每年",
+              "locale": "zh_Hant"
+            }
+          ],
+          "productID": "com.artesoft.brasspawn.pro.yearly",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Brass Pawn Pro Yearly",
+          "subscriptionGroupID": "22324080",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
         }
       ]
     }
   ],
-  "version" : {
-    "major" : 4,
-    "minor" : 0
+  "version": {
+    "major": 4,
+    "minor": 0
   }
 }

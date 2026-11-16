@@ -22,10 +22,11 @@
 // while the feature is being tested, "approved" once only read words go out.
 import { LANGS } from './article.mjs';
 import { positionAt } from './diagram.mjs';
+import { EXTRA_APP_LANGS, LOCALE_ALIASES } from './premium.mjs';
 import { openS3 } from './s3.mjs';
 
-/** The languages with folders of their own; English is the top level. */
-const OTHER = LANGS.filter((lang) => lang !== 'en');
+/** The languages with folders of their own (all 30 site languages + extended app locales); English is the top level. */
+const OTHER = [...new Set([...LANGS, ...EXTRA_APP_LANGS, ...Object.keys(LOCALE_ALIASES)])].filter((lang) => lang !== 'en');
 
 /** A story without its other languages — what the English files carry. */
 const bare = ({ words, ...story }) => story;
@@ -34,7 +35,9 @@ const bare = ({ words, ...story }) => story;
 export function inLanguage(story, lang) {
   const { words, ...rest } = story;
   const own = words?.[lang];
-  return own ? { ...rest, headline: own.headline, lede: own.lede, body: own.body, lang } : { ...rest, lang: 'en' };
+  return own
+    ? { ...rest, headline: own.headline, lede: own.lede, body: own.body, premium: own.premium ?? rest.premium ?? null, lang }
+    : { ...rest, lang: 'en' };
 }
 
 export const PREFIX = 'media/feed/v1';
@@ -92,8 +95,12 @@ export function openStore({
     if (!fullCache.has(story.id)) fullCache.set(story.id, (await get(`${PREFIX}/stories/${story.id}.json`)) ?? story);
     return fullCache.get(story.id);
   }
-  // Each language's copy of one file, side by side.
-  const inEvery = (make) => Promise.all(OTHER.map((lang) => make(lang)));
+  // Each language's copy of one file, written 16 at a time to stay friendly to S3 sockets.
+  const inEvery = async (make) => {
+    for (let i = 0; i < OTHER.length; i += 16) {
+      await Promise.all(OTHER.slice(i, i + 16).map((lang) => make(lang)));
+    }
+  };
 
   return {
     bucket,
@@ -101,9 +108,11 @@ export function openStore({
     visible,
     /** Every public story, newest day first, as the day files list them. */
     async publicStories(days) {
+      const sortedDates = Object.keys(days).sort().reverse();
       const stories = [];
-      for (const date of Object.keys(days).sort().reverse()) {
-        stories.push(...(await this.day(date)).stories.filter(visible));
+      for (let i = 0; i < sortedDates.length; i += 12) {
+        const chunk = await Promise.all(sortedDates.slice(i, i + 12).map((d) => this.day(d)));
+        for (const day of chunk) stories.push(...day.stories.filter(visible));
       }
       return stories;
     },
@@ -243,7 +252,8 @@ export function stored(story) {
     headline: story.headline,
     lede: story.lede ?? story.body.split(/(?<=[.!?])\s+(?=[A-Z0-9])/)[0],
     body: story.body,
-    // The story in every other language the app speaks (article.mjs), for
+    premium: story.premium ?? null,
+    // The story in every other language the app speaks (article.mjs / premium.mjs), for
     // the files each language reads. English is the fields above.
     words: story.words ?? null,
     fen,

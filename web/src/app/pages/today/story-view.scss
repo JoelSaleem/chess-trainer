@@ -26,6 +26,13 @@ section + section,
   position: relative;
 }
 
+@media (min-width: 52.01rem) {
+  .story__board {
+    position: sticky;
+    top: 5.5rem;
+  }
+}
+
 /*
  * The hand-over, laid over the board it takes the place of — the square and
  * nothing else, so the caption, the replay and the story are still there to
@@ -126,6 +133,148 @@ section + section,
   line-height: 1.6;
   margin: 0 0 1.25rem;
   max-width: var(--measure);
+}
+
+.premium-head {
+  margin: 0 0 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule-soft);
+  max-width: var(--measure);
+}
+
+.premium-head__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+}
+
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: linear-gradient(135deg, var(--brass-hot, #e5c37a), var(--brass));
+  padding: 0.22rem 0.62rem;
+  border-radius: 999px;
+}
+
+.premium-time {
+  font-size: var(--label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.premium-subtitle {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.18rem, 2vw, 1.45rem);
+  line-height: 1.35;
+  color: var(--ivory);
+}
+
+.premium-sections {
+  display: grid;
+  gap: 1.75rem;
+  margin: 2rem 0 0;
+  max-width: var(--measure);
+}
+
+.premium-sec {
+  padding: 1.35rem 1.4rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.85rem;
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.18));
+}
+
+.premium-sec__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem 1rem;
+  margin-bottom: 0.85rem;
+}
+
+.premium-sec__titles {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+
+  h3 {
+    margin: 0;
+    font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+    line-height: 1.25;
+    color: var(--ivory);
+  }
+}
+
+.premium-sec__index {
+  font-size: var(--label);
+  letter-spacing: 0.14em;
+  color: var(--brass);
+}
+
+.premium-sec__chip {
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  color: var(--brass);
+  background: rgba(203, 155, 102, 0.08);
+  border: 1px solid var(--brass-deep);
+  border-radius: 999px;
+  padding: 0.28rem 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease), color 0.2s var(--ease);
+
+  &:hover,
+  &.on {
+    color: var(--ink);
+    background: var(--brass);
+    border-color: var(--brass);
+  }
+}
+
+.premium-sec__engine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.9rem;
+  padding: 0.55rem 0.75rem;
+  margin-bottom: 0.95rem;
+  border-left: 2px solid var(--brass);
+  background: rgba(255, 255, 255, 0.025);
+  border-radius: 0 0.35rem 0.35rem 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.premium-sec__eval {
+  color: var(--brass);
+}
+
+.premium-sec__body {
+  margin: 0 0 0.9rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--ivory-dim);
+}
+
+.premium-sec__takeaways {
+  margin: 0.95rem 0 0;
+  padding: 0.85rem 0 0 1.15rem;
+  border-top: 1px solid var(--rule-soft);
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ivory);
+
+  li::marker {
+    color: var(--brass);
+  }
 }
 
 .facts {

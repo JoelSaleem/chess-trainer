@@ -149,10 +149,32 @@ public struct FeedStory: Codable, Sendable, Hashable, Identifiable {
     /// the collector. Optional: a story written before it did is replayed.
     public let fen: String?
     public let last: LastMove?
+    /// Deep multi-section analytical breakdown of the game, when present.
+    public let premium: PremiumArticle?
 
     public struct LastMove: Codable, Sendable, Hashable {
         public let from: String
         public let to: String
+    }
+
+    public struct PremiumSection: Codable, Sendable, Hashable {
+        public let heading: String
+        public let ply: Int?
+        public let move: String?
+        public let fen: String?
+        public let last: LastMove?
+        public let evalBefore: String?
+        public let evalAfter: String?
+        public let engineLine: String?
+        public let body: String
+        public let takeaways: [String]?
+    }
+
+    public struct PremiumArticle: Codable, Sendable, Hashable {
+        public let tier: String?
+        public let subtitle: String?
+        public let readingMinutes: Int?
+        public let sections: [PremiumSection]
     }
 
     public var sans: [String] { moves.split(separator: " ").map(String.init) }
@@ -189,6 +211,24 @@ public struct FeedStory: Codable, Sendable, Hashable, Identifiable {
             last = move
         }
         return (position, last)
+    }
+
+    /// Resolves the board diagram and last move for a section in a Premium Article.
+    public func sectionBoard(_ section: PremiumSection) -> (position: Position, lastMove: Move?)? {
+        if let fen = section.fen, let position = Position(fen: fen) {
+            let move = section.last.flatMap { last in
+                Square(last.from).flatMap { from in Square(last.to).map { Move(from: from, to: $0) } }
+            }
+            return (position, move)
+        }
+        guard let ply = section.ply, ply >= 0 else { return nil }
+        var position = Position()
+        var lastMove: Move?
+        for san in sans.prefix(ply) {
+            guard let move = position.move(san: san), position.make(move) != nil else { return nil }
+            lastMove = move
+        }
+        return (position, lastMove)
     }
 
     /// Who won, or nil for a draw.
@@ -324,12 +364,26 @@ public enum FeedLink {
     /// app has more than one of it, the variant — Brazilian Portuguese, Chinese
     /// in either script.
     public static func folder(for localization: String) -> String? {
-        let whole: Set<String> = ["pt-BR", "zh-Hans", "zh-Hant"]
-        if whole.contains(localization) { return localization }
-        let language = String(localization.prefix { $0 != "-" && $0 != "_" })
+        let normalized = localization.replacingOccurrences(of: "_", with: "-")
+        if normalized == "en" || normalized.hasPrefix("en-") { return nil }
+        if normalized.hasPrefix("zh-Hans") || normalized == "zh-CN" { return "zh-Hans" }
+        if normalized.hasPrefix("zh-Hant") || normalized == "zh-TW" || normalized == "zh-HK" || normalized == "zh-MO" {
+            return "zh-Hant"
+        }
+        if normalized == "pt-BR" { return "pt-BR" }
+        if normalized == "pt-PT" { return "pt-PT" }
+        if normalized == "pt" { return "pt-BR" }
+        if normalized == "es-MX" || normalized == "es-419" { return "es-MX" }
+
+        let language = String(normalized.prefix { $0 != "-" })
+        if language == "nb" || language == "nn" { return "no" }
+        if language == "iw" { return "he" }
+
         let languages: Set<String> = [
-            "ar", "cs", "da", "de", "el", "es", "fi", "fr", "he", "hi", "hu", "id", "it", "ja",
-            "ko", "ms", "nl", "no", "pl", "ro", "ru", "sv", "th", "tr", "vi",
+            "ar", "bg", "bn", "ca", "cs", "da", "de", "el", "es", "fi", "fr",
+            "gu", "he", "hi", "hr", "hu", "id", "it", "ja", "kk", "kn", "ko",
+            "ml", "mr", "ms", "nl", "no", "or", "pa", "pl", "ro", "ru", "sk",
+            "sl", "sv", "ta", "te", "th", "tr", "uk", "ur", "vi",
         ]
         return languages.contains(language) ? language : nil
     }
@@ -349,3 +403,6 @@ public enum FeedLink {
         URL(string: "https://brasspawn.com/media/feed/v1/stories/\(id).json")!
     }
 }
+
+public typealias PremiumSection = FeedStory.PremiumSection
+public typealias PremiumArticle = FeedStory.PremiumArticle

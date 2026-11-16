@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
 
+import { storyArticle } from '../../core/schema';
 import { Seo } from '../../core/seo';
-import { url } from '../../core/site';
 import type { Story, StorySummary } from './feed/types';
 import { listPath, STORY_SLUGS, storyPath, TodayLanguage } from './i18n';
 import { StoryView } from './story-view';
@@ -47,31 +47,7 @@ export class StoryPage {
         updated: story.date,
         appArgument: `brasspawn://today/${story.id}`,
         crumbs: [{ label: words.app['today'], path: listPath(words.slug) }],
-        entities: [
-          {
-            '@type': 'Article',
-            '@id': `${url(path)}#article`,
-            headline: story.headline,
-            description: story.lede,
-            datePublished: story.date,
-            dateModified: story.date,
-            mainEntityOfPage: { '@id': `${url(path)}#webpage` },
-            author: { '@id': url('/#organization') },
-            publisher: { '@id': url('/#organization') },
-            image: url('/og.jpg'),
-            inLanguage: words.locale.tag,
-            // What the article is about, named — and not as an Event. A story
-            // is a page about one game, not a listing of the tournament, and
-            // Google reads any Event it finds as an event to show in search,
-            // which then has to have dates, a venue and tickets. The
-            // tournament's own page, the Olympiad report, is where it is one.
-            about: { '@type': 'Thing', name: story.event.name },
-            ...(story.event.location
-              ? { contentLocation: { '@type': 'Place', name: story.event.location } }
-              : {}),
-            mentions: [story.white, story.black].map((p) => ({ '@type': 'Person', name: p.name })),
-          },
-        ],
+        entities: [storyArticle(path, words.locale.tag, story)],
       });
     });
   }

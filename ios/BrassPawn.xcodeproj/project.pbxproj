@@ -351,36 +351,74 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				ar,
 				"ar-SA",
+				bg,
+				bn,
+				"bn-BD",
+				ca,
 				cs,
 				da,
+				de,
 				"de-DE",
 				el,
 				en,
+				"en-AU",
 				"en-CA",
+				"en-GB",
 				"en-US",
+				es,
 				"es-ES",
+				"es-MX",
 				fi,
+				fr,
 				"fr-CA",
 				"fr-FR",
+				gu,
+				"gu-IN",
 				he,
 				hi,
+				hr,
 				hu,
 				id,
 				it,
 				ja,
+				kk,
+				kn,
+				"kn-IN",
 				ko,
+				ml,
+				"ml-IN",
+				mr,
+				"mr-IN",
 				ms,
 				nb,
+				nl,
 				"nl-NL",
 				no,
+				or,
+				"or-IN",
+				pa,
+				"pa-IN",
 				pl,
+				pt,
 				"pt-BR",
+				"pt-PT",
 				ro,
 				ru,
+				sk,
+				sl,
+				"sl-SI",
 				sv,
+				ta,
+				"ta-IN",
+				te,
+				"te-IN",
 				th,
 				tr,
+				uk,
+				ur,
+				"ur-PK",
 				vi,
 				"zh-Hans",
 				"zh-Hant",
@@ -515,8 +553,8 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = App/BrassPawnCatalyst.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
-				"CURRENT_PROJECT_VERSION[sdk=macosx*]" = 14;
+				CURRENT_PROJECT_VERSION = 15;
+				"CURRENT_PROJECT_VERSION[sdk=macosx*]" = 15;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
 				DEVELOPMENT_TEAM = 8293TNMX6S;
 				INFOPLIST_FILE = App/Info.plist;
@@ -524,7 +562,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arte-soft.brasspawn";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = YES;
@@ -543,8 +581,8 @@
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = App/BrassPawnCatalyst.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
-				"CURRENT_PROJECT_VERSION[sdk=macosx*]" = 14;
+				CURRENT_PROJECT_VERSION = 15;
+				"CURRENT_PROJECT_VERSION[sdk=macosx*]" = 15;
 				DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER = NO;
 				DEVELOPMENT_TEAM = 8293TNMX6S;
 				INFOPLIST_FILE = App/Info.plist;
@@ -552,7 +590,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arte-soft.brasspawn";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = YES;
@@ -568,14 +606,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Clip/BrassPawnClip.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 8293TNMX6S;
 				INFOPLIST_FILE = Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arte-soft.brasspawn.Clip";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;
@@ -590,14 +628,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Clip/BrassPawnClip.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 14;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_TEAM = 8293TNMX6S;
 				INFOPLIST_FILE = Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.1;
+				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.arte-soft.brasspawn.Clip";
 				SDKROOT = iphoneos;
 				SUPPORTS_MACCATALYST = NO;

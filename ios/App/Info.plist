@@ -37,6 +37,8 @@
 	<string>public.app-category.board-games</string>
 	<key>NSCameraUsageDescription</key>
 	<string>To read a chess position from a photo of a real board.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To choose a photo or screenshot of a chessboard and recognize its position.</string>
 	<key>NSGKFriendListUsageDescription</key>
 	<string>To show your Game Center friends who play Brass Pawn, and invite them to a game.</string>
 	<key>UIAppFonts</key>

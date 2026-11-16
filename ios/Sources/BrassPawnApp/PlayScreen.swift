@@ -314,9 +314,7 @@ struct PlayScreen: View {
     @Environment(ActivityGuard.self) private var activity
     @State private var model = PlayModel()
     @State private var values = MoveValueController()
-    #if DEBUG
     @Environment(Navigator.self) private var navigator
-    #endif
     @State private var recorded = false
     @Environment(\.modelContext) private var history
 
@@ -580,6 +578,20 @@ struct PlayScreen: View {
             }
             .buttonStyle(PillButtonStyle(emphasis: .solid))
             .padding(.top, 4)
+
+            #if canImport(UIKit)
+            Button {
+                navigator.scanBoardFromPhoto()
+            } label: {
+                HStack(spacing: 7) {
+                    Image(systemName: "camera.viewfinder")
+                        .font(.system(size: 13, weight: .semibold))
+                    Text(L.t("play.scanBoard", "Scan a board from photo"))
+                }
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(PillButtonStyle(emphasis: .ghost))
+            #endif
         }
     }
 

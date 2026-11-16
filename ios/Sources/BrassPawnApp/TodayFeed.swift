@@ -25,21 +25,31 @@ final class TodayFeed {
         case failed
     }
 
-    static let address: URL = {
+    static let englishAddress = URL(string: "https://brasspawn.com/media/feed/v1/latest.json")!
+
+    static var candidateAddresses: [URL] {
         #if DEBUG
-        // A debug build can be pointed at a preview of unapproved drafts —
-        // `node scripts/feed/publish.mjs --preview`, served locally. A release
-        // build cannot: the override does not exist in it.
         if let override = ProcessInfo.processInfo.environment["BRASSPAWN_FEED_URL"],
            let url = URL(string: override) {
-            return url
+            return [url]
         }
         #endif
-        // The copy of the feed in the reader's language, which the collector
-        // writes beside the English one; English is the top level.
-        let folder = Bundle.main.preferredLocalizations.first.flatMap(FeedLink.folder(for:))
-        return URL(string: "https://brasspawn.com/media/feed/v1/\(folder.map { "\($0)/" } ?? "")latest.json")!
-    }()
+        guard let folder = Bundle.main.preferredLocalizations.first.flatMap(FeedLink.folder(for:)) else {
+            return [englishAddress]
+        }
+        var urls = [URL(string: "https://brasspawn.com/media/feed/v1/\(folder)/latest.json")!]
+        if folder == "es-MX" {
+            urls.append(URL(string: "https://brasspawn.com/media/feed/v1/es/latest.json")!)
+        } else if folder == "pt-PT" {
+            urls.append(URL(string: "https://brasspawn.com/media/feed/v1/pt-BR/latest.json")!)
+        }
+        urls.append(englishAddress)
+        return urls
+    }
+
+    static let address: URL = candidateAddresses[0]
+
+    private var activeAddress: URL = TodayFeed.address
 
     private(set) var stories: [FeedStory] = []
     private(set) var state = State.idle
@@ -97,12 +107,34 @@ final class TodayFeed {
         guard state != .loading else { return }
 
         state = .loading
+        var loadedData: Data?
+        var resolvedURL: URL?
+        for candidate in Self.candidateAddresses {
+            do {
+                var request = URLRequest(url: candidate)
+                request.setValue("application/json", forHTTPHeaderField: "Accept")
+                let (data, response) = try await session.data(for: request)
+                let code = (response as? HTTPURLResponse)?.statusCode ?? 0
+                if code == 200 {
+                    loadedData = data
+                    resolvedURL = candidate
+                    break
+                }
+                // Fall back to parent/English feed when a locale folder is not published yet.
+                if code == 403 || code == 404 {
+                    continue
+                }
+            } catch {
+                break
+            }
+        }
+
         do {
-            var request = URLRequest(url: Self.address)
-            request.setValue("application/json", forHTTPHeaderField: "Accept")
-            let (data, response) = try await session.data(for: request)
-            guard (response as? HTTPURLResponse)?.statusCode == 200 else { throw URLError(.badServerResponse) }
+            guard let data = loadedData, let resolvedURL else {
+                throw URLError(.badServerResponse)
+            }
             let feed = try await Self.decoded(data)
+            activeAddress = resolvedURL
             show(feed)
             fetchedAt = Date()
             state = .loaded
@@ -132,7 +164,7 @@ final class TodayFeed {
         guard !next.isEmpty else { return }
         isLoadingEarlier = true
         defer { isLoadingEarlier = false }
-        let base = Self.address.deletingLastPathComponent().appendingPathComponent("days")
+        let base = activeAddress.deletingLastPathComponent().appendingPathComponent("days")
         for day in next {
             do {
                 let (data, response) = try await session.data(from: base.appendingPathComponent("\(day.date).json"))

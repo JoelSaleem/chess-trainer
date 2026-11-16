@@ -128,6 +128,20 @@ struct MenuScreen: View {
 
     private var accountActions: some View {
         HStack(spacing: 0) {
+            #if canImport(UIKit)
+            menuAction(
+                symbol: "camera.viewfinder",
+                label: L.t("board.scanPhoto", "Scan board")
+            ) {
+                navigator.scanBoardFromPhoto()
+                onChoose(.play)
+            }
+
+            Rectangle()
+                .fill(Theatre.brassDeep.opacity(0.65))
+                .frame(width: 1, height: 27)
+            #endif
+
             menuAction(
                 symbol: "creditcard",
                 label: L.t("store.title", "Brass Pawn Pro")

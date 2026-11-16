@@ -51,7 +51,7 @@ struct AboutCopy {
         let intro = Self.values("about.intro3")
         let apart = Self.values("about.privacyApart")
         let online = Self.values("about.onlinePresence")
-        #expect(intro.count == 32 && apart.count == 32 && online.count == 32)
+        #expect(intro.count == 71 && apart.count == 71 && online.count == 71)
         for (lang, text) in online {
             #expect(text.contains("Game Center"), "\(lang): \(text)")
         }

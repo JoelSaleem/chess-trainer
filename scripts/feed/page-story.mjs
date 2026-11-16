@@ -27,6 +27,7 @@ export function forSite(story) {
     moves: story.moves,
     key: story.key,
     body: story.body,
+    premium: story.premium ?? null,
     url: pageURL(story.id),
     source: story.source,
     report: reportFor(story),

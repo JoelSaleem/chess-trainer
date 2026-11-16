@@ -45,6 +45,7 @@ public final class SubscriptionStore {
     /// needs to know which one paid for it.
     public private(set) var isPro = false
     public private(set) var ownership: Ownership?
+    public private(set) var entitlementJWS: String?
     public private(set) var isCheckingEntitlement = true
     public private(set) var monthly: Product?
     public private(set) var yearly: Product?
@@ -93,6 +94,7 @@ public final class SubscriptionStore {
         defer { isCheckingEntitlement = false }
 
         var owned: Ownership?
+        var activeJWS: String?
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result,
                   ProductID.all.contains(transaction.productID),
@@ -102,6 +104,7 @@ public final class SubscriptionStore {
             // The one-off unlock outranks a subscription running beside it.
             if transaction.productID == ProductID.lifetime {
                 owned = Ownership(productID: transaction.productID, expires: nil, willRenew: false, nextProductID: nil)
+                activeJWS = result.jwsRepresentation
                 break
             }
             var willRenew = true
@@ -112,9 +115,37 @@ public final class SubscriptionStore {
             }
             owned = Ownership(productID: transaction.productID, expires: transaction.expirationDate,
                               willRenew: willRenew, nextProductID: next)
+            activeJWS = result.jwsRepresentation
         }
         ownership = owned
+        entitlementJWS = activeJWS
         isPro = owned != nil
+    }
+
+    /// The loaded StoreKit product for a product identifier, when available.
+    public func product(for id: String) -> Product? {
+        switch id {
+        case ProductID.monthly: monthly
+        case ProductID.yearly: yearly
+        case ProductID.lifetime: lifetime
+        default: nil
+        }
+    }
+
+    /// Verified StoreKit 2 JWS tokens for server-verified Pro quota checks.
+    public func verifiedJWS() async -> (entitlement: String?, appTransaction: String?) {
+        var foundEntitlement: String?
+        for await result in Transaction.currentEntitlements {
+            guard case .verified(let transaction) = result,
+                  ProductID.all.contains(transaction.productID),
+                  transaction.revocationDate == nil,
+                  !transaction.isUpgraded
+            else { continue }
+            foundEntitlement = result.jwsRepresentation
+            if transaction.productID == ProductID.lifetime { break }
+        }
+        let appTxJWS = (try? await AppTransaction.shared)?.jwsRepresentation
+        return (foundEntitlement ?? entitlementJWS, appTxJWS)
     }
 
     /// Whether this product can be bought now: anything but the plan already

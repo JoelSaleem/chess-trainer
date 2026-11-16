@@ -26,6 +26,7 @@ import { candidateTours, loadPlayers, score, slugify, turningPoint } from './ana
 import { createEngines } from './engine-pool.mjs';
 import { parsePgn, roundPgn } from './lichess.mjs';
 import { openPages, publishPages } from './pages.mjs';
+import { generatePremiumStoryWords } from './premium.mjs';
 import { openStore, stored } from './store.mjs';
 import { articles } from './article.mjs';
 import { eventNames, person } from './words.mjs';
@@ -33,7 +34,7 @@ import { eventNames, person } from './words.mjs';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 
 /**
- * Stories per event per day. A top-tier event gets five from its open section
+ * Stories per event per day, however many broadcasts relay it. A top-tier event gets five from its open section
  * and two from its women's; a tier below gets three, and only games with a followed
  * player or somebody strong in them — that tier is every strong national
  * league and open, and without the bar it would bury the events people follow.
@@ -78,39 +79,65 @@ export async function collect({
   } catch (error) {
     log(`Could not read the broadcasts (${error.message}); nothing to do until the next run`);
   }
+  // One event, one quota. A broadcast group can relay the same section more
+  // than once — a group stage as "Combined" and again as "Group A" to "Group D"
+  // — and read tour by tour that is the same game five times over and five
+  // quotas where the event has one. So the tours of an event's section are
+  // read together, a day at a time, and a game two of them carry is one game.
+  const events = new Map();
   for (const t of tours) {
     const names = eventNames(t);
-    const top = only || (t.tour.tier ?? 0) >= 5;
-    const byDay = new Map();
+    const eventKey = `${names.name}|${names.section ?? ''}`;
+    const event = events.get(eventKey) ?? { names, top: false, title: [names.name, names.section].filter(Boolean).join(' | '), byDay: new Map() };
+    events.set(eventKey, event);
+    event.top ||= Boolean(only) || (t.tour.tier ?? 0) >= 5;
     for (const round of t.rounds ?? []) {
       if (!round.startsAt || round.startsAt < since || round.startsAt > started) continue;
       const date = new Date(round.startsAt).toISOString().slice(0, 10);
-      byDay.set(date, [...(byDay.get(date) ?? []), round]);
+      event.byDay.set(date, [...(event.byDay.get(date) ?? []), { t, round }]);
     }
+  }
+  const sameGame = (g) =>
+    [g.tags.WhiteFideId || g.tags.White, g.tags.BlackFideId || g.tags.Black, g.tags.Result, g.sans.slice(0, 20).join(' ')].join('|');
+  for (const { names, top, title, byDay } of events.values()) {
     for (const [date, dayRounds] of byDay) {
-      const key = `${t.tour.id}:${date}`;
-      if (state.rounds[key]?.done) continue;
-      const over = dayRounds.every((r) => r.finished === true || started - r.startsAt > ROUND_OVER_MS);
+      const dayTours = [...new Map(dayRounds.map(({ t }) => [t.tour.id, t])).values()];
+      const keyOf = (t) => `${t.tour.id}:${date}`;
+      const read = dayTours.filter((t) => state.rounds[keyOf(t)]?.done);
+      if (read.length === dayTours.length) continue;
+      if (read.length) {
+        // Read tour by tour before the tours were read together: the day has
+        // had its stories, and the tours left would only repeat them.
+        for (const t of dayTours) (state.rounds[keyOf(t)] ??= { tour: t.tour.id, name: `${t.tour.name} · ${date}`, games: [] }).done = true;
+        continue;
+      }
+      const over = dayRounds.every(({ round: r }) => r.finished === true || started - r.startsAt > ROUND_OVER_MS);
       if (!over) {
-        log(`  ${t.tour.name} · ${date}: still being played`);
+        log(`  ${title} · ${date}: still being played`);
         continue;
       }
       const candidates = [];
+      const seen = new Set();
       try {
-        for (const round of dayRounds) {
+        for (const { t, round } of dayRounds) {
           const games = parsePgn(await roundPgn(round.id)).filter(
             (g) => ['1-0', '0-1', '1/2-1/2'].includes(g.tags.Result) && (g.tags.Variant ?? 'Standard') === 'Standard',
           );
-          for (const game of games) candidates.push({ game, round });
+          for (const game of games) {
+            const same = sameGame(game);
+            if (seen.has(same)) continue;
+            seen.add(same);
+            candidates.push({ game, round, t });
+          }
         }
       } catch (error) {
         // Not marked read: the next run asks again.
-        log(`  ${t.tour.name} · ${date}: could not be read (${error.message}) — next time`);
+        log(`  ${title} · ${date}: could not be read (${error.message}) — next time`);
         continue;
       }
       const quota = top ? (QUOTA[names.section] ?? QUOTA.default) : LOWER_TIER.quota;
       const followed = (g) => lookup(g.tags.White, g.tags.WhiteFideId)?.star || lookup(g.tags.Black, g.tags.BlackFideId)?.star;
-      const bar = /women/i.test(`${names.section ?? ''} ${t.tour.name}`) ? LOWER_TIER.womenElo : LOWER_TIER.elo;
+      const bar = /women/i.test(`${names.section ?? ''} ${dayTours.map((t) => t.tour.name).join(' ')}`) ? LOWER_TIER.womenElo : LOWER_TIER.elo;
       const chosen = candidates
         .filter(({ game: g }) => {
           const elo = Math.max(Number(g.tags.WhiteElo) || 0, Number(g.tags.BlackElo) || 0);
@@ -120,15 +147,18 @@ export async function collect({
         .filter((c) => c.score > 0)
         .sort((a, b) => b.score - a.score)
         .slice(0, quota);
-      log(`  ${t.tour.name} · ${date}: ${dayRounds.length} round(s), ${candidates.length} finished, ${chosen.length} chosen`);
-      const entry = (state.rounds[key] ??= { tour: t.tour.id, name: `${t.tour.name} · ${date}`, games: [] });
-      const record = { entry, left: 0 };
+      log(`  ${title} · ${date}: ${dayRounds.length} round(s) in ${dayTours.length} broadcast(s), ${candidates.length} finished, ${chosen.length} chosen`);
+      const entries = new Map(
+        dayTours.map((t) => [t.tour.id, (state.rounds[keyOf(t)] ??= { tour: t.tour.id, name: `${t.tour.name} · ${date}`, games: [] })]),
+      );
+      const record = { entries: [...entries.values()], left: 0 };
       groups.push(record);
-      chosen.forEach(({ game, round, score: weight }, rank) => {
+      const done = new Set(record.entries.flatMap((entry) => entry.games));
+      chosen.forEach(({ game, round, t, score: weight }, rank) => {
         const gameId = game.tags.GameURL?.split('/').pop() ?? `${game.tags.White}-${game.tags.Black}`;
-        if (entry.games.includes(gameId)) return;
+        if (done.has(gameId)) return;
         record.left++;
-        jobs.push({ game, gameId, rank, weight, t, round, names, record });
+        jobs.push({ game, gameId, rank, weight, t, round, names, record, entry: entries.get(t.tour.id) });
       });
     }
   }
@@ -166,8 +196,8 @@ export async function collect({
         // cut short still leaves most of its stories listed.
         if (written.length % 10 === 0) await store.writeLatest(state.days);
       }
-      job.record.entry.games.push(job.gameId);
-      if (--job.record.left === 0) job.record.entry.done = true;
+      job.entry.games.push(job.gameId);
+      if (--job.record.left === 0) for (const entry of job.record.entries) entry.done = true;
       await store.saveState(state);
     });
     return saving;
@@ -193,7 +223,7 @@ export async function collect({
   for (const engine of engines) await engine.close?.();
 
   // A day with nothing chosen from it is over all the same.
-  for (const { entry, left } of groups) if (left === 0) entry.done = true;
+  for (const { entries, left } of groups) if (left === 0) for (const entry of entries) entry.done = true;
   if (written.length) await store.writeLatest(state.days);
   await store.saveState(state);
   if (site) {
@@ -254,10 +284,27 @@ async function storyFor({ game, gameId, rank, weight, t, round, names }, { engin
     key: turn.key ? { ...turn.key, clock: game.clocks[turn.key.ply - 1] ?? null } : null,
     source: { name: 'Lichess broadcast', url: tags.GameURL ?? tags.BroadcastURL ?? null },
   };
-  // The words, in every language — and a story whose words fail the checks
-  // is not written at all (article.mjs throws, and the game is reported).
-  const { en, ...words } = articles(story);
-  return stored({ ...story, headline: en.headline, lede: en.lede, body: en.body, words });
+  // Author a deeply analytical Premium Article via gpt-6.1-terra (high) across
+  // all languages, with graceful fallback to deterministic article.mjs templates
+  // if OpenAI is unreachable.
+  try {
+    const premiumOut = await generatePremiumStoryWords(story, {
+      engine,
+      clocks: game.clocks,
+    });
+    return stored({
+      ...story,
+      headline: premiumOut.headline,
+      lede: premiumOut.lede,
+      body: premiumOut.body,
+      premium: premiumOut.premium,
+      words: premiumOut.words,
+    });
+  } catch (error) {
+    console.error(`  ! premium article fallback for ${story.id}: ${error.message}`);
+    const { en, ...words } = articles(story);
+    return stored({ ...story, headline: en.headline, lede: en.lede, body: en.body, words });
+  }
 }
 
 function parseArgs(argv) {
