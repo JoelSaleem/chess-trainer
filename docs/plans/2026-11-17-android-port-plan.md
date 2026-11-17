@@ -310,3 +310,54 @@ android/
 3. JNI symbol name and receiver (`jobject` for a Kotlin `object` member). Proof: `llvm-nm` count = 1 (T2) and the screenshot (T3).
 4. FEN validation rejects positions where the side not to move is in check, and boards with no king. Test: `Illegal positions are rejected` (T4).
 5. GameImport stops at the first bad token and reports where. Tests: `A typo stops the line and says where` and `An illegal but well-formed move stops it too` (T6).
+
+---
+
+## M2 — chess-engine (expanded 2026-11-17, after M0/M1 proved the toolchain)
+
+**Scope decision — Reckless is out for v1** (handover §6). `RecklessEngine.swift` and all
+Reckless-only tests are *not* ported. With one engine the Swift `protocol Engine: Actor`
+collapses to the concrete class: **no interface** (YAGNI, one implementation), and
+`valueEveryMove` + the budget-convenience overloads become members of `StockfishEngine`.
+`:chess-engine` gains a dependency on `:chess-core` (for `Position`/`MoveValues`), which
+M1 deferred.
+
+**Test target: 13 instrumented tests** (all drive the real engine + networks, so all
+`connectedAndroidTest`), not the 27 in `ios/Tests/ChessEngineTests`:
+
+| Swift file | Ported | Skipped |
+|---|---|---|
+| StockfishTests (8) | 8 | — |
+| ValueCoverageTests (2) | 2 | — |
+| BudgetTests (5) | 3 | 2 (Reckless) |
+| RecklessTests (7) + RecklessCoverageTests (2) | — | 9 (Reckless out) |
+| LegalTextsInSync (2) + VendoredFramework (1) | — | 3 (iOS resource/packaging; revisit at M9) |
+
+**Concurrency port:** Swift `actor` + `async`/`await` + `CheckedContinuation` + watchdog
+`Task` → Kotlin `suspend` funs on a class guarded by a `kotlinx.coroutines.sync.Mutex`
+(the one-search-at-a-time gate), `suspendCancellableCoroutine` for the search wait, and a
+launched coroutine with `delay` for the 10 s watchdog. Adds `kotlinx-coroutines-core` to
+`:chess-engine`.
+
+**JNI callbacks on the search thread:** cache `JavaVM` in `JNI_OnLoad`,
+`AttachCurrentThread` inside `onInfo`/`onBestMove`, hold a global ref to the Kotlin
+listener, `DetachCurrentThread` when done. `SFEngine*` is stored as a `jlong` handle.
+
+**Networks:** the two Stockfish nets (`nn-c288c895ea92.nnue`, `nn-37f18f62d772.nnue` from
+`https://tests.stockfishchess.org/api/nn/<name>`) ship as `noCompress` assets, copied to
+`filesDir` on first launch, then `sf_load_networks`. A Gradle task (port of
+`ios/scripts/fetch-networks.sh`) downloads them into `src/main/assets/` if absent. The big
+net is ~104 MB, so the test APK is large; the harness sets `Threads=1`, `Hash=64`.
+
+### Increments
+
+- **A — pure types (JVM-verifiable, no emulator):** `EngineScore`, `EngineLine`,
+  `Analysis`, `EngineException`, `EngineCapabilities`, `SearchBudget`; one Kotlin-only
+  `EngineScoreTest`. Exit: `:chess-engine:testDebugUnitTest` green.
+- **B — JNI bridge:** expand `sfjni.cpp` to wrap every `sf_*`; `StockfishNative.kt` (handle
+  as `jlong`, a listener interface, threaded callbacks). Exit: AAR builds both ABIs,
+  `llvm-nm` shows the new symbols.
+- **C — StockfishEngine.kt:** the coroutine port (gate, session sink, watchdog,
+  `analyse`/`chooseMove`/`valueEveryMove`/`setOption`/`newGame`/`stop`). Exit: compiles.
+- **D — networks + instrumented tests:** fetch/bundle nets, first-run copy, androidTest
+  harness (`makeEngine`), the 13 tests. Exit: 13 green via `connectedAndroidTest`.
