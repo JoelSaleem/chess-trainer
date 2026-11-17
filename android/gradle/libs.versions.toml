@@ -1,0 +1,17 @@
+[versions]
+agp = "9.5.1"
+# AGP 9.5.1 is built against Kotlin 2.2.10 (its POM); match it to avoid plugin skew.
+kotlin = "2.2.10"
+composeBom = "2026.09.00"
+activityCompose = "1.13.0"
+
+[libraries]
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
