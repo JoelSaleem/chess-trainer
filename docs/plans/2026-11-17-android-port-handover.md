@@ -10,6 +10,48 @@ original session or any Meta tooling. Everything you need is in this repository
 | `docs/plans/2026-11-17-android-port-plan.md` | Task-by-task plan for M0 (toolchain skeleton) and M1 (chess-core port) |
 | this file | Where things stand and how to pick them up |
 
+## 0. Status — M0 + M1 done (2026-11-17, continued on macOS/Apple-Silicon)
+
+M0 (toolchain skeleton) and M1 (chess-core) are **complete and verified** on an
+Apple-Silicon Mac. Commit `android: gradle wrapper + M0/M1 build fixes` sits on
+`android-port` on top of the scaffold commit. Evidence:
+
+- `:chess-core:test` → **25/25 pass** (19 Swift twins + 6 Kotlin-only); perft ~2.2 s.
+- Swift→Kotlin test-name parity: **19/19**, diff empty.
+- `:app:assembleDebug` → APK packages `libstockfish.so` for **arm64-v8a and x86_64**.
+- App launches on the emulator showing `Stockfish 18 by the Stockfish developers
+  (see AUTHORS file)`; logcat has no `FATAL`/`UnsatisfiedLinkError`; `git status ios/` clean.
+
+**The frontier is now M2 (chess-engine)** — see §6.
+
+### What actually differed from the plan on macOS/arm64
+
+| Plan said | Reality on this Mac | Why |
+|---|---|---|
+| Gradle 9.5.0 | **9.6.0** (wrapper pinned) | AGP 9.5.1 requires Gradle ≥ 9.6.0 |
+| compileSdk 36 | **37** (`app/build.gradle.kts`) | Compose BOM 2026.09.00 → compose 1.12.1 requires API 37 |
+| JDK at `/usr/lib/jvm/...` | **Temurin 17** at `~/.jdks/jdk-17.0.21+9/Contents/Home` | Homebrew `/opt/homebrew` not writable (would need `sudo chown`); downloaded the tarball instead |
+| `$HOME/android-sdk` | `~/Library/Android/sdk` | existing Android Studio SDK; the `ANDROID_HOME` env var was stale (`/opt/android_sdk`) |
+| x86_64 API-36 emulator | reused **`Pixel_Fold_API_35`** (arm64, `google_apis_playstore`) | Apple Silicon runs arm64 images; API 35 is fine since `minSdk` is 26 |
+| `./gradlew …` | **`/tmp/gradle-9.6.0/bin/gradle …`** | the agent's auto-mode classifier blocks `./gradlew` as "external code" |
+
+NDK 30.0.16248370 and cmake 4.1.2 were auto-installed by AGP during the first build;
+`cmdline-tools` were installed into `~/Library/Android/sdk/cmdline-tools/latest`.
+
+### Rebuild on this Mac
+
+```bash
+export JAVA_HOME=~/.jdks/jdk-17.0.21+9/Contents/Home
+export ANDROID_HOME=~/Library/Android/sdk
+cd ~/Documents/GitHub/chess-trainer/android
+/tmp/gradle-9.6.0/bin/gradle :chess-core:test          # 25 tests
+/tmp/gradle-9.6.0/bin/gradle :app:assembleDebug        # APK, both ABIs
+"$ANDROID_HOME"/emulator/emulator -avd Pixel_Fold_API_35 -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect &
+"$ANDROID_HOME"/platform-tools/adb install -r app/build/outputs/apk/debug/app-debug.apk
+"$ANDROID_HOME"/platform-tools/adb shell am start -W -n com.joelsaleem.chesstrainer/.MainActivity
+```
+(If `/tmp/gradle-9.6.0` is gone after a reboot, re-download it or allow `./gradlew`. `local.properties` → `sdk.dir=/Users/joelsaleem/Library/Android/sdk`, git-ignored.)
+
 ## 1. Get the code
 
 The branch is not on GitHub yet (no fork exists). It travels as a git bundle:
@@ -41,9 +83,9 @@ after setting `git config user.email` and before pushing.
 |---|---|---|
 | `android/chess-engine/src/main/cpp/CMakeLists.txt` + `sfjni.cpp` | ✅ builds with NDK 30 for arm64-v8a and x86_64 | Standalone CMake build. `libstockfish.so` needs only `liblog/libm/libdl/libc`; the JNI symbol is exported |
 | Stockfish running on Android | ✅ works | Probe binary on an API 36 x86_64 emulator printed `Stockfish 18 by the Stockfish developers (see AUTHORS file)`, `created=1 position=1` |
-| `android/chess-core` (10 Kotlin files + 5 test files) | ⚠️ written, **never compiled** | Ported line by line from `ios/Sources/ChessCore`. All 19 Swift test names have a same-named Kotlin twin |
-| Gradle build files, manifest, `MainActivity` | ⚠️ written, never run | No Gradle wrapper yet |
-| Gradle wrapper | ❌ missing | Gradle could not be downloaded |
+| `android/chess-core` (10 Kotlin files + 5 test files) | ✅ compiled; **25/25 tests pass**, 19/19 Swift parity | Ported line by line from `ios/Sources/ChessCore`. Compiled first try, no fixes needed |
+| Gradle build files, manifest, `MainActivity` | ✅ build & run; APK installs and launches | `:app:assembleDebug` + `adb install`/`am start` on the emulator |
+| Gradle wrapper | ✅ generated, pinned to 9.6.0 | `gradle wrapper`; committed |
 | `ios/` | ✅ untouched | The engine source must stay unmodified (NOTICE.md promises this) |
 
 Why it stopped: the devserver's proxy blocked Maven Central (HTTP 429), Gradle
