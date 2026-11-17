@@ -22,7 +22,10 @@ Apple-Silicon Mac. Commit `android: gradle wrapper + M0/M1 build fixes` sits on
 - App launches on the emulator showing `Stockfish 18 by the Stockfish developers
   (see AUTHORS file)`; logcat has no `FATAL`/`UnsatisfiedLinkError`; `git status ios/` clean.
 
-**The frontier is now M2 (chess-engine)** — see §6.
+**M2 (chess-engine) is done too** — Stockfish runs in-process over JNI with
+search-thread callbacks; 13/13 instrumented tests pass on the emulator
+(StockfishTests 8, ValueCoverage 2, BudgetTests 3; Reckless and iOS-only tests are
+out of scope). **The frontier is now M3 (chess-training)** — see §6.
 
 ### What actually differed from the plan on macOS/arm64
 

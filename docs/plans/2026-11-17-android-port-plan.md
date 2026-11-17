@@ -361,3 +361,10 @@ net is ~104 MB, so the test APK is large; the harness sets `Threads=1`, `Hash=64
   `analyse`/`chooseMove`/`valueEveryMove`/`setOption`/`newGame`/`stop`). Exit: compiles.
 - **D — networks + instrumented tests:** fetch/bundle nets, first-run copy, androidTest
   harness (`makeEngine`), the 13 tests. Exit: 13 green via `connectedAndroidTest`.
+
+**Status (2026-11-17): A–D all complete.** 13/13 instrumented tests green on an arm64
+emulator. Note kept faithful to iOS: `chooseMove`'s elo limit is reset by `analyse`, so
+the limiter is currently a no-op during the search — matched rather than silently fixed.
+Instrumented test method names are camelCase (the Swift func names), not the backtick
+display strings: D8 forbids spaces in class names for `minSdk < 35`, which the lambda
+classes inside backtick-named tests would otherwise trigger.
