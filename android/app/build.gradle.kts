@@ -5,7 +5,8 @@ plugins {
 
 android {
     namespace = "com.joelsaleem.chesstrainer"
-    compileSdk = 36
+    // Compose BOM 2026.09.00 pulls compose 1.12.1, which requires compileSdk >= 37.
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.joelsaleem.chesstrainer"
