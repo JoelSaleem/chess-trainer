@@ -368,3 +368,38 @@ the limiter is currently a no-op during the search — matched rather than silen
 Instrumented test method names are camelCase (the Swift func names), not the backtick
 display strings: D8 forbids spaces in class names for `minSdk < 35`, which the lambda
 classes inside backtick-named tests would otherwise trigger.
+
+---
+
+## M3 — chess-training (expanded 2026-11-18)
+
+**Scope.** The iOS module is 20 files / 4228 LOC; v1 drops online play and the paywall
+(design §Scope), so the Android port is the offline-training subset:
+
+| Ported (v1) | Dropped (out of v1) |
+|---|---|
+| Appearance, Clock, Content, EloGuess, Features, GameHistory, Grading, Localized, MaterialBalance, MoveDescription, Premove, Progress, Rush, Selection, Feed (Today-feed parsing) | MatchSession, MatchProtocol, Invitation, OnlineRecord (Game Center online play); Entitlement → a hard-coded "always Pro" stub |
+
+Dropped tests: MatchTests (500), InvitationTests (76), RatingPoolTests (151),
+EntitlementTests (127 → replaced by a trivial always-Pro check). Ported JVM unit tests:
+Appearance 77, EloGuess 91, GameHistory 95, MaterialBalance 40, Premove 101, Rush 77,
+Training 270, Feed 289 (parsing only) — the "127 tests" minus dropped features, per
+design §Verification line 97.
+
+**New module** `:chess-training` (`com.android.library`; offline logic + Room; most tests
+run on the JVM). Deps: `:chess-core` (and `:chess-engine` where Grading/MoveDescription
+use `EngineScore`/`Analysis`). kotlinx.serialization (Codable models) and Room
+(`GameHistory`, exercised at M6) are added as later increments need them.
+
+### Increments
+- **M3.0 — module scaffold + first pure slice:** create `:chess-training`; port
+  MaterialBalance + its 3 tests. Exit: `:chess-training:testDebugUnitTest` green.
+- **M3.1 — pure training logic:** Grading, MoveDescription, EloGuess, Rush, Premove,
+  Selection, Clock, Features (+ tests). JVM unit tests.
+- **M3.2 — serialized content:** Content (ContentLibrary), Feed parsing, Appearance via
+  kotlinx.serialization; bundle `data/*.json` into assets. JVM tests.
+- **M3.3 — Progress** (682 LOC) + tests.
+- **M3.4 — GameHistory → Room** + GameHistoryTests (Robolectric or instrumented).
+- **M3.5 — Entitlement** always-Pro stub + a trivial test.
+
+Exit (M3): the ported chess-training suite green; parity diff empty over ported files.
