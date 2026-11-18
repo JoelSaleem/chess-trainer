@@ -7,8 +7,11 @@ import com.joelsaleem.chesstrainer.core.make
 import com.joelsaleem.chesstrainer.core.move
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.time.Instant
 
 class FeatureTests {
     @Test
@@ -120,5 +123,163 @@ class MoveDescriptionTests {
         val points = MoveDescription.summary(PositionFeatures(position))
         assertTrue(points.any { it.contains("secure knight on e5") })
         assertTrue(points.any { it.contains("Material") })
+    }
+}
+
+class ProgressTests {
+    @Test
+    fun `Rating rises on a win and falls on a loss`() {
+        val progress = TrainingProgress()
+        val start = progress.rating(TrainingMode.tactics)
+
+        progress.record(mode = TrainingMode.tactics, itemID = "a", itemRating = 1500, correct = true)
+        assertTrue(progress.rating(TrainingMode.tactics) > start)
+
+        val losing = TrainingProgress()
+        losing.record(mode = TrainingMode.tactics, itemID = "a", itemRating = 900, correct = false)
+        assertTrue(losing.rating(TrainingMode.tactics) < start)
+    }
+
+    @Test
+    fun `A hint means the attempt does not count towards rating`() {
+        val progress = TrainingProgress()
+        progress.record(mode = TrainingMode.tactics, itemID = "a", itemRating = 1500, correct = true, usedHint = true)
+        assertTrue(progress.rating(TrainingMode.tactics) < 1200) // scored as a miss for rating purposes
+    }
+
+    @Test
+    fun `A missed puzzle returns tomorrow, a solved one later`() {
+        val now = Instant.now()
+        val progress = TrainingProgress()
+
+        progress.record(mode = TrainingMode.tactics, itemID = "missed", itemRating = 1200, correct = false, now = now)
+        assertEquals(1, progress.cards["missed"]!!.intervalDays)
+
+        progress.record(mode = TrainingMode.tactics, itemID = "solved", itemRating = 1200, correct = true, now = now)
+        progress.record(
+            mode = TrainingMode.tactics, itemID = "solved", itemRating = 1200, correct = true,
+            now = now.plusSeconds(86_400L * 2),
+        )
+        assertTrue(progress.cards["solved"]!!.intervalDays >= 4)
+    }
+
+    @Test
+    fun `Descriptive themes are not counted as skills`() {
+        val progress = TrainingProgress()
+        progress.record(
+            mode = TrainingMode.tactics, itemID = "a", itemRating = 1200, correct = true,
+            themes = listOf("pin", "short", "middlegame", "crushing"),
+        )
+        assertNotNull(progress.themes["pin"])
+        assertNull(progress.themes["short"])
+        assertNull(progress.themes["middlegame"])
+    }
+
+    @Test
+    fun `Confidence, not raw accuracy, ranks weaknesses`() {
+        val oneMiss = ThemeRecord(seen = 1, solved = 0)
+        val manyMisses = ThemeRecord(seen = 20, solved = 5)
+        // Both are 0% and 25%, but only the second is evidence of a weakness.
+        assertTrue(manyMisses.ceiling < oneMiss.ceiling)
+    }
+
+    @Test
+    fun `Targets are motifs below your own baseline`() {
+        val progress = TrainingProgress()
+        progress.themes = mapOf(
+            "pin" to ThemeRecord(seen = 12, solved = 3),
+            "deflection" to ThemeRecord(seen = 9, solved = 3),
+            "fork" to ThemeRecord(seen = 14, solved = 12),
+            "discoveredAttack" to ThemeRecord(seen = 10, solved = 9),
+        )
+        val names = progress.trainingTargets().map { it.name }.toSet()
+        assertTrue(names.contains("pin"))
+        assertTrue(names.contains("deflection"))
+        assertFalse(names.contains("fork"))
+    }
+
+    @Test
+    fun `Streaks count consecutive days only`() {
+        val progress = TrainingProgress()
+        val day = Instant.ofEpochSecond(1_700_000_000)
+        progress.record(mode = TrainingMode.tactics, itemID = "a", itemRating = 1200, correct = true, now = day)
+        progress.record(
+            mode = TrainingMode.tactics, itemID = "b", itemRating = 1200, correct = true,
+            now = day.plusSeconds(86_400L),
+        )
+        assertEquals(2, progress.currentStreak)
+
+        // Skipping a day resets it.
+        progress.record(
+            mode = TrainingMode.tactics, itemID = "c", itemRating = 1200, correct = true,
+            now = day.plusSeconds(86_400L * 4),
+        )
+        assertEquals(1, progress.currentStreak)
+        assertEquals(2, progress.bestStreak)
+    }
+}
+
+class SelectionTests {
+    private fun puzzle(id: String, rating: Int, themes: List<String>): Puzzle =
+        Puzzle(
+            id = id, fen = Position.startFEN, solution = listOf("e2e4"), themes = themes,
+            rating = rating, mate = false, source = null,
+        )
+
+    @Test
+    fun `Due reviews come before anything else`() {
+        val progress = TrainingProgress()
+        val now = Instant.now()
+        progress.record(
+            mode = TrainingMode.tactics, itemID = "old", itemRating = 1200, correct = false,
+            now = now.minusSeconds(86_400L * 3),
+        )
+
+        val puzzles = listOf(
+            puzzle("old", rating = 1200, themes = listOf("pin")),
+            puzzle("new", rating = 1250, themes = listOf("fork")),
+        )
+        val selection = ItemSelector.nextPuzzle(from = puzzles, progress = progress, now = now)!!
+        assertEquals("old", selection.item.id)
+        assertEquals(SelectionReason.Review, selection.reason)
+    }
+
+    @Test
+    fun `Weak motifs are targeted most of the time`() {
+        val progress = TrainingProgress()
+        progress.pools = mapOf(RatedPool.training(TrainingMode.tactics).id to PoolRating(rating = 1500))
+        progress.themes = mapOf(
+            "pin" to ThemeRecord(seen = 12, solved = 3),
+            "fork" to ThemeRecord(seen = 14, solved = 12),
+            "discoveredAttack" to ThemeRecord(seen = 10, solved = 9),
+        )
+
+        val puzzles = (0 until 40).map { index ->
+            puzzle("p$index", rating = 1500, themes = if (index % 2 == 0) listOf("pin") else listOf("fork"))
+        }
+
+        // Force the targeting branch; the share itself is a product decision, not a test's business.
+        val selection = ItemSelector.nextPuzzle(
+            from = puzzles, progress = progress, random = { 0 }, chance = { 0.0 },
+        )!!
+        assertTrue(selection.item.themes.contains("pin"))
+        val reason = selection.reason
+        assertTrue(reason is SelectionReason.Weakness)
+        assertEquals("pin", (reason as SelectionReason.Weakness).motif)
+    }
+
+    @Test
+    fun `Without enough evidence it just tracks your level`() {
+        val progress = TrainingProgress()
+        progress.pools = mapOf(RatedPool.training(TrainingMode.tactics).id to PoolRating(rating = 1500))
+        val puzzles = listOf(
+            puzzle("near", rating = 1540, themes = listOf("pin")),
+            puzzle("far", rating = 2400, themes = listOf("pin")),
+        )
+        val selection = ItemSelector.nextPuzzle(
+            from = puzzles, progress = progress, random = { 0 }, chance = { 0.0 },
+        )!!
+        assertEquals("near", selection.item.id)
+        assertEquals(SelectionReason.Level, selection.reason)
     }
 }
