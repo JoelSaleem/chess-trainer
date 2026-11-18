@@ -115,6 +115,8 @@ class TrainingProgress(
     var themes: Map<String, ThemeRecord> = emptyMap(),
     var history: List<AttemptRecord> = emptyList(),
     var eloGuesses: List<EloGuessRecord> = emptyList(),
+    /** What the free tier has spent today. */
+    var dailyUsage: DailyUsage = DailyUsage(),
     var appearance: Appearance = Appearance(),
     var currentStreak: Int = 0,
     var bestStreak: Int = 0,
@@ -129,6 +131,20 @@ class TrainingProgress(
     }
 
     val eloGuessStats: EloGuessStats get() = EloGuessStats(eloGuesses)
+
+    // Free tier
+
+    fun freeRemaining(activity: TrainingActivity, now: Instant = Instant.now(), zone: ZoneId = ZoneId.systemDefault()): Int =
+        dailyUsage.remaining(activity, now, zone)
+
+    fun recordFreeUse(activity: TrainingActivity, now: Instant = Instant.now(), zone: ZoneId = ZoneId.systemDefault()) =
+        dailyUsage.record(activity, now, zone)
+
+    fun freeTacticsSkipsRemaining(now: Instant = Instant.now(), zone: ZoneId = ZoneId.systemDefault()): Int =
+        dailyUsage.remainingTacticsSkips(now, zone)
+
+    fun recordFreeTacticsSkip(now: Instant = Instant.now(), zone: ZoneId = ZoneId.systemDefault()) =
+        dailyUsage.recordTacticsSkip(now, zone)
 
     // Ratings
 
