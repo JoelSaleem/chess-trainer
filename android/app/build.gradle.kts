@@ -23,5 +23,8 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
+    implementation(project(":chess-core"))
+    implementation(project(":chess-training"))
     implementation(project(":chess-engine"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
 }
