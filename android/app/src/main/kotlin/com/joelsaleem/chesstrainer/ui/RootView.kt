@@ -18,26 +18,31 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.joelsaleem.chesstrainer.AppModel
 
-// ponytail: state-based navigation for two screens — no nav library for a home + one screen.
-// A real nav graph lands as the screen count grows (M5/M6).
-private enum class Screen { Home, Tactics }
+// ponytail: state-based navigation while the screen count is small — no nav library yet.
+// A real nav graph lands as the screens multiply (M6).
+private enum class Screen { Home, Tactics, Progress }
 
 @Composable
-fun RootView() {
+fun RootView(app: AppModel) {
     MaterialTheme {
         Surface(Modifier.fillMaxSize()) {
             var screen by remember { mutableStateOf(Screen.Home) }
             when (screen) {
-                Screen.Home -> HomeScreen(onTactics = { screen = Screen.Tactics })
-                Screen.Tactics -> TacticsScreen(onBack = { screen = Screen.Home })
+                Screen.Home -> HomeScreen(
+                    onTactics = { screen = Screen.Tactics },
+                    onProgress = { screen = Screen.Progress },
+                )
+                Screen.Tactics -> TacticsScreen(app = app, onBack = { screen = Screen.Home })
+                Screen.Progress -> ProgressScreen(app = app, onBack = { screen = Screen.Home })
             }
         }
     }
 }
 
 @Composable
-private fun HomeScreen(onTactics: () -> Unit) {
+private fun HomeScreen(onTactics: () -> Unit, onProgress: () -> Unit) {
     Column(
         Modifier.fillMaxSize().padding(24.dp),
         verticalArrangement = Arrangement.Center,
@@ -46,5 +51,7 @@ private fun HomeScreen(onTactics: () -> Unit) {
         Text("Brass Pawn", style = MaterialTheme.typography.headlineMedium)
         Spacer(Modifier.height(24.dp))
         Button(onClick = onTactics) { Text("Tactics") }
+        Spacer(Modifier.height(12.dp))
+        Button(onClick = onProgress) { Text("Progress") }
     }
 }

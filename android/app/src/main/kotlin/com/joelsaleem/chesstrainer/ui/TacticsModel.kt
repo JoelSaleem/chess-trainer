@@ -37,6 +37,9 @@ class TacticsModel {
     private var step = 0
     private var mistakes = 0
 
+    /** Called once when a puzzle ends, with the rated outcome — the screen records it into progress. */
+    var onComplete: ((solved: Boolean, usedHint: Boolean) -> Unit)? = null
+
     val orientation: PieceColor get() = puzzle?.sideToMove ?: PieceColor.white
 
     fun load(next: Puzzle) {
@@ -101,11 +104,13 @@ class TacticsModel {
             apply(current.solution[step])
             step += 1
         }
+        val counted = solved && mistakes == 0
         feedback = when {
-            solved && mistakes == 0 -> "Solved"
+            counted -> "Solved"
             solved -> "Solved, but not first time"
             else -> "Solution"
         }
+        onComplete?.invoke(counted, false)
     }
 
     private fun refreshDestinations() {

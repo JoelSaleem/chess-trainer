@@ -217,6 +217,20 @@ class ProgressTests {
         assertEquals(1, progress.currentStreak)
         assertEquals(2, progress.bestStreak)
     }
+
+    @Test
+    fun `Overall rating weights tactics heaviest and maps to a ladder rung`() {
+        val progress = TrainingProgress()
+        progress.pools = mapOf(
+            RatedPool.training(TrainingMode.tactics).id to PoolRating(rating = 1600),
+            RatedPool.training(TrainingMode.positional).id to PoolRating(rating = 1200),
+            RatedPool.training(TrainingMode.endgame).id to PoolRating(rating = 1200),
+        )
+        assertEquals(1400, progress.overallRating) // 1600*0.5 + 1200*0.25 + 1200*0.25
+        assertEquals("Club player", LadderRung.current(1000).name)
+        assertEquals(0, LadderRung.current(500).id)
+        assertEquals(6, LadderRung.current(2600).id)
+    }
 }
 
 class SelectionTests {

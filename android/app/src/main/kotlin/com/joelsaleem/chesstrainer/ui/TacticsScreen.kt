@@ -20,14 +20,26 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.joelsaleem.chesstrainer.AppModel
 import com.joelsaleem.chesstrainer.SamplePuzzles
 import com.joelsaleem.chesstrainer.training.L
+import com.joelsaleem.chesstrainer.training.TrainingMode
 import kotlinx.coroutines.launch
 
 @Composable
-fun TacticsScreen(onBack: () -> Unit) {
+fun TacticsScreen(app: AppModel, onBack: () -> Unit) {
     val model = remember { TacticsModel() }
     val scope = rememberCoroutineScope()
+    model.onComplete = { solved, usedHint ->
+        model.puzzle?.let { p ->
+            app.update {
+                it.record(
+                    mode = TrainingMode.tactics, itemID = p.id, itemRating = p.rating,
+                    correct = solved, themes = p.themes, usedHint = usedHint,
+                )
+            }
+        }
+    }
     LaunchedEffect(Unit) {
         if (model.puzzle == null) model.load(SamplePuzzles.all.first())
     }

@@ -242,6 +242,12 @@ class TrainingProgress(
 
     // Reporting
 
+    /** Tactics dominates practical strength at club level, so it weighs heaviest. */
+    val overallRating: Int
+        get() = (rating(TrainingMode.tactics) * 0.5 +
+            rating(TrainingMode.positional) * 0.25 +
+            rating(TrainingMode.endgame) * 0.25).roundToInt()
+
     fun hasSeen(itemID: String): Boolean = cards.containsKey(itemID)
 
     /** Everything whose interval has elapsed — missed items back the next day, solved ones later. */
@@ -265,5 +271,25 @@ class TrainingProgress(
             .sortedBy { it.second.ceiling }
             .take(limit)
             .map { ThemeTarget(it.first, it.second) }
+    }
+}
+
+/**
+ * The ladder: honest labels for what a puzzle rating means in practice. A puzzle rating is not an
+ * over-the-board rating and runs several hundred points above one.
+ */
+data class LadderRung(val id: Int, val minimum: Int, val name: String, val focus: String) {
+    companion object {
+        val all: List<LadderRung> = listOf(
+            LadderRung(0, 0, L.t("ladder.name0", "Beginner"), L.t("ladder.focus0", "Piece safety, one-move threats, basic mates")),
+            LadderRung(1, 1000, L.t("ladder.name1", "Club player"), L.t("ladder.focus1", "Forks, pins, back rank, king-and-pawn endings")),
+            LadderRung(2, 1400, L.t("ladder.name2", "Strong club"), L.t("ladder.focus2", "Two-move combinations, rook activity, opposition")),
+            LadderRung(3, 1750, L.t("ladder.name3", "Expert"), L.t("ladder.focus3", "Deflection, interference, prophylaxis, Lucena and Philidor")),
+            LadderRung(4, 2050, L.t("ladder.name4", "Candidate master"), L.t("ladder.focus4", "Quiet moves, long forcing lines, minor-piece endings")),
+            LadderRung(5, 2300, L.t("ladder.name5", "Master"), L.t("ladder.focus5", "Positional sacrifices, defensive resources, technique")),
+            LadderRung(6, 2500, L.t("ladder.name6", "Grandmaster range"), L.t("ladder.focus6", "Deep calculation, imbalance evaluation, endgame precision")),
+        )
+
+        fun current(rating: Int): LadderRung = all.lastOrNull { rating >= it.minimum } ?: all[0]
     }
 }
