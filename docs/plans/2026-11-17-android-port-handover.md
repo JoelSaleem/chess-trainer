@@ -10,22 +10,28 @@ original session or any Meta tooling. Everything you need is in this repository
 | `docs/plans/2026-11-17-android-port-plan.md` | Task-by-task plan for M0 (toolchain skeleton) and M1 (chess-core port) |
 | this file | Where things stand and how to pick them up |
 
-## 0. Status — M0 + M1 done (2026-11-17, continued on macOS/Apple-Silicon)
+## 0. Status — M0–M5 landed; web (Kotlin Multiplatform) in progress (updated 2026-11-19)
 
-M0 (toolchain skeleton) and M1 (chess-core) are **complete and verified** on an
-Apple-Silicon Mac. Commit `android: gradle wrapper + M0/M1 build fixes` sits on
-`android-port` on top of the scaffold commit. Evidence:
+All on `android-port`, on an Apple-Silicon Mac:
 
-- `:chess-core:test` → **25/25 pass** (19 Swift twins + 6 Kotlin-only); perft ~2.2 s.
-- Swift→Kotlin test-name parity: **19/19**, diff empty.
-- `:app:assembleDebug` → APK packages `libstockfish.so` for **arm64-v8a and x86_64**.
-- App launches on the emulator showing `Stockfish 18 by the Stockfish developers
-  (see AUTHORS file)`; logcat has no `FATAL`/`UnsatisfiedLinkError`; `git status ios/` clean.
+- **M0–M2** (toolchain, chess-core, chess-engine) complete and verified.
+  `:chess-core` 25/25; `:chess-engine` 13/13 instrumented on the emulator;
+  `:app:assembleDebug` packages `libstockfish.so` for arm64-v8a + x86_64; the app
+  launches showing `Stockfish 18 by the Stockfish developers (see AUTHORS file)`.
+- **M3 (chess-training)** complete — pure training logic + serialized content;
+  **78 unit tests** across 13 suites (Feed 16, Entitlement/Progress 8,
+  EloGuess/Rush/Premove 6, …). Includes M3.3 Progress/EloGuess, M3.4 game-history
+  (raw SQLite via `SQLiteOpenHelper`, **not Room** — see the note in `GameHistory.kt`),
+  M3.5 Entitlement free-tier.
+- **M4** first Compose UI (2D board + Tactics + root navigation); **M5 (wip)** app
+  foundation + Progress screen + two tactics-rating bug fixes.
+  ⚠️ M3.3–M5 were produced in one long autonomous pass — **green but not yet
+  line-reviewed**.
 
-**M2 (chess-engine) is done too** — Stockfish runs in-process over JNI with
-search-thread callbacks; 13/13 instrumented tests pass on the emulator
-(StockfishTests 8, ValueCoverage 2, BudgetTests 3; Reckless and iOS-only tests are
-out of scope). **The frontier is now M3 (chess-training)** — see §6.
+**New workstream — web.** Decision (2026-11-19): run the app on web too via
+**Kotlin Multiplatform**, reusing the ported Kotlin rather than rewriting in TS.
+`:chess-core` and `:chess-training` are both converted — their logic runs on web,
+both targets green. See **§8** for the conversion recipe and status.
 
 ### What actually differed from the plan on macOS/arm64
 
@@ -177,3 +183,61 @@ scanner, the Reckless engine, App Clip, Mac. The app is named "Chess Trainer"
 - A Quest 3 is also attached over adb (`127.0.0.1:15557`). Always `export ANDROID_SERIAL=emulator-5554`.
 - SDK at `~/android-sdk` (all packages above installed); JDK 17 at `/usr/lib/jvm/java-17-openjdk`; AVD `ct36` already exists.
 - Run the emulator headless: `emulator -avd ct36 -no-window -no-audio -no-boot-anim -gpu swiftshader_indirect`.
+
+## 8. Web (Kotlin Multiplatform) — in progress (2026-11-19)
+
+Goal: the app runs on web too, reusing the Kotlin. Approach: convert the pure
+modules to KMP (Android + JS/web targets); the native engine and the UI come later.
+
+**Why it isn't a recompile:** `:chess-engine` is native C++ over NDK+JNI — there is
+no JNI on web. Web Stockfish means `stockfish.wasm` driven over a Worker (a later
+increment). The `StockfishEngine` *orchestration* (mutex, watchdog, budgets) is
+portable; only the thin native-call layer swaps per platform.
+
+### Done — `:chess-core` → KMP (commit `47499ee`)
+25/25 tests green on **both** the Android host and **JS (node)**; consumers
+(`:app`, `:chess-engine`, `:chess-training`) build against it unchanged.
+
+### Conversion recipe (what the toolchain actually needs on AGP 9.5.1 / Kotlin 2.2.10)
+- **Plugin:** `com.android.kotlin.multiplatform.library` (catalog alias
+  `android-kmp-library`), **not** `com.android.library` + `androidTarget()` — that
+  combo is **banned since AGP 9**. Target DSL: `kotlin { android { namespace;
+  compileSdk; minSdk; withHostTest {}; withDeviceTest {} } }` (the block is `android`,
+  not the deprecated `androidLibrary`).
+- Declare `kotlin-multiplatform` and `android-kmp-library` in the **root** `plugins {}`
+  with `apply false`, else: "plugin already on the classpath with an unknown version".
+- Sources → `src/commonMain/kotlin` + `src/commonTest/kotlin`; platform-only files →
+  `src/androidMain` / `src/androidDeviceTest`.
+- **JS runner under `FAIL_ON_PROJECT_REPOS`:** switch to `PREFER_SETTINGS` and declare
+  the Node + Yarn dist ivy repos in `settings.gradle.kts` (snippet is in the file).
+- `kotlin.jvm.*` is a JVM default import but not a common one — add explicit
+  `import kotlin.jvm.JvmInline` (and any other `kotlin.jvm.*`) in commonMain.
+- Heavy JS tests: raise the Mocha timeout —
+  `js { nodejs { testTask { useMocha { timeout = "300s" } } } }` (perft walks millions
+  of nodes under emulated `Long`).
+- Commit `kotlin-js-store/yarn.lock`.
+- Verify with `:<m>:testAndroidHostTest` + `:<m>:jsNodeTest` (after conversion the
+  Android unit-test task is `testAndroidHostTest`, **not** `testDebugUnitTest`).
+
+### Done — `:chess-training` → KMP
+**78/78 unit tests green on both the Android host and JS (node)**; `:app` compiles
+against the KMP module unchanged; counts match pre-conversion exactly. Conversions:
+`java.time` → `kotlinx-datetime` 0.6.2; `java.util.UUID` → `kotlin.uuid.Uuid`;
+`String.format`/`Locale` → pure-common `Format.kt` (`formatTwoDecimals` +
+`formatTemplate` for the `L.t` fallback — handles `%s`/`%d`/`%1$s`/`%%`); dropped the
+custom `InstantIso8601Serializer` (kotlinx-datetime's `Instant` is ISO-8601 by
+default, same wire format). Platform-only → `androidMain`: `GameHistory.kt` (SQLite)
++ a `File`-based `ContentLoader` (commonMain keeps a string-based
+`ContentLibrary.parse`). Tests JUnit4 → `kotlin.test`. No `expect`/`actual` needed.
+
+**Known gap:** the instrumented `GameHistoryStoreTest` is moved to
+`src/androidDeviceTest/` and converted, but AGP 9's KMP device-test DSL
+(`withDeviceTest` + the `androidDeviceTest` source-set accessor) isn't wired, so it is
+an orphaned source set (harmless build warning). The SQLite store has no running test
+until that's resolved — and it needs an emulator to run regardless.
+
+### Next
+`stockfish.wasm` engine shim (the `StockfishEngine` orchestration is portable; only
+the native-call layer swaps) → web UI (Compose Multiplatform/Wasm vs a thin web
+front-end — undecided). Smaller: wire the device-test DSL to restore the instrumented
+`GameHistoryStoreTest`.
