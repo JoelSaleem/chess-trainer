@@ -4,6 +4,8 @@
 
 package com.joelsaleem.chesstrainer.core
 
+import kotlin.jvm.JvmInline
+
 enum class PieceColor {
     white, black;
 
