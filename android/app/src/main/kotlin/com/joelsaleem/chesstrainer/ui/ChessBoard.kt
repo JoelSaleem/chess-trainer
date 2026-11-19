@@ -55,7 +55,9 @@ fun ChessBoard(
         if (!enabled) return
         val from = selected
         if (from == null) {
-            if (position[square] != null) selected = square
+            // Only the side to move can be picked up: tapping an opponent piece (or empty) selects
+            // nothing, so a stray tap on the enemy can't be sent to onMove and counted as a mistake.
+            if (position[square]?.color == position.sideToMove) selected = square
             return
         }
         if (square == from) {

@@ -15,8 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,13 +33,20 @@ import kotlinx.coroutines.launch
 fun TacticsScreen(app: AppModel, onBack: () -> Unit) {
     val model = remember { TacticsModel() }
     val scope = rememberCoroutineScope()
+    // Tactics grants one completion per puzzle, not per attempt: replaying via Retry is free
+    // practice and must not move the rating again. Resets only on a fresh puzzle (a new screen
+    // entry today, a "next" button in M6), never on retry — mirrors iOS TacticsScreen.
+    var hasCountedCompletion by remember { mutableStateOf(false) }
     model.onComplete = { solved, usedHint ->
-        model.puzzle?.let { p ->
-            app.update {
-                it.record(
-                    mode = TrainingMode.tactics, itemID = p.id, itemRating = p.rating,
-                    correct = solved, themes = p.themes, usedHint = usedHint,
-                )
+        if (!hasCountedCompletion) {
+            hasCountedCompletion = true
+            model.puzzle?.let { p ->
+                app.update {
+                    it.record(
+                        mode = TrainingMode.tactics, itemID = p.id, itemRating = p.rating,
+                        correct = solved, themes = p.themes, usedHint = usedHint,
+                    )
+                }
             }
         }
     }
