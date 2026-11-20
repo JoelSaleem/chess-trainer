@@ -13,6 +13,9 @@ kotlin {
         compileSdk = 36
         minSdk = 26
         withHostTest {}
+        withDeviceTest {
+            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        }
     }
     // Web target; commonMain is pure once java.time → kotlinx-datetime. Platform I/O lives in androidMain.
     js {
@@ -31,6 +34,12 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(kotlin("test"))
+        }
+        // Instrumented GameHistoryStoreTest (SQLite store) — compiles here; runs on an emulator.
+        getByName("androidDeviceTest").dependencies {
+            implementation("androidx.test.ext:junit:1.2.1")
+            implementation("androidx.test:runner:1.6.2")
+            implementation("androidx.test:core:1.6.1")
         }
     }
 }
