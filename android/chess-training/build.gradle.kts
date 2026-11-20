@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kmp.library)
@@ -23,6 +25,13 @@ kotlin {
             testTask {
                 useMocha { timeout = "60s" }
             }
+        }
+    }
+    // Wasm target for the shared Compose Multiplatform UI.
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        nodejs {
+            testTask { useMocha { timeout = "60s" } }
         }
     }
 
