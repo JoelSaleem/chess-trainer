@@ -32,6 +32,10 @@ kotlin {
             // The JNI Stockfish backend (the native .so lives here).
             implementation(project(":chess-engine"))
         }
+        wasmJsMain.dependencies {
+            // org.w3c.dom.Worker etc. for the stockfish.wasm UCI driver.
+            implementation("org.jetbrains.kotlinx:kotlinx-browser:0.3")
+        }
         commonTest.dependencies {
             implementation(kotlin("test"))
         }

@@ -272,10 +272,28 @@ flows transitively from `:ui` (one version).
 Also done earlier: KMP device-test wired (`withDeviceTest {}` + `androidDeviceTest` deps
 via `getByName`); `chess-training` gained a wasmJs target.
 
+### Engine on web — orchestration + stockfish.wasm driver (done; runtime-verify pending)
+`chess-engine` stays the Android-native module (NDK/JNI/CMake untouched). A new `:engine`
+KMP module holds the orchestration (`StockfishEngine` + EngineTypes + SearchBudget) against
+an injected `EngineBackend` interface (commit `9b83f3b`): `AndroidEngineBackend` wraps the
+JNI; `expect/actual EngineLock` (android real lock / wasmJs no-op) replaced `synchronized`;
+`EngineScore.text` uses a pure 2dp formatter (dropped `java.util.Locale`). Verified: `:engine`
+5/5 host + 5/5 wasmJs; android + instrumented compile; `:app` builds.
+
+`WasmEngineBackend` (wasmJsMain) is implemented + compiles: it drives a single-threaded
+`stockfish-*-lite-single.js` Web Worker over UCI (`org.w3c.dom.Worker` via kotlinx-browser),
+queues commands until `uciok`, and parses `info`/`bestmove` into the `SearchListener`; FEN is
+validated via chess-core for the InvalidPosition contract. Chosen: the prebuilt `stockfish`
+npm package (lite-single — no COOP/COEP headers), not emscripten.
+
+**To make it actually run on web (needs a browser — the sandbox can't):**
+1. Serve the engine next to the app: `npm i stockfish`, copy `stockfish-*-lite-single.js` +
+   its `.wasm` into `web/src/wasmJsMain/resources/`, and pass that filename to
+   `WasmEngineBackend(workerUrl = ...)` (default `"stockfish.js"`).
+2. Wire a UI feature to `StockfishEngine(WasmEngineBackend())` — the M4/M5 screens use
+   pre-solved tactics, so nothing drives the engine yet; analysis/play is a new feature.
+3. Verify in a browser.
+
 ### Next
-`stockfish.wasm` engine shim — the last piece for a playable web app. The
-`StockfishEngine` orchestration is portable (coroutines + chess-core); the couplings are
-`StockfishNative` (JNI → make `expect`/`actual`), one `synchronized` lock, one `Locale`.
-Web actual = a `stockfish.wasm` Worker speaking UCI, parsed back into the `SearchListener`
-callbacks. Decision pending: prebuilt `stockfish` npm package vs emscripten-compiling the
-vendored Stockfish C++; plus how the NNUE networks load on web.
+Wire + vendor + browser-verify the web engine (above) → analysis/play features →
+a localStorage-backed `ProgressStore` for real web persistence.
