@@ -236,8 +236,24 @@ default, same wire format). Platform-only → `androidMain`: `GameHistory.kt` (S
 an orphaned source set (harmless build warning). The SQLite store has no running test
 until that's resolved — and it needs an emulator to run regardless.
 
+### Web UI — Compose Multiplatform/Wasm (2026-11-20)
+Decision: reuse the Kotlin UI via **Compose Multiplatform → wasmJs** (not a TS
+rewrite). Spike + first screen done:
+- `chess-core` gained a `wasmJs` target — **25 tests green on wasmJs** (native i64
+  `Long`, unlike `js()`'s emulated `Long`).
+- New `:web` module (`org.jetbrains.compose` 1.9.0 + `kotlin.multiplatform` +
+  `kotlin.compose`; wasmJs/browser/executable) renders an 8×8 board from
+  `chess-core`'s `Position`. `:web:wasmJsBrowserDevelopmentExecutableDistribution`
+  compiles + webpack-bundles (`web.js` + `chess-trainer-web.wasm` ~15.6 MB +
+  `skiko.wasm` ~8 MB — Compose/Wasm is canvas/Skia, inherently heavy; prod DCE shrinks).
+- **Render not verified live**: the agent sandbox blocks headless Chrome (`mach_port`
+  perm) and `meta browser`'s cert infra is down. Run it:
+  `gradle :web:wasmJsBrowserDevelopmentRun`, or serve
+  `web/build/dist/wasmJs/developmentExecutable/` over http.
+
 ### Next
+Share the real **M4/M5 Compose UI** into a shared Compose-MP module so web reuses the
+actual app screens (needs `chess-training` wasmJs + multiplatform nav/resources) →
 `stockfish.wasm` engine shim (the `StockfishEngine` orchestration is portable; only
-the native-call layer swaps) → web UI (Compose Multiplatform/Wasm vs a thin web
-front-end — undecided). Smaller: wire the device-test DSL to restore the instrumented
-`GameHistoryStoreTest`.
+the native-call layer swaps). Smaller: wire the KMP device-test DSL (clears the
+`androidDeviceTest` build warning + restores `GameHistoryStoreTest`).

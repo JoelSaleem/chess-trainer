@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.kmp.library)
@@ -14,14 +16,17 @@ kotlin {
         minSdk = 26
         withHostTest {}
     }
-    // Web target. Pure-stdlib core compiles to JS unchanged; nodejs() runs the tests headless.
-    // browser() is added in the web-UI phase; the library itself is browser-ready either way.
+    // Plain Kotlin/JS target (emulated Long); fast headless tests + a TS-interop option.
     js {
         nodejs {
-            testTask {
-                // perft walks millions of nodes; JS (emulated Long) needs far more than Mocha's 2s default.
-                useMocha { timeout = "300s" }
-            }
+            testTask { useMocha { timeout = "300s" } }
+        }
+    }
+    // Wasm target (native i64 Long) — what Compose Multiplatform for web depends on.
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        nodejs {
+            testTask { useMocha { timeout = "300s" } }
         }
     }
 
