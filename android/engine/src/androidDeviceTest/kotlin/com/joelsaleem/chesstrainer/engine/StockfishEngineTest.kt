@@ -18,7 +18,9 @@ class StockfishEngineTest {
     // "The engine reports itself"
     @Test
     fun engineInfo() {
-        assertTrue(StockfishEngine.engineDescription.contains("Stockfish"))
+        val engine = StockfishEngine(AndroidEngineBackend())
+        assertTrue(engine.engineDescription.contains("Stockfish"))
+        engine.close()
     }
 
     // "It finds mate in one"
@@ -101,7 +103,8 @@ class StockfishEngineTest {
     // "The capability name drops the authorship"
     @Test
     fun shortName() {
-        val short = StockfishEngine.shortDescription
+        val engine = StockfishEngine(AndroidEngineBackend())
+        val short = engine.shortDescription
         assertTrue(short.startsWith("Stockfish"))
         assertTrue(!short.contains(" by "))
         assertTrue(!short.contains("AUTHORS"))

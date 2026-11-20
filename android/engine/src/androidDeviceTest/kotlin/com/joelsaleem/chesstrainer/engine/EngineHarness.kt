@@ -30,7 +30,7 @@ object EngineHarness {
             out
         }.sortedByDescending { it.length() }  // the big network is the larger file
 
-        val engine = StockfishEngine()
+        val engine = StockfishEngine(AndroidEngineBackend())
         engine.loadNetworks(files[0].absolutePath, files[1].absolutePath)
         engine.setOption("Threads", "1")
         engine.setOption("Hash", "64")

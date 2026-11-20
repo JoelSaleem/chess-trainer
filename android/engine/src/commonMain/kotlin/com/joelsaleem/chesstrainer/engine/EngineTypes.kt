@@ -1,8 +1,8 @@
 package com.joelsaleem.chesstrainer.engine
 
-import java.util.Locale
 import kotlin.math.abs
 import kotlin.math.exp
+import kotlin.math.roundToLong
 
 /** An evaluation, always from the point of view of the side to move. */
 sealed class EngineScore {
@@ -38,8 +38,10 @@ sealed class EngineScore {
             is Mate -> "#$moves"
             is Centipawns -> {
                 val pawns = cp / 100.0
-                // Locale.ROOT so the decimal is always a dot, matching Swift's String(format:).
-                (if (pawns >= 0) "+" else "−") + String.format(Locale.ROOT, "%.2f", abs(pawns))
+                // Pure-common 2dp with a dot decimal, matching Swift's String(format:) under Locale.ROOT.
+                val scaled = (abs(pawns) * 100).roundToLong()
+                val body = "${scaled / 100}.${(scaled % 100).toString().padStart(2, '0')}"
+                (if (pawns >= 0) "+" else "−") + body
             }
         }
 }

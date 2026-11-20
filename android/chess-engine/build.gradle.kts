@@ -26,13 +26,5 @@ android {
     }
 }
 
-dependencies {
-    implementation(project(":chess-core"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-
-    testImplementation("junit:junit:4.13.2")
-
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0")
-}
+// No dependencies: this module is now only the native Stockfish build + the JNI
+// StockfishNative surface. The orchestration + tests moved to :engine.

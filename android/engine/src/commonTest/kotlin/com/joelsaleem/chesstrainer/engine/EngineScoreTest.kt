@@ -1,8 +1,8 @@
 package com.joelsaleem.chesstrainer.engine
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 /** Kotlin-only sanity check for the pure EngineScore math (no Swift twin). */
 class EngineScoreTest {

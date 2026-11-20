@@ -18,18 +18,32 @@ import kotlin.coroutines.resume
  * A UCI engine holds exactly one position and one search, so every operation is
  * serialised through [searchMutex] — a correctness requirement, not an
  * optimisation: sending a new position while a search is unwinding corrupts the
- * single callback context the C side holds. Mirrors the iOS `actor StockfishEngine`.
+ * single callback context the backend holds. Mirrors the iOS `actor StockfishEngine`.
+ *
+ * The platform [backend] is the only per-target part: JNI on Android, a
+ * stockfish.wasm Worker on web.
  */
-class StockfishEngine : AutoCloseable {
+class StockfishEngine(private val backend: EngineBackend) : AutoCloseable {
     private val handle: Long
     private var isReady = false
     private val searchMutex = Mutex()
 
     init {
-        StockfishNative.globalInit()
-        handle = StockfishNative.create()
+        backend.globalInit()
+        handle = backend.create()
         require(handle != 0L) { "Stockfish could not be created" }
     }
+
+    /** The full UCI id string, e.g. "Stockfish 18 by the Stockfish developers (see AUTHORS file)". */
+    val engineDescription: String get() = backend.engineInfo()
+
+    /** The name and version without the authorship engine_info appends, for Settings. */
+    val shortDescription: String
+        get() {
+            val full = engineDescription
+            val idx = full.indexOf(" by ")
+            return if (idx < 0) full else full.substring(0, idx)
+        }
 
     /** Stockfish limits strength through UCI_Elo, a real rating limiter, so the whole ladder is available. */
     val capabilities: EngineCapabilities =
@@ -37,17 +51,17 @@ class StockfishEngine : AutoCloseable {
 
     /** Point the engine at its two network files. Must succeed before searching. */
     suspend fun loadNetworks(bigPath: String, smallPath: String) = searchMutex.withLock {
-        if (!StockfishNative.loadNetworks(handle, bigPath, smallPath)) {
+        if (!backend.loadNetworks(handle, bigPath, smallPath)) {
             throw EngineException.NetworksMissing(bigPath)
         }
         isReady = true
     }
 
     suspend fun setOption(name: String, value: String) = searchMutex.withLock {
-        StockfishNative.setOption(handle, name, value)
+        backend.setOption(handle, name, value)
     }
 
-    suspend fun newGame() = searchMutex.withLock { StockfishNative.newGame(handle) }
+    suspend fun newGame() = searchMutex.withLock { backend.newGame(handle) }
 
     /** Search a position. Both a depth and a time cap: "this deep, but never longer than this". */
     suspend fun analyse(fen: String, depth: Int = 14, movetimeMs: Int = 0, multiPV: Int = 1): Analysis =
@@ -65,13 +79,13 @@ class StockfishEngine : AutoCloseable {
     suspend fun chooseMove(fen: String, elo: Int? = null, depth: Int = 12, movetimeMs: Int = 0): String? =
         searchMutex.withLock {
             if (elo != null) {
-                StockfishNative.setOption(handle, "UCI_LimitStrength", "true")
-                StockfishNative.setOption(handle, "UCI_Elo", elo.coerceIn(1320, 3190).toString())
+                backend.setOption(handle, "UCI_LimitStrength", "true")
+                backend.setOption(handle, "UCI_Elo", elo.coerceIn(1320, 3190).toString())
             } else {
-                StockfishNative.setOption(handle, "UCI_LimitStrength", "false")
+                backend.setOption(handle, "UCI_LimitStrength", "false")
             }
             val analysis = analyseLocked(fen, depth, movetimeMs, 1)
-            StockfishNative.setOption(handle, "UCI_LimitStrength", "false")
+            backend.setOption(handle, "UCI_LimitStrength", "false")
             analysis.bestMove
         }
 
@@ -97,19 +111,19 @@ class StockfishEngine : AutoCloseable {
     }
 
     /** Cut the current search short. Safe to call when nothing is running. */
-    fun stop() = StockfishNative.stop(handle)
+    fun stop() = backend.stop(handle)
 
     override fun close() {
-        StockfishNative.stop(handle)
-        StockfishNative.waitForSearch(handle)
-        StockfishNative.destroy(handle)
+        backend.stop(handle)
+        backend.waitForSearch(handle)
+        backend.destroy(handle)
     }
 
     private suspend fun analyseLocked(fen: String, depth: Int, movetimeMs: Int, multiPV: Int): Analysis {
         if (!isReady) throw EngineException.NetworksMissing("networks not loaded")
-        StockfishNative.setOption(handle, "MultiPV", multiPV.toString())
-        StockfishNative.setOption(handle, "UCI_LimitStrength", "false")
-        if (!StockfishNative.setPosition(handle, fen)) throw EngineException.InvalidPosition(fen)
+        backend.setOption(handle, "MultiPV", multiPV.toString())
+        backend.setOption(handle, "UCI_LimitStrength", "false")
+        if (!backend.setPosition(handle, fen)) throw EngineException.InvalidPosition(fen)
 
         val session = Session()
         return coroutineScope {
@@ -117,7 +131,7 @@ class StockfishEngine : AutoCloseable {
             // itself and this should never fire, but a hung search must not hang the app.
             val watchdog = launch {
                 delay(ceilingMs(movetimeMs).toLong())
-                runCatching { StockfishNative.stop(handle) }
+                runCatching { backend.stop(handle) }
             }
             try {
                 suspendCancellableCoroutine { cont ->
@@ -125,8 +139,8 @@ class StockfishEngine : AutoCloseable {
                         cont.resume(Unit)
                         return@suspendCancellableCoroutine
                     }
-                    cont.invokeOnCancellation { runCatching { StockfishNative.stop(handle) } }
-                    StockfishNative.go(handle, depth, movetimeMs, session)
+                    cont.invokeOnCancellation { runCatching { backend.stop(handle) } }
+                    backend.go(handle, depth, movetimeMs, session)
                 }
             } finally {
                 watchdog.cancel()
@@ -136,9 +150,9 @@ class StockfishEngine : AutoCloseable {
         }
     }
 
-    /** Collects one search's output across the JNI callback boundary (called from the search thread). */
-    private class Session : StockfishNative.SearchListener {
-        private val lock = Any()
+    /** Collects one search's output across the backend callback boundary (may be another thread). */
+    private class Session : EngineBackend.SearchListener {
+        private val lock = EngineLock()
         private val lines = LinkedHashMap<Int, EngineLine>()
         private var best: String? = null
         private var cont: CancellableContinuation<Unit>? = null
@@ -156,22 +170,22 @@ class StockfishEngine : AutoCloseable {
                 moves = if (pv.isEmpty()) emptyList() else pv.split(" "),
             )
             // A deeper report for the same rank supersedes the earlier one.
-            synchronized(lock) { lines[line.rank] = line }
+            lock.withLock { lines[line.rank] = line }
         }
 
         override fun onBestMove(bestMove: String?, ponder: String?) {
-            val resume: CancellableContinuation<Unit>?
-            synchronized(lock) {
+            val resume: CancellableContinuation<Unit>? = lock.withLock {
                 best = bestMove?.takeUnless { it == "(none)" || it.isEmpty() }
                 finished = true
-                resume = cont
+                val c = cont
                 cont = null
+                c
             }
             resume?.resume(Unit)
         }
 
         /** Returns false if the search already finished, so the caller resumes at once. */
-        fun park(continuation: CancellableContinuation<Unit>): Boolean = synchronized(lock) {
+        fun park(continuation: CancellableContinuation<Unit>): Boolean = lock.withLock {
             if (finished) {
                 false
             } else {
@@ -180,23 +194,12 @@ class StockfishEngine : AutoCloseable {
             }
         }
 
-        fun results(): Pair<List<EngineLine>, String?> = synchronized(lock) {
+        fun results(): Pair<List<EngineLine>, String?> = lock.withLock {
             lines.values.sortedBy { it.rank } to best
         }
     }
 
     companion object {
-        /** The full UCI id string, e.g. "Stockfish 18 by the Stockfish developers (see AUTHORS file)". */
-        val engineDescription: String get() = StockfishNative.engineInfo()
-
-        /** The name and version without the authorship engine_info appends, for Settings. */
-        val shortDescription: String
-            get() {
-                val full = engineDescription
-                val idx = full.indexOf(" by ")
-                return if (idx < 0) full else full.substring(0, idx)
-            }
-
         /** The longest any one search may run, whatever it was asked for. */
         const val HARD_CEILING_MS = 10_000
 

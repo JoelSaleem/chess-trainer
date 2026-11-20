@@ -38,4 +38,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "chess-trainer"
-include(":chess-core", ":chess-engine", ":chess-training", ":ui", ":app", ":web")
+include(":chess-core", ":chess-engine", ":chess-training", ":engine", ":ui", ":app", ":web")
