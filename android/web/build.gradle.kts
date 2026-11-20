@@ -15,10 +15,8 @@ kotlin {
 
     sourceSets {
         wasmJsMain.dependencies {
-            implementation(project(":chess-core"))
+            implementation(project(":ui"))
             implementation(compose.runtime)
-            implementation(compose.foundation)
-            implementation(compose.material3)
             implementation(compose.ui)
         }
     }

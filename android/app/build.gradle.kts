@@ -6,7 +6,6 @@ plugins {
 
 android {
     namespace = "com.joelsaleem.chesstrainer"
-    // Compose BOM 2026.09.00 pulls compose 1.12.1, which requires compileSdk >= 37.
     compileSdk = 37
 
     defaultConfig {
@@ -21,8 +20,8 @@ android {
 }
 
 dependencies {
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.material3)
+    // Compose + chess types come transitively from :ui (its api(...) deps), one version for both platforms.
+    implementation(project(":ui"))
     implementation(libs.activity.compose)
     implementation(project(":chess-core"))
     implementation(project(":chess-training"))

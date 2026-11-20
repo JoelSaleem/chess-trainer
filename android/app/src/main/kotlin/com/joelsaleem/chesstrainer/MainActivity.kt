@@ -9,7 +9,7 @@ import java.io.File
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val app = AppModel(File(filesDir, "progress.json"))
+        val app = AppModel(FileProgressStore(File(filesDir, "progress.json")))
         setContent { RootView(app) }
     }
 }

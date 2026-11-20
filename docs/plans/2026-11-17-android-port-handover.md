@@ -30,8 +30,9 @@ All on `android-port`, on an Apple-Silicon Mac:
 
 **New workstream — web.** Decision (2026-11-19): run the app on web too via
 **Kotlin Multiplatform**, reusing the ported Kotlin rather than rewriting in TS.
-`:chess-core` and `:chess-training` are both converted — their logic runs on web,
-both targets green. See **§8** for the conversion recipe and status.
+`:chess-core` and `:chess-training` are converted (logic on web, both targets green),
+and the M4/M5 Compose UI is now **shared on web** via a new `:ui` module. The one piece
+left for a playable web app is the engine. See **§8**.
 
 ### What actually differed from the plan on macOS/arm64
 
@@ -251,9 +252,30 @@ rewrite). Spike + first screen done:
   `gradle :web:wasmJsBrowserDevelopmentRun`, or serve
   `web/build/dist/wasmJs/developmentExecutable/` over http.
 
+### Shared UI — the real M4/M5 screens on web (done)
+New `:ui` Compose-MP module (android + wasmJs); the 7 UI files moved from `:app` to
+`ui/commonMain`. `:app` keeps only `MainActivity` + a `FileProgressStore`; `:web`
+renders `RootView(AppModel(InMemoryProgressStore()))`. The only cross-platform seam was
+persistence: `interface ProgressStore` (File on Android, in-memory on web — localStorage
+is the upgrade). Verified: `:app:assembleDebug` (full APK), `:ui:compileKotlinWasmJs`,
+`:web` bundle all green; chess-training 78/78 on host + js.
+
+**Gotcha (important):** the `org.jetbrains.compose` *plugin* 1.9.0 is incompatible with
+AGP 9.5.1's `com.android.kotlin.multiplatform.library` (crashes at config on
+`KotlinMultiplatformAndroidComponentsExtension.onVariant`). A module with BOTH the android
+KMP target and Compose must **skip the compose plugin** and apply only `kotlin.compose`
+(the compiler) + depend on the Compose-MP artifacts directly
+(`api("org.jetbrains.compose.{runtime,foundation,material3,ui}:1.9.0")`). A wasmJs-only
+module (`:web`) can keep the plugin. `:app` dropped its androidx.compose BOM — Compose now
+flows transitively from `:ui` (one version).
+
+Also done earlier: KMP device-test wired (`withDeviceTest {}` + `androidDeviceTest` deps
+via `getByName`); `chess-training` gained a wasmJs target.
+
 ### Next
-Share the real **M4/M5 Compose UI** into a shared Compose-MP module so web reuses the
-actual app screens (needs `chess-training` wasmJs + multiplatform nav/resources) →
-`stockfish.wasm` engine shim (the `StockfishEngine` orchestration is portable; only
-the native-call layer swaps). Smaller: wire the KMP device-test DSL (clears the
-`androidDeviceTest` build warning + restores `GameHistoryStoreTest`).
+`stockfish.wasm` engine shim — the last piece for a playable web app. The
+`StockfishEngine` orchestration is portable (coroutines + chess-core); the couplings are
+`StockfishNative` (JNI → make `expect`/`actual`), one `synchronized` lock, one `Locale`.
+Web actual = a `stockfish.wasm` Worker speaking UCI, parsed back into the `SearchListener`
+callbacks. Decision pending: prebuilt `stockfish` npm package vs emscripten-compiling the
+vendored Stockfish C++; plus how the NNUE networks load on web.
